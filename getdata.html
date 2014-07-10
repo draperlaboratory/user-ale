@@ -19,6 +19,7 @@
     <!-- Custom styles for this template -->
     <link href="dashboard.css" rel="stylesheet">
     <link href="custom.css" rel="stylesheet">
+    <link href="css/wf-colors.css" rel="stylesheet">
 
   </head>
 
@@ -47,9 +48,10 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-          <img style="margin-bottom: 18px" src="img/data-ale-final-small2.png" alt="">
+          <img src="img/data-ale-final-small2.png" alt="">
+          <hr>
           <ul class="nav nav-sidebar">
-            <li><a href="#">Overview</a></li>
+            <li><a href="index.html">Overview</a></li>
             <li class="sub-list">
               <div class="sub-list header">Workflow Activities</div>
               <ul class="sub-list list">
@@ -65,7 +67,10 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h4 class="pull-right">WF_GETDATA</h4>
-          <h1 class="page-header">Get Data</h1>
+          <div class="pull-left wf wf_getdata light"></div>
+          <h1 class="page-header">            
+            Get Data
+          </h1>
           
           <h4>Description</h4>
           <p>Get Data involves <b>creating</b> (formulating and writing), <b>executing</b>, and <b>refining</b> search queries.  Refining may include drilling down, augmenting (e.g., for multiple spellings).  We use the term 'query' loosely -- a database is not required.   Because some searches are on-going, any action involved in monitoring the status or checking for new results from a persistent search also fall into this activity.   Operationally, this state would include requesting data from others, but that is out of scope for XDATA.</p>

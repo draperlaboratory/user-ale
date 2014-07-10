@@ -18,6 +18,8 @@
 
     <!-- Custom styles for this template -->
     <link href="dashboard.css" rel="stylesheet">
+    <link href="custom.css" rel="stylesheet">
+    <link href="css/wf-colors.css" rel="stylesheet">
 
   </head>
 
@@ -43,18 +45,33 @@
       </div>
     </div> -->
 
-    <div class="container-fluid">
+     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-          <img style="margin-bottom: 18px" src="img/data-ale-final-175px.png" alt="">
+          <img src="img/data-ale-final-small2.png" alt="">
+          <hr>
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview</a></li>
-            <li><a href="#">Workflow Activities</a></li>
+            <li class="active"><a href="/">Overview</a></li>
+            <li class="sub-list">
+              <div class="sub-list header">Workflow Activities</div>
+              <ul class="sub-list list">
+                <li><a href="define.html">Define Problem</a></li>
+                <li><a href="getdata.html">Get Data</a></li>
+                <li><a href="explore.html">Explore Data</a></li>
+                <li><a href="create.html">Create View</a></li>
+                <li><a href="enrich.html">Enrich Data</a></li>
+                <li><a href="transform.html">Transform Data</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Overview</h1>
-
+          <h1 class="page-header">Overview</h1>  
+          <h4>Background</h4>       
+          <p>The Data Activity Logging Engine, or Data-ALE, is a logging mechanism used to quantitatively assess the behavioural and cognitive state of a data analyst while interacting with Big Data Exploitation Systems (BDES).</p>
+          
+          <h4>Who is the package for?</h4>
+          <p>This package is for developers creating <b>User</b> facing tools, and who would like to log the users interaction with this tool, in order to gain an insight into the behavioural and cognitive state of the user.</p>
         </div>
       </div>
     </div>
