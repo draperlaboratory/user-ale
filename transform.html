@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Dashboard Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.css" rel="stylesheet">
+
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="dashboard.css" rel="stylesheet">
+    <link href="custom.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Data-ALE | analytic logging engine</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="https://github.com/draperlaboratory/xdatalogger">Github <i class="fa fa-github fa-lg"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <img style="margin-bottom: 18px" src="img/data-ale-final-small2.png" alt="">
+          <ul class="nav nav-sidebar">
+            <li><a href="#">Overview</a></li>
+            <li class="sub-list">
+              <div class="sub-list header">Workflow Activities</div>
+              <ul class="sub-list list">
+                <li><a href="define.html">Define Problem</a></li>
+                <li><a href="getdata.html">Get Data</a></li>
+                <li><a href="explore.html">Explore Data</a></li>
+                <li><a href="create.html">Create View</a></li>
+                <li><a href="enrich.html">Enrich Data</a></li>
+                <li class="active"><a href="transform.html">Transform Data</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h4 class="pull-right">WF_TRANSFORM</h4>
+          <h1 class="page-header">Transform Data</h1>
+          
+          <h4>Description</h4>
+          <p>In Transform, the user takes a deeper look at the data. The user applies algorithms to transform the data (reduce, denoise, etc.) and searches for patterns. Actions may be informed by SME knowledge or knowledge gained from other datasets. Actions may include interpolating or extrapolating, comparing across data sets or models, correlating. (Making notes or conclusions about patterns is in Enrich. Identifying/searching for them is in Transform.)</p>
+
+          <h4>Example Usages</h4>
+
+          <ul class="list-group">
+            <li class="list-group-item">
+              <h5>If you are...</h5>
+              <p style="margin-left: 15px; ">
+                Letting your user directly interact with the behavior of an algorithm (such as running a pattern match, or changing the parameters of a clustering algorithm)
+              </p>
+
+              <h5>Consider the following activities...</h5>
+              <div   style="margin-left: 15px;">
+                <code>denoise, detrend, pattern_search, "do_math", 
+transform_data, coordinate_transform</code>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    <script src="../../assets/js/docs.min.js"></script>
+  </body>
+</html>
