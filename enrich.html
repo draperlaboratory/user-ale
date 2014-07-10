@@ -16,6 +16,13 @@
 
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css">
+    <script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+    <!-- <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/styles/github.min.css"> -->
+    
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/languages/javascript.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
     <!-- Custom styles for this template -->
     <link href="dashboard.css" rel="stylesheet">
     <link href="custom.css" rel="stylesheet">
@@ -23,86 +30,76 @@
 
   </head>
 
-  <body>
+<body>
 
-    <!-- <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Data-ALE | analytic logging engine</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="https://github.com/draperlaboratory/xdatalogger">Github <i class="fa fa-github fa-lg"></i></a></li>
-          </ul>
-        </div>
-      </div>
-    </div> -->
-
-    <div class="container-fluid">
+     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <img src="img/data-ale-final-small2.png" alt="">
           <hr>
           <ul class="nav nav-sidebar">
-            <li><a href="index.html">Overview</a></li>
+            <li ><a href="index.html">Overview</a></li>
+            <li ><a href="getting_started.html">Getting Started</a></li>
             <li class="sub-list">
               <div class="sub-list header">Workflow Activities</div>
               <ul class="sub-list list">
-                <li><a href="define.html">Define Problem</a></li>
-                <li><a href="getdata.html">Get Data</a></li>
-                <li><a href="explore.html">Explore Data</a></li>
-                <li><a href="create.html">Create View</a></li>
-                <li class="active"><a href="enrich.html">Enrich Data</a></li>
-                <li><a href="transform.html">Transform Data</a></li>
+                
+                  <li><a href="define.html">Define Problem</a></li>
+                
+                  <li><a href="getdata.html">Get Data</a></li>
+                
+                  <li><a href="explore.html">Explore Data</a></li>
+                
+                  <li><a href="create.html">Create View</a></li>
+                
+                  <li class="active"><a href="enrich.html">Enrich Data</a></li>
+                
+                  <li><a href="transform.html">Transform Data</a></li>
+                
               </ul>
             </li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h4 class="pull-right">WF_ENRICH</h4>
-          <div class="pull-left wf wf_enrich light"></div>
-          <h1 class="page-header">Enrich Data</h1>
           
-          <h4>Description</h4>
-          <p>In Enrich, the user actively adds insight value back into the tool.  Activities include annotating/tagging/labeling data with textual notes or links, bookmarking views, creating links between data elements.  Annotations may include external insight (from SMEs), algorithmic results (searching for patterns, denoising, etc.), identifying patterns/trends,  (Making notes or conclusions about patterns is in Enrich. Identifying/searching for them is in Transform.)</p>
+<h4 class="pull-right">WF_ENRICH</h4>
+<div class="pull-left wf wf_enrich light"></div>
+<h1 class="page-header">Enrich Data</h1>
 
-          <h4>Example Usages</h4>
+<h4>Description</h4>
+<p>In Enrich, the user actively adds insight value back into the tool.  Activities include annotating/tagging/labeling data with textual notes or links, bookmarking views, creating links between data elements.  Annotations may include external insight (from SMEs), algorithmic results (searching for patterns, denoising, etc.), identifying patterns/trends,  (Making notes or conclusions about patterns is in Enrich. Identifying/searching for them is in Transform.)</p>
 
-          <ul class="list-group">
-            <li class="list-group-item">
-              <h5>If you are...</h5>
-              <p style="margin-left: 15px; ">
-                Letting the user organize their data, in a sandbox or workspace
-              </p>
+<h4>Example Usages</h4>
 
-              <h5>Consider the following activities...</h5>
-              <div style="margin-left: 15px;">
-                <code>create_workspace, remove_workspace, 
+<ul class="list-group">
+  <li class="list-group-item">
+    <h5>If you are...</h5>
+    <p style="margin-left: 15px; ">
+      Letting the user organize their data, in a sandbox or workspace
+    </p>
+
+    <h5>Consider the following activities...</h5>
+    <div style="margin-left: 15px;">
+      <code>create_workspace, remove_workspace, 
 add_to_workspace, remove_from_workspace, clear_workspace, 
 export_data, import_data</code>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <h5>If you are...</h5>
-              <p style="margin-left: 15px; ">
-                Letting your user annotate or mark the data. This is an active process of having the user document their insight within your tool
-              </p>
+    </div>
+  </li>
+  <li class="list-group-item">
+    <h5>If you are...</h5>
+    <p style="margin-left: 15px; ">
+      Letting your user annotate or mark the data. This is an active process of having the user document their insight within your tool
+    </p>
 
-              <h5>Consider the following activities...</h5>
-              <div style="margin-left: 15px;">
-                <code>annotate_graph, annotate_plot, annotate_chart, annotate_map,  
+    <h5>Consider the following activities...</h5>
+    <div style="margin-left: 15px;">
+      <code>annotate_graph, annotate_plot, annotate_chart, annotate_map,  
 remove_graph_annotation, remove_map_annotation, remove_chart_annotation, 
 bookmark_view, add_note, remove_note, highlight_data</code>
-              </div>
-            </li>
-          </ul>
+    </div>
+  </li>
+</ul>
+
         </div>
       </div>
     </div>

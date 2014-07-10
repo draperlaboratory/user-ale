@@ -39,14 +39,14 @@
           <hr>
           <ul class="nav nav-sidebar">
             <li ><a href="index.html">Overview</a></li>
-            <li ><a href="getting_started.html">Getting Started</a></li>
+            <li  class="active"><a href="getting_started.html">Getting Started</a></li>
             <li class="sub-list">
               <div class="sub-list header">Workflow Activities</div>
               <ul class="sub-list list">
                 
                   <li><a href="define.html">Define Problem</a></li>
                 
-                  <li class="active"><a href="getdata.html">Get Data</a></li>
+                  <li><a href="getdata.html">Get Data</a></li>
                 
                   <li><a href="explore.html">Explore Data</a></li>
                 
@@ -62,41 +62,51 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           
-<h4 class="pull-right">WF_GETDATA</h4>
-<div class="pull-left wf wf_getdata light"></div>
-<h1 class="page-header">            
-  Get Data
-</h1>
+<h1 class="page-header">Getting Started</h1>  
+<div class="step">
+  <h4>Instantiate the Logger</h4>
+  <pre><code>// web worker url
+var worker = 'js/draper.activity_worker-2.1.1.js'
+var ac = new activityLogger(worker);
+.testing(true) // simulate POST, won't send log
+.echo(true) // log to console
+.mute(['SYS']); // don't log SYSTEM actions
+  </code></pre>
+</div>
 
-<h4>Description</h4>
-<p>Get Data involves <b>creating</b> (formulating and writing), <b>executing</b>, and <b>refining</b> search queries.  Refining may include drilling down, augmenting (e.g., for multiple spellings).  We use the term 'query' loosely -- a database is not required.   Because some searches are on-going, any action involved in monitoring the status or checking for new results from a persistent search also fall into this activity.   Operationally, this state would include requesting data from others, but that is out of scope for XDATA.</p>
+<div class="step">
+  <h4>Register the Logger</h4>
+  <pre><code>ac.registerActivityLogger(
+  "http://xd-draper.xdata.data-tactics-corp.com:1337", 
+  "my-component", 
+  "v0.1"
+  );
+  </code></pre>
+</div>
 
-<h4>Example Usages</h4>
 
-<ul class="list-group">
-  <li class="list-group-item">
-    <h5>If you are...</h5>
-    <p style="margin-left: 15px; ">
-      <b>Creating a filter or query</b> for getting data (whether that filter is done with a text box or crossfiltered views or checkboxes or sliders or ...) A visual filter has an interactive component, such as a slider, or dragging a box around an area on a map.
-    </p>
+<div class="step">
+  <h4>Log a User Activity</h4>
+  <pre><code>$('#button').mouseenter(function() {
+  ac.logUserActivity(
+  'User hovered over element to read popup', // description
+  'hover_start', // activity_code
+  ac.WF_EXPLORE // workflow State
+  );
+})
+  </code></pre>
+</div>
 
-    <h5>Consider the following activities...</h5>
-    <div   style="margin-left: 15px;">
-      <code>select_filter_menu_option, enter_filter_text, set_visual_filter_parameters, reset_filter_parameters, remove_visual_filter, remove_query_filter</code>
-    </div>
-  </li>
-  <li class="list-group-item">
-    <h5>If you are...</h5>
-    <p style="margin-left: 15px; ">
-      <b>Executing a query</b> or visual search (if that takes a separate step).
-    </p>
+<div class="step">
+<h4>Log a System Activity</h4>
+<pre><code>ac.logSystemActivity('asking server for data.');
 
-    <h5>Consider the following activities...</h5>
-    <div style="margin-left: 15px;">
-      <code>execute_query_filter, execute_visual_filter, abort_query</code>
-    </div>
-  </li>
-</ul>
+$.getJSON('https://my_endpoint/get_data', data, function(data) {
+  ac.logSystemActivity('received data from server.');
+  $("#result").text(data.result);
+});
+  </code></pre>
+</div>
 
         </div>
       </div>

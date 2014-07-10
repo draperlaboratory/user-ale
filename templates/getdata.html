@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% set active_page = "getdata.html" %}
+{% block content %}
+<h4 class="pull-right">WF_GETDATA</h4>
+<div class="pull-left wf wf_getdata light"></div>
+<h1 class="page-header">            
+  Get Data
+</h1>
+
+<h4>Description</h4>
+<p>Get Data involves <b>creating</b> (formulating and writing), <b>executing</b>, and <b>refining</b> search queries.  Refining may include drilling down, augmenting (e.g., for multiple spellings).  We use the term 'query' loosely -- a database is not required.   Because some searches are on-going, any action involved in monitoring the status or checking for new results from a persistent search also fall into this activity.   Operationally, this state would include requesting data from others, but that is out of scope for XDATA.</p>
+
+<h4>Example Usages</h4>
+
+<ul class="list-group">
+  <li class="list-group-item">
+    <h5>If you are...</h5>
+    <p style="margin-left: 15px; ">
+      <b>Creating a filter or query</b> for getting data (whether that filter is done with a text box or crossfiltered views or checkboxes or sliders or ...) A visual filter has an interactive component, such as a slider, or dragging a box around an area on a map.
+    </p>
+
+    <h5>Consider the following activities...</h5>
+    <div   style="margin-left: 15px;">
+      <code>select_filter_menu_option, enter_filter_text, set_visual_filter_parameters, reset_filter_parameters, remove_visual_filter, remove_query_filter</code>
+    </div>
+  </li>
+  <li class="list-group-item">
+    <h5>If you are...</h5>
+    <p style="margin-left: 15px; ">
+      <b>Executing a query</b> or visual search (if that takes a separate step).
+    </p>
+
+    <h5>Consider the following activities...</h5>
+    <div style="margin-left: 15px;">
+      <code>execute_query_filter, execute_visual_filter, abort_query</code>
+    </div>
+  </li>
+</ul>
+{% endblock %}

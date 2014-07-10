@@ -16,6 +16,13 @@
 
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css">
+    <script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+    <!-- <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/styles/github.min.css"> -->
+    
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/languages/javascript.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
     <!-- Custom styles for this template -->
     <link href="dashboard.css" rel="stylesheet">
     <link href="custom.css" rel="stylesheet">
@@ -23,93 +30,83 @@
 
   </head>
 
-  <body>
+<body>
 
-    <!-- <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Data-ALE | analytic logging engine</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="https://github.com/draperlaboratory/xdatalogger">Github <i class="fa fa-github fa-lg"></i></a></li>
-          </ul>
-        </div>
-      </div>
-    </div> -->
-
-    <div class="container-fluid">
+     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <img src="img/data-ale-final-small2.png" alt="">
           <hr>
           <ul class="nav nav-sidebar">
-            <li><a href="index.html">Overview</a></li>
+            <li ><a href="index.html">Overview</a></li>
+            <li ><a href="getting_started.html">Getting Started</a></li>
             <li class="sub-list">
               <div class="sub-list header">Workflow Activities</div>
               <ul class="sub-list list">
-                <li><a href="define.html">Define Problem</a></li>
-                <li><a href="getdata.html">Get Data</a></li>
-                <li><a href="explore.html">Explore Data</a></li>
-                <li class="active"><a href="create.html">Create View</a></li>
-                <li><a href="enrich.html">Enrich Data</a></li>
-                <li><a href="transform.html">Transform Data</a></li>
+                
+                  <li><a href="define.html">Define Problem</a></li>
+                
+                  <li><a href="getdata.html">Get Data</a></li>
+                
+                  <li><a href="explore.html">Explore Data</a></li>
+                
+                  <li class="active"><a href="create.html">Create View</a></li>
+                
+                  <li><a href="enrich.html">Enrich Data</a></li>
+                
+                  <li><a href="transform.html">Transform Data</a></li>
+                
               </ul>
             </li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h4 class="pull-right">WF_CREATE</h4>
-          <div class="pull-left wf wf_create light"></div>
-          <h1 class="page-header">Create View</h1>
           
-          <h4>Description</h4>
-          <p>Create View of Data involves the organization of data. Creating and manipulating the spatial layout in a visualization, creating categories, deriving higher-level structures, and merging pieces of information all fall under this activity.</p>
+<h4 class="pull-right">WF_CREATE</h4>
+<div class="pull-left wf wf_create light"></div>
+<h1 class="page-header">Create View</h1>
 
-          <h4>Example Usages</h4>
+<h4>Description</h4>
+<p>Create View of Data involves the organization of data. Creating and manipulating the spatial layout in a visualization, creating categories, deriving higher-level structures, and merging pieces of information all fall under this activity.</p>
 
-          <ul class="list-group">
-            <li class="list-group-item">
-              <h5>If you are...</h5>
-              <p style="margin-left: 15px; ">
-                Configuring or adjusting the overall UI. This includes arrangement of windows, and hiding/showing of control panels or help functions, <b>but not hiding/showing of data</b>.
-              </p>
+<h4>Example Usages</h4>
 
-              <h5>Consider the following activities...</h5>
-              <div style="margin-left: 15px;">
-                <code>open_modal_tools, close_modal_tools, show_tools, hide_tools, resize_window, resize_component, arrange_windows, scroll, show_instructional_material, hide_instructional_material</code>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <h5>If you are...</h5>
-              <p style="margin-left: 15px; ">
-                Generating or displaying visualizations of data (including maps, plots, tables, and more)
-              </p>
+<ul class="list-group">
+  <li class="list-group-item">
+    <h5>If you are...</h5>
+    <p style="margin-left: 15px; ">
+      Configuring or adjusting the overall UI. This includes arrangement of windows, and hiding/showing of control panels or help functions, <b>but not hiding/showing of data</b>.
+    </p>
 
-              <h5>Consider the following activities...</h5>
-              <div style="margin-left: 15px;">
-                <code>show_map, hide_map, show_plot, hide_plot, show_data, hide_data, show_table, hide_table, show_graph, hide_graph, show_chart, hide_chart</code>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <h5>If you are...</h5>
-              <p style="margin-left: 15px; ">
-                Defining the parameters for a visualization (including maps, plots, tables, and more)
-              </p>
+    <h5>Consider the following activities...</h5>
+    <div style="margin-left: 15px;">
+      <code>open_modal_tools, close_modal_tools, show_tools, hide_tools, resize_window, resize_component, arrange_windows, scroll, show_instructional_material, hide_instructional_material</code>
+    </div>
+  </li>
+  <li class="list-group-item">
+    <h5>If you are...</h5>
+    <p style="margin-left: 15px; ">
+      Generating or displaying visualizations of data (including maps, plots, tables, and more)
+    </p>
 
-              <h5>Consider the following activities...</h5>
-              <div style="margin-left: 15px;">
-                <code>select_plot_type, select_table_type, select_map_type, select_graph_type, select_map_layer_type, set_map_layer_properties, set_plot_properties, set_chart_properties, set_graph_properties, define_axes, add_map_layer, remove_map_layer,start_animation, stop_animation, pause_animation, set_animation_properties</code>
-              </div>
-            </li>
-          </ul>
+    <h5>Consider the following activities...</h5>
+    <div style="margin-left: 15px;">
+      <code>show_map, hide_map, show_plot, hide_plot, show_data, hide_data, show_table, hide_table, show_graph, hide_graph, show_chart, hide_chart</code>
+    </div>
+  </li>
+  <li class="list-group-item">
+    <h5>If you are...</h5>
+    <p style="margin-left: 15px; ">
+      Defining the parameters for a visualization (including maps, plots, tables, and more)
+    </p>
+
+    <h5>Consider the following activities...</h5>
+    <div style="margin-left: 15px;">
+      <code>select_plot_type, select_table_type, select_map_type, select_graph_type, select_map_layer_type, set_map_layer_properties, set_plot_properties, set_chart_properties, set_graph_properties, define_axes, add_map_layer, remove_map_layer,start_animation, stop_animation, pause_animation, set_animation_properties</code>
+    </div>
+  </li>
+</ul>
+
         </div>
       </div>
     </div>
