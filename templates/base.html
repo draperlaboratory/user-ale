@@ -44,7 +44,7 @@
 
      <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
+        <div style="z-index: 5000;" class="col-sm-3 col-md-2 sidebar">
           <img src="img/data-ale-final-small2.png" alt="">
           <hr>
           <ul class="nav nav-sidebar">
@@ -52,6 +52,8 @@
   %}><a href="index.html">Overview</a></li>
             <li {% if 'getting_started.html' == active_page %} class="active"{% endif
                   %}><a href="getting_started.html">Getting Started</a></li>
+            <li {% if 'documentation.html' == active_page %} class="active"{% endif
+  %}><a href="documentation.html">RESTful API</a></li>
             <li class="sub-list">
               <div class="sub-list header">Workflow Activities</div>
               <ul class="sub-list list">
@@ -63,7 +65,7 @@
             </li>
           </ul>
         </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div  style="position: relative;" data-spy="scroll" data-target=".navbar-example" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           {% block content %}{% endblock %}
         </div>
       </div>
@@ -73,7 +75,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/docs.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <!-- // <script src="../../assets/js/docs.min.js"></script> -->
   </body>
 </html>
