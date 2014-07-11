@@ -22,7 +22,7 @@ Creating a filter or query for getting data (whether that filter is done with a 
 
 Consider the following activities...
 
-`select_filter_menu_option`, `enter_filter_text`, set_visual_filter_parameters, reset_filter_parameters, remove_visual_filter, remove_query_filter
+`select_filter_menu_option`, `enter_filter_text`, `set_visual_filter_parameters`, `reset_filter_parameters`, `remove_visual_filter`, `remove_query_filter`
 
 __If you are...__
 
@@ -30,7 +30,7 @@ Executing a query or visual search (if that takes a separate step).
 
 __Consider the following activities...__
 
-`execute_query_filter`, execute_visual_filter, abort_query
+`execute_query_filter`, `execute_visual_filter`, `abort_query`
 
 
 ##Explore Data
@@ -47,14 +47,14 @@ Interacting with a map or visualization
 
 Consider the following activities...
 
-pan (pan_start, pan_end), zoom (zoom_in, zoom_out), rotate, drag_object (drag_object_start, drag_object_end), drag (drag_start, drag_end), hover (hover_start, hover_end), select_object, deselect_object, expand_data, collapse_data
+`pan (pan_start, pan_end)`, `zoom (zoom_in, zoom_out)`, `rotate`, `drag_object (drag_object_start, drag_object_end)`, `drag (drag_start, drag_end)`, `hover (hover_start, hover_end)`, `select_object`, `deselect_object`, `expand_data`, `collapse_data`
 If you are...
 
 Controls for the user to directly interact with the data presented within a visualization
 
 Consider the following activities...
 
-sort, scroll, show_data_info, hide_data_info, highlight_data
+`sort`, `scroll`, `show_data_info`, `hide_data_info`, `highlight_data`
 
 ##Create View
 
@@ -70,21 +70,21 @@ Configuring or adjusting the overall UI. This includes arrangement of windows, a
 
 Consider the following activities...
 
-open_modal_tools, close_modal_tools, show_tools, hide_tools, resize_window, resize_component, arrange_windows, scroll, show_instructional_material, hide_instructional_material
+`open_modal_tools`, `close_modal_tools`, `show_tools`, `hide_tools`, `resize_window`, `resize_component`, `arrange_windows`, `scroll`, `show_instructional_material`, `hide_instructional_material`
 If you are...
 
 Generating or displaying visualizations of data (including maps, plots, tables, and more)
 
 Consider the following activities...
 
-show_map, hide_map, show_plot, hide_plot, show_data, hide_data, show_table, hide_table, show_graph, hide_graph, show_chart, hide_chart
+`show_map`, `hide_map`, `show_plot`, `hide_plot`, `show_data`, `hide_data`, `show_table`, `hide_table`, `show_graph`, `hide_graph`, `show_chart`, `hide_chart`
 If you are...
 
 Defining the parameters for a visualization (including maps, plots, tables, and more)
 
 Consider the following activities...
 
-select_plot_type, select_table_type, select_map_type, select_graph_type, select_map_layer_type, set_map_layer_properties, set_plot_properties, set_chart_properties, set_graph_properties, define_axes, add_map_layer, remove_map_layer,start_animation, stop_animation, pause_animation, set_animation_properties
+`select_plot_type`, `select_table_type`, `select_map_type`, `select_graph_type`, `select_map_layer_type`, `set_map_layer_properties`, `set_plot_properties`, `set_chart_properties`, `set_graph_properties`, `define_axes`, `add_map_layer`, `remove_map_layer`, `start_animation`, `stop_animation`, `pause_animation`, `set_animation_properties`
 
 ##Enrich Data
 
@@ -100,14 +100,15 @@ Letting the user organize their data, in a sandbox or workspace
 
 Consider the following activities...
 
-create_workspace, remove_workspace, add_to_workspace, remove_from_workspace, clear_workspace, export_data, import_data
+`create_workspace`, `remove_workspace`, `add_to_workspace`, `remove_from_workspace`, `clear_workspace`, `export_data`, `import_data`
+
 If you are...
 
 Letting your user annotate or mark the data. This is an active process of having the user document their insight within your tool
 
 Consider the following activities...
 
-annotate_graph, annotate_plot, annotate_chart, annotate_map, remove_graph_annotation, remove_map_annotation, remove_chart_annotation, bookmark_view, add_note, remove_note, highlight_data
+`annotate_graph`, `annotate_plot`, `annotate_chart`, `annotate_map`, `remove_graph_annotation`, `remove_map_annotation`, `remove_chart_annotation`, `bookmark_view`, `add_note`, `remove_note`, `highlight_data`
 
 ##Transform Data
 
@@ -123,7 +124,7 @@ Letting your user directly interact with the behavior of an algorithm (such as r
 
 Consider the following activities...
 
-denoise, detrend, pattern_search, "do_math", transform_data, coordinate_transform
+`denoise`, `detrend`, `pattern_search`, `"do_math"`, `transform_data`, `coordinate_transform`
 
 ##Other
 
