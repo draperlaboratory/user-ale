@@ -20,7 +20,7 @@ __If you are...__
 
 Creating a filter or query for getting data (whether that filter is done with a text box or crossfiltered views or checkboxes or sliders or ...) A visual filter has an interactive component, such as a slider, or dragging a box around an area on a map.
 
-Consider the following activities...
+__Consider the following activities...__
 
 `select_filter_menu_option`, `enter_filter_text`, `set_visual_filter_parameters`, `reset_filter_parameters`, `remove_visual_filter`, `remove_query_filter`
 
@@ -39,7 +39,7 @@ __Consider the following activities...__
 
 Explore Data involves consuming data (reading, listening, watching) or visualizations of data. This activity may involve the examination of a visualization, or the comparing of multiple views of a dataset. Explore may be dynamic, but is a passive state (vs. Enrich). This is the triage step of taking a first look at the data. This is typically a big picture view.
 
-Example Usages
+####Example Usages
 
 __If you are...__
 
