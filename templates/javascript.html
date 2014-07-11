@@ -9,7 +9,7 @@
 
 <h3>Getting Started</h3>
 <div class="step">
-  <h5>Download both the latest logging library and the latest worker library from Github <a href="https://github.com/draperlaboratory/data-ale/tree/master/helper-libs/javascript">here.</a></h5>
+  <h5>Download both the latest logging library and the latest worker library from Github <a href="https://github.com/draperlaboratory/User-ALE/tree/master/helper-libs/javascript">here.</a></h5>
 </div>
 
 <div class="step">
@@ -29,7 +29,7 @@ var ac = new activityLogger(worker);
 </div>
 
 <div class="alert alert-warning" role="alert">
-  If you plan to distribute software that is instrumented using Data-ALE, please set testing=true to ensure that logging is not automatically turned on.
+  If you plan to distribute software that is instrumented using User-ALE, please set testing=true to ensure that logging is not automatically turned on.
 </div>
 
 <div class="step">
@@ -66,6 +66,9 @@ var ac = new activityLogger(worker);
 <b class="function-name">testing</b><code class="function-usage">ac.testing(true/false)</code>
 <br>
 <p>Set to true to disable XHR logging to remote server and  to false to enable XHR logging to remote server.</p>
+<div class="alert alert-warning" role="alert">
+  If you plan to distribute software that is instrumented using User-ALE, please set testing=true to ensure that logging is not automatically turned on.
+</div>
 <hr>
 <b class="function-name">echo</b><code class="function-usage">ac.echo(true/false)</code>
 <br>
