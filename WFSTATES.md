@@ -16,7 +16,7 @@ Get Data involves creating (formulating and writing), executing, and refining se
 
 ####Example Usages
 
-If you are...
+__If you are...__
 
 Creating a filter or query for getting data (whether that filter is done with a text box or crossfiltered views or checkboxes or sliders or ...) A visual filter has an interactive component, such as a slider, or dragging a box around an area on a map.
 
@@ -41,18 +41,19 @@ Explore Data involves consuming data (reading, listening, watching) or visualiza
 
 Example Usages
 
-If you are...
+__If you are...__
 
 Interacting with a map or visualization
 
-Consider the following activities...
+__Consider the following activities...__
 
 `pan (pan_start, pan_end)`, `zoom (zoom_in, zoom_out)`, `rotate`, `drag_object (drag_object_start, drag_object_end)`, `drag (drag_start, drag_end)`, `hover (hover_start, hover_end)`, `select_object`, `deselect_object`, `expand_data`, `collapse_data`
-If you are...
+
+__If you are...__
 
 Controls for the user to directly interact with the data presented within a visualization
 
-Consider the following activities...
+__Consider the following activities...__
 
 `sort`, `scroll`, `show_data_info`, `hide_data_info`, `highlight_data`
 
@@ -64,25 +65,27 @@ Create View of Data involves the organization of data. Creating and manipulating
 
 ####Example Usages
 
-If you are...
+__If you are...__
 
 Configuring or adjusting the overall UI. This includes arrangement of windows, and hiding/showing of control panels or help functions, but not hiding/showing of data.
 
-Consider the following activities...
+__Consider the following activities...__
 
 `open_modal_tools`, `close_modal_tools`, `show_tools`, `hide_tools`, `resize_window`, `resize_component`, `arrange_windows`, `scroll`, `show_instructional_material`, `hide_instructional_material`
-If you are...
+
+__If you are...__
 
 Generating or displaying visualizations of data (including maps, plots, tables, and more)
 
-Consider the following activities...
+__Consider the following activities...__
 
 `show_map`, `hide_map`, `show_plot`, `hide_plot`, `show_data`, `hide_data`, `show_table`, `hide_table`, `show_graph`, `hide_graph`, `show_chart`, `hide_chart`
-If you are...
+
+__If you are...__
 
 Defining the parameters for a visualization (including maps, plots, tables, and more)
 
-Consider the following activities...
+__Consider the following activities...__
 
 `select_plot_type`, `select_table_type`, `select_map_type`, `select_graph_type`, `select_map_layer_type`, `set_map_layer_properties`, `set_plot_properties`, `set_chart_properties`, `set_graph_properties`, `define_axes`, `add_map_layer`, `remove_map_layer`, `start_animation`, `stop_animation`, `pause_animation`, `set_animation_properties`
 
@@ -94,19 +97,19 @@ In Enrich, the user actively adds insight value back into the tool. Activities i
 
 ####Example Usages
 
-If you are...
+__If you are...__
 
 Letting the user organize their data, in a sandbox or workspace
 
-Consider the following activities...
+__Consider the following activities...__
 
 `create_workspace`, `remove_workspace`, `add_to_workspace`, `remove_from_workspace`, `clear_workspace`, `export_data`, `import_data`
 
-If you are...
+__If you are...__
 
 Letting your user annotate or mark the data. This is an active process of having the user document their insight within your tool
 
-Consider the following activities...
+__Consider the following activities...__
 
 `annotate_graph`, `annotate_plot`, `annotate_chart`, `annotate_map`, `remove_graph_annotation`, `remove_map_annotation`, `remove_chart_annotation`, `bookmark_view`, `add_note`, `remove_note`, `highlight_data`
 
@@ -118,11 +121,11 @@ In Transform, the user takes a deeper look at the data. The user applies algorit
 
 ####Example Usages
 
-If you are...
+__If you are...__
 
 Letting your user directly interact with the behavior of an algorithm (such as running a pattern match, or changing the parameters of a clustering algorithm)
 
-Consider the following activities...
+__Consider the following activities...__
 
 `denoise`, `detrend`, `pattern_search`, `"do_math"`, `transform_data`, `coordinate_transform`
 
