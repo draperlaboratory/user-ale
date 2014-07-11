@@ -26,3 +26,4 @@ convert_file('enrich.html')
 convert_file('getting_started.html')
 convert_file('documentation.html')
 
+convert_file('javascript.html')

@@ -1,3 +1,6 @@
+li.sub-list {
+	margin-bottom: 6px;
+}
 
 .sub-list.header {
 	padding-right: 20px;
@@ -55,4 +58,45 @@ div.step {
 
 .dl-link > a:hover {
 	text-decoration: none;
+}
+
+hr {
+margin-top: 5px;
+margin-bottom: 5px;
+}
+
+.function-name {	
+font-size: 14px;
+line-height: 30px;
+}
+
+.function-usage {
+	margin-left: 30px;
+	font-family: Monaco, Consolas, "Lucida Console", monospace;
+	font-size: 12px;
+	line-height: 18px;
+	font-style: normal;
+	color: #c7254e;
+	background-color: inherit;
+}
+
+.wfCodes a {
+	color: inherit;
+}
+
+.wfCodes .badge {
+display: block;
+max-width: 300px;
+min-width: 10px;
+padding: 3px 7px;
+margin-bottom: 5px;
+font-size: 16px;
+font-weight: bold;
+line-height: 1;
+color: #fff;
+text-align: center;
+white-space: nowrap;
+vertical-align: baseline;
+background-color: #777;
+border-radius: 5px;
 }
