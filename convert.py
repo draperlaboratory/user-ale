@@ -16,6 +16,7 @@ def convert_file(fname):
 
 convert_file('index.html')
 convert_file('transform.html')
+convert_file('other.html')
 convert_file('define.html')
 convert_file('explore.html')
 convert_file('getdata.html')

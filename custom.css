@@ -52,3 +52,7 @@ font-size: 18px;
 div.step {
 	margin-bottom: 35px;
 }
+
+.dl-link > a:hover {
+	text-decoration: none;
+}

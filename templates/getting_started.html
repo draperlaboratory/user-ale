@@ -1,10 +1,16 @@
 {% extends "base.html" %}
 {% set active_page = "getting_started.html" %}
 {% block content %}
-<h1 class="page-header">Getting Started</h1>  
-<p>A helper library has been written in Javascript.</p>
+<h1 class="page-header">JavaScript Quickstart</h1>  
+
 <div class="step">
-  <h4>Include the Data-ALE logging library</h4>
+  <h4>Download both the JavaScript helper logging library and the worker library</h4>
+  <h3 class="dl-link"><a href="https://raw.githubusercontent.com/draperlaboratory/data-ale/master/helper-libs/javascript/draper.activity_logger-2.1.1.js" download><span class="label label-primary">draper.activity_logger-2.1.1.js</span></a> </h3>
+  <h3 class="dl-link"><a href="https://raw.githubusercontent.com/draperlaboratory/data-ale/master/helper-libs/javascript/draper.activity_worker-2.1.1.js" download><span class="label label-primary">draper.activity_worker-2.1.1.js</span></a> </h3>
+</div>
+
+<div class="step">
+  <h4>Include the logging library</h4>
   <pre><code>&lt;script src="js/draper.activity_logger-2.1.1.js"&gt;&lt;/script&gt;</code></pre>
 </div>
 
@@ -17,6 +23,10 @@ var ac = new activityLogger(worker);
 .echo(true) // log to console
 .mute(['SYS']); // don't log SYSTEM actions
   </code></pre>
+</div>
+
+<div class="alert alert-warning" role="alert">
+  If you plan to distribute software that is instrumented using Data-ALE, please set testing=true to ensure that logging is not automatically turned on.
 </div>
 
 <div class="step">

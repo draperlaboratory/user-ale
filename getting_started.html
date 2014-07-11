@@ -37,9 +37,13 @@
         <div style="z-index: 5000;" class="col-sm-3 col-md-2 sidebar">
           <img src="img/data-ale-final-small2.png" alt="">
           <hr>
+          <div style="text-align: center">
+            <a href="https://github.com/draperlaboratory/data-ale">Get from Github <i class="fa fa-github"></i></a>
+          </div>
+          <hr>
           <ul class="nav nav-sidebar">
             <li ><a href="index.html">Overview</a></li>
-            <li  class="active"><a href="getting_started.html">Getting Started</a></li>
+            <li  class="active"><a href="getting_started.html">JavaScript Quickstart</a></li>
             <li ><a href="documentation.html">RESTful API</a></li>
             <li class="sub-list">
               <div class="sub-list header">Workflow Activities</div>
@@ -57,16 +61,24 @@
                 
                   <li><a href="transform.html">Transform Data</a></li>
                 
+                  <li><a href="other.html">Other</a></li>
+                
               </ul>
             </li>
           </ul>
         </div>
         <div  style="position: relative;" data-spy="scroll" data-target=".navbar-example" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           
-<h1 class="page-header">Getting Started</h1>  
-<p>A helper library has been written in Javascript.</p>
+<h1 class="page-header">JavaScript Quickstart</h1>  
+
 <div class="step">
-  <h4>Include the Data-ALE logging library</h4>
+  <h4>Download both the JavaScript helper logging library and the worker library</h4>
+  <h3 class="dl-link"><a href="https://raw.githubusercontent.com/draperlaboratory/data-ale/master/helper-libs/javascript/draper.activity_logger-2.1.1.js" download><span class="label label-primary">draper.activity_logger-2.1.1.js</span></a> </h3>
+  <h3 class="dl-link"><a href="https://raw.githubusercontent.com/draperlaboratory/data-ale/master/helper-libs/javascript/draper.activity_worker-2.1.1.js" download><span class="label label-primary">draper.activity_worker-2.1.1.js</span></a> </h3>
+</div>
+
+<div class="step">
+  <h4>Include the logging library</h4>
   <pre><code>&lt;script src="js/draper.activity_logger-2.1.1.js"&gt;&lt;/script&gt;</code></pre>
 </div>
 
@@ -79,6 +91,10 @@ var ac = new activityLogger(worker);
 .echo(true) // log to console
 .mute(['SYS']); // don't log SYSTEM actions
   </code></pre>
+</div>
+
+<div class="alert alert-warning" role="alert">
+  If you plan to distribute software that is instrumented using Data-ALE, please set testing=true to ensure that logging is not automatically turned on.
 </div>
 
 <div class="step">
