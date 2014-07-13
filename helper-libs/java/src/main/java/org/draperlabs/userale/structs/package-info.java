@@ -15,8 +15,14 @@
  * limitations under the License.
  */
 /**
- * Base package for the Activity Logger Java API.
+ * This package contains data structures defined in JSON and stored in <code>src/main/resources/</code>.</p>
+ * The JSON is compiled into Java beans using the GoraCompiler. This ensures that we define a fully
+ * compliant Java bean and which we can hold in memory whilst we populate it with data. Such a 
+ * Java bean will also scale if data structures grow.</p>
+ * <p>Finally, the Gora data bean essentially writes Avro data meaning it is Hadoop
+ * compatible should there be a requirement to persist logs into HDFS or another
+ * larger storage backend.</p>
  * For more information please see the
  * <a href="https://github.com/draperlaboratory/user-ale/tree/master/helper-libs">Draper Labs Github Repos</a>
  */
-package gov.nasa.jpl.xdata.activitylogger;
+package org.draperlabs.userale.structs;
