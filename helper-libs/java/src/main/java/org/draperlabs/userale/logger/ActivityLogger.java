@@ -19,9 +19,6 @@ package org.draperlabs.userale.logger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
-import java.util.HashMap;
-
-import org.draperlabs.userale.structs.Message;
 import org.draperlabs.userale.worker.ActivityWorker;
 
 /**
@@ -36,9 +33,6 @@ import org.draperlabs.userale.worker.ActivityWorker;
  * @version 2.1.1
  */
 public class ActivityLogger {
-
-  //TODO What is 'use strict' in JS API???
-  // Do we need to port this here?
   
   private static String VERSION = "2.1.1";
 
@@ -74,16 +68,18 @@ public class ActivityLogger {
     setMuteUserActivityLogging(false);
     setMuteSystemActivityLogging(false);
     setLogToConsole(false);
-    setTesting(false);
+    setTesting(true); //
   }
 
   /**
    * This should be called when we wish to register an instance of the 
    * {@link ActivityLogger}. Once we register it we can begin to gather metrics
    * from software execution.
-   * @param url
-   * @param componentName
-   * @param componentVersion
+   * @param url the logging server end-point, logger is currently static and behind XDATA VPN. 
+   * This will change when migrated to AWS. Possibility to change again when local logging via
+   * nodejs is implemented.
+   * @param componentName the component name we are currently logging activity for
+   * @param componentVersion version version of the actual component we are logging
    * @throws MalformedURLException
    */
   public void registerActivityLogger(String url, String componentName, String componentVersion) throws MalformedURLException {
@@ -91,11 +87,11 @@ public class ActivityLogger {
     setComponentName(componentName);
     setComponentVersion(componentVersion);
     //get the session ID from the JRE
-    setSessionID(getJREParameterByName("USID"));
+    setSessionID(getJREParameterByName("USID")); //this needs to be constant. What aspect of JRE can we obtain.
     setClientHostName(getJREParameterByName("host"));
 
     if (sessionID == null) {
-      sessionID = componentName + new Date().getTime(); // we 'just' get the component name here we drop .slice(0,3)
+      sessionID = componentName + new Date().getTime(); 
     }
 
     if (clientHostName == null) {
@@ -103,9 +99,7 @@ public class ActivityLogger {
     }
 
     // set the logging URL on the ActivityWorker
-    worker.postMessage("setLoggingUrl", getUrl());
-
-    //TODO what does classListener(); actually do?
+    worker.postMessage("setLoggingUrl", getUrl());//should be brought back into ActivityLogger
 
     if (logToConsole) {
       if (testing) {
@@ -114,28 +108,17 @@ public class ActivityLogger {
         System.out.println("DRAPER LOG: Successfully registered Activity Logger " + getSessionID());
       }     
     }
-
-    // TODO what is sendBuffer actually sending???
-    worker.postMessage("sendBuffer", "");
-
-    //return draperLog; TODO Confirm we do not need to return a ActivityLogger instance.
-    //we 'should' now be able to log system activity via a call to 
-    //    activityLogger.logSystemActivity(params).
-
   }
 
   /**
    * This call creates a system/software/task activity message which is 
    * POSTED to the Logging API. Currently we <b>always</b> append an arbitrary string
-   * 'SYSACTION' to the logging message. This **may** change in the future.
-   * 
-   * TODO How do we structure the JSON do we wish to provide a schema for doing so?
-   * Right now this is a bit unclear to me.
+   * 'SYSACTION' to the logging message.
    *
-   * @param actionDescription a {@link String } description of the activity in natural language.
+   * @param actionDescription a {@link String} description of the activity in natural language.
    * This should be fully representative of the task being executed as it can hopefully
    * be used to further analyze the nature of complex algorithms and/or programs more
-   * generally.
+   * generally. This may be an excerpt from the Javadoc for the method call.
    * @param softwareMetadata an arbitrary JSON {@link String} that may support this activity.
    */
   public void logSystemActivity(String actionDescription, String softwareMetadata) {
@@ -164,21 +147,28 @@ public class ActivityLogger {
    */
   private void sendMessage(String string, String actionDescription,
       String softwareMetadata) {
-    Message msg = Message.newBuilder().build();
-    msg.setTimestamp(new Date().toString());
-    msg.setClient((String)getClientHostName());
-    HashMap<CharSequence, CharSequence> componentMap = new HashMap<>();
-    componentMap.put("name", getComponentName());
-    componentMap.put("version", ActivityLogger.VERSION); //TODO This is meant to be the software version
-                                                         //NOT the ActivityLogger version... correct?
-    msg.setComponent(componentMap);
-    msg.setSessionID((String)getSessionID());
-    msg.setImplLanguage("Java"); // TODO Is this always the case? I am not sure it is.
-    msg.setApiVersion(ActivityLogger.VERSION);
 
-    // if (!testing) {
-      worker.postMessage("sendMsg", msg);
-    // }
+    /*
+    {
+      "type" : "SYSACTION",
+      "parms" : {
+        "desc" : "Kitware Twitter Browsing - updateGraph executed"
+      },
+      "timestamp" : "2014-02-21T16:21:43.151Z",
+      "client" : "172.16.3.43",
+      "component" : {
+        "name" : "Kitware_Twitter_Browsing",
+        "version" : "0.1"
+      },
+      "sessionID" : "53077d2f22c173f256000027",
+      "impLanguage" : "JavaScript",
+      "apiVersion" : "0.2.0"
+    }
+    */
+
+    if (!testing) {
+      //worker.postMessage("sendMsg", msg);
+    }
   }
   
   /**
@@ -205,7 +195,7 @@ public class ActivityLogger {
       if(string.equalsIgnoreCase("USER") || string.equalsIgnoreCase("SYS")) {
         setMuteUserActivityLogging(true);
       }
-    } //TODO should be post that it has been muted?
+    }
   }
 
     /**
@@ -220,7 +210,7 @@ public class ActivityLogger {
       if(string.equalsIgnoreCase("USER") || string.equalsIgnoreCase("SYS")) {
         setMuteUserActivityLogging(true);
       }
-    } //TODO should we post it has been unmuted?
+    }
   }
 
   /**
@@ -245,7 +235,6 @@ public class ActivityLogger {
    * @return returns a specific metric from the JRE/JVM.
    */
   private Object getJREParameterByName(String string) {
-    // TODO Auto-generated method stub
     return null;
   }
 
@@ -255,7 +244,6 @@ public class ActivityLogger {
    * @param args
    */
   public static void main(String[] args) {
-    // TODO Auto-generated method stub
 
   }
 

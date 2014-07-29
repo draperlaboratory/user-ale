@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class ActivityWorker {
   
-  private ArrayList<?> logBuffer = new ArrayList<>();
+  private ArrayList<?> logBuffer = new ArrayList<Object>();
   private static String LOGGING_URL = "http://localhost:3001";
   private int intervalTime = 5000; //send every 5 seconds
   private boolean testing = false;
@@ -34,7 +34,6 @@ public class ActivityWorker {
   private String msg = "DRAPER LOG: ";
 
   public ActivityWorker(String webWorkerURL) {
-    // TODO Auto-generated constructor stub
   }
   
   private void timerMethod() {
@@ -45,7 +44,7 @@ public class ActivityWorker {
       }
       //This is the real thing, we are logging.
       if (!isTesting()) {
-        XHR(getLOGGING_URL() + "/send_log", getLogBuffer());
+        xmlHttpRequest(getLOGGING_URL() + "/send_log", getLogBuffer());
           setLogBuffer(null);
       // This is a test, we are not logging.
       } else {
@@ -66,34 +65,42 @@ public class ActivityWorker {
     } 
   }
 
-  private void XHR(String string, ArrayList<?> logBuffer2) {
-    var xhr;
+  private void xmlHttpRequest(String string, ArrayList<?> logBuffer2) {
+    String xhr;//TODO define the HTTP REquest object, maybe as top level private variable.
 
-    if(typeof XMLHttpRequest !== 'undefined') xhr = new XMLHttpRequest();
-    else {
-      var versions = ["MSXML2.XmlHttp.5.0", 
+    //if(XMLHttpRequest type "undefined") xhr = new XMLHttpRequest();
+    //else {
+      String[] versions = {"MSXML2.XmlHttp.5.0", 
                       "MSXML2.XmlHttp.4.0",
                       "MSXML2.XmlHttp.3.0", 
                       "MSXML2.XmlHttp.2.0",
-                      "Microsoft.XmlHttp"];
+                      "Microsoft.XmlHttp"};
 
-      for(var i = 0, len = versions.length; i < len; i++) {
+      for(int i = 0, len = versions.length; i < len; i++) {
         try {
-          xhr = new ActiveXObject(versions[i]);
+          //xhr = new ActiveXObject(versions[i]);
           break;
         }
         catch(e){}
       } 
-    }
+    //}
 
-    xhr.onreadystatechange = ensureReadiness;
+    //xhr.onreadystatechange = ensureReadiness;
 
-    function ensureReadiness() {
+    ensureReadiness();
+
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.send(JSON.stringify(log));
+    
+  }
+
+  private void ensureReadiness() {
       if(xhr.readyState < 4) {
         return;
       }
 
-      if(xhr.status !== 200) {
+      if(xhr.status != 200) {
         return;
       }
 
@@ -101,11 +108,6 @@ public class ActivityWorker {
       if(xhr.readyState === 4) {
         callback(xhr);
       }     
-    }
-
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.send(JSON.stringify(log));
     
   }
 

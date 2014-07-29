@@ -1,51 +1,79 @@
 /**
-* Draper activityLogger
-*
-* The purpose of this module is allow XDATA Developers to easily add a logging
-* mechanism into their own modules for the purposes of recording the behaviors
-* of the analysists using their tools.
-*
-* @author Draper Laboratory
-* @date 2014
-* @version 2.1.1
-*/
+ * Draper activityLogger
+ *
+ * The purpose of this module is allow XDATA Developers to easily add a logging
+ * mechanism into their own modules for the purposes of recording the behaviors
+ * of the analysists using their tools.
+ *
+ * @author Draper Laboratory
+ * @date 2014
+ * @version 2.1.1
+ */
 
 /*jshint unused:false*/
 function activityLogger(webWorkerURL) {
 	'use strict';
 
-  var draperLog = {version: "2.1.1"}; // semver  
+	var draperLog = {version: "2.1.1"}; // server  
 
-  draperLog.worker = new Worker(webWorkerURL);
+	draperLog.worker = new Worker(webWorkerURL);
 
-  var muteUserActivityLogging = false,
-  muteSystemActivityLogging = false,
-  logToConsole = false,
-  testing = false,
-  workflowCodingVersion = '2.0';
+	var muteUserActivityLogging = false,
+	muteSystemActivityLogging = false,
+	logToConsole = false,
+	testing = false,
+	workflowCodingVersion = '2.0';
 
-  /**
-  * Workflow Codes
-  */
-  draperLog.WF_OTHER       = 0;
-  draperLog.WF_DEFINE      = 1;
-  draperLog.WF_GETDATA     = 2;
-  draperLog.WF_EXPLORE     = 3;
-  draperLog.WF_CREATE      = 4;
-  draperLog.WF_ENRICH      = 5;
-  draperLog.WF_TRANSFORM   = 6;
+	/** 
+	 *  If the user action does not appear to map to any other workflow state, 
+	 * please use Other and contact Draper. 
+	 */
+	draperLog.WF_OTHER       = 0;
+
+	/** 
+	 * This state includes: receiving tasking, refining the request (perhaps 
+	 * with the requestor), defining specific goals and objectives for the 
+	 * request, specifying research questions and/or hypotheses to test, and 
+	 * justifying the tasking.
+	 */
+	draperLog.WF_DEFINE      = 1;
 
 	/**
-	* Registers this component with Draper's logging server.  The server creates
-	* a unique session_id, that is then used in subsequent logging messages.  This
-	* is a blocking ajax call to ensure logged messages are tagged correctly.
-	* @todo investigate the use of promises, instead of the blocking call.
-	*
-	* @method registerActivityLogger
-	* @param {String} url the url of Draper's Logging Server
-	* @param {String} componentName the name of this component
-	* @param {String} componentVersion the version of this component
-	*/
+	 * Get Data involves creating (formulating and writing), executing, and refining search queries.
+	 */
+	draperLog.WF_GETDATA     = 2;
+
+	/**
+	 * Explore Data involves consuming data (reading, listening, watching) or visualizations of data.
+	 */
+	draperLog.WF_EXPLORE     = 3;
+
+	/**
+	 * Create View of Data involves the organization of data.
+	 */
+	draperLog.WF_CREATE      = 4;
+
+	/**
+	 * In Enrich, the user actively adds insight value back into the tool.
+	 */
+	draperLog.WF_ENRICH      = 5;
+
+	/**
+	 * In Transform, the user takes a deeper look at the data.
+	 */
+	draperLog.WF_TRANSFORM   = 6;
+
+	/**
+	 * Registers this component with Draper's logging server.  The server creates
+	 * a unique session_id, that is then used in subsequent logging messages.  This
+	 * is a blocking ajax call to ensure logged messages are tagged correctly.
+	 * @todo investigate the use of promises, instead of the blocking call.
+	 *
+	 * @method registerActivityLogger
+	 * @param {String} url the url of Draper's Logging Server
+	 * @param {String} componentName the name of this component
+	 * @param {String} componentVersion the version of this component
+	 */
 	draperLog.registerActivityLogger = function(url, componentName, componentVersion) {
 
 		draperLog.url = url;
@@ -61,21 +89,21 @@ function activityLogger(webWorkerURL) {
 		}
 
 		draperLog.sessionID = getParameterByName('USID');
-    draperLog.clientHostname = getParameterByName('client')
+		draperLog.clientHostname = getParameterByName('client');
 
-    if (!draperLog.sessionID) {
-      draperLog.sessionID = draperLog.componentName.slice(0,3) + new Date().getTime()
-    }
+		if (!draperLog.sessionID) {
+			draperLog.sessionID = draperLog.componentName.slice(0,3) + new Date().getTime();
+		}
 
-    if (!draperLog.clientHostname) {
-      draperLog.clientHostname = 'UNK'
-    }
+		if (!draperLog.clientHostname) {
+			draperLog.clientHostname = 'UNK';
+		}
 
 		// set the logging URL on the Web Worker
 		draperLog.worker.postMessage({
-	  	cmd: 'setLoggingUrl',
-	  	msg: url
-	  });
+			cmd: 'setLoggingUrl',
+			msg: url
+		});
 
 		classListener();
 
@@ -88,111 +116,111 @@ function activityLogger(webWorkerURL) {
 		}
 
 		draperLog.worker.postMessage({
-		  	cmd: 'sendBuffer',
-		  	msg: ''
-		  });
-		
+			cmd: 'sendBuffer',
+			msg: ''
+		});
+
 		window.onbeforeunload = function(){
-      draperLog.logUserActivity(
-        'window closing',
-        'window_closed',
-        draperLog.WF_OTHER
-        )
-      
+			draperLog.logUserActivity(
+					'window closing',
+					'window_closed',
+					draperLog.WF_OTHER
+			);
+
 			draperLog.worker.postMessage({
-		  	cmd: 'sendBuffer',
-		  	msg: ''
-		  });
+				cmd: 'sendBuffer',
+				msg: ''
+			});
 		};
 
-    window.onfocus = function() {
-      draperLog.logUserActivity(
-        'window gained focus',
-        'window_focus',
-        draperLog.WF_OTHER
-        )
-    }
+		window.onfocus = function() {
+			draperLog.logUserActivity(
+					'window gained focus',
+					'window_focus',
+					draperLog.WF_OTHER
+			);
+		};
 
-    window.onblur = function() {
-      draperLog.logUserActivity(
-        'window lost focus',
-        'window_blur',
-        draperLog.WF_OTHER
-        )
-    }
+		window.onblur = function() {
+			draperLog.logUserActivity(
+					'window lost focus',
+					'window_blur',
+					draperLog.WF_OTHER
+			);
+		};
 
 		return draperLog;
 	};
 
 	/**
-	* Create USER activity message.
-	*
-	* @method logUserActivity
-	* @param {String} actionDescription a description of the activity in natural language.
-	* @param {String} userActivity a more generalized one word description of the current activity.
-	* @param {Integer} userWorkflowState an integer representing one of the enumerated states above.
-	* @param {JSON} softwareMetadata any arbitrary JSON that may support this activity
-	*/
+	 * Create USER activity message.
+	 *
+	 * @method logUserActivity
+	 * @param {String} actionDescription a description of the activity in natural language.
+	 * @param {String} userActivity a more generalized one word description of the current activity.
+	 * @param {Integer} userWorkflowState an integer representing one of the enumerated states above.
+	 * @param {JSON} softwareMetadata any arbitrary JSON that may support this activity
+	 */
 	draperLog.logUserActivity = function (actionDescription, userActivity, userWorkflowState, softwareMetadata) {
 		if(!muteUserActivityLogging) {
 			var msg = {
-				type: 'USERACTION',
-				parms: {
-					desc: actionDescription,
-					activity: userActivity,
-					wf_state: userWorkflowState,
-					wf_version: workflowCodingVersion
-				},
-				meta: softwareMetadata
+					type: 'USERACTION',
+					parms: {
+						desc: actionDescription,
+						activity: userActivity,
+						wf_state: userWorkflowState,
+						wf_version: workflowCodingVersion
+					},
+					meta: softwareMetadata
 			};
 			sendMessage(msg);
 
-      if (logToConsole) {
-        if (testing) {
-          console.log('DRAPER LOG: (TESTING) Logging UserActivity', msg.parms);
-        } else {
-          console.log('DRAPER LOG: Logging UserActivity', msg.parms);
-        }
-      }
+			if (logToConsole) {
+				if (testing) {
+					console.log('DRAPER LOG: (TESTING) Logging UserActivity', msg.parms);
+				} else {
+					console.log('DRAPER LOG: Logging UserActivity', msg.parms);
+				}
+			}
 		}
 	};
 
 	/**
-	* Create SYSTEM activity message.
-	*
-	* @method logSystemActivity
-	* @param {String} actionDescription a description of the activity in natural language.
-	* @param {JSON} softwareMetadata any arbitrary JSON that may support this activity
-	*/
+	 * Create SYSTEM activity message.
+	 *
+	 * @method logSystemActivity
+	 * @param {String} actionDescription a description of the activity in natural language.
+	 * @param {JSON} softwareMetadata any arbitrary JSON that may support this activity
+	 */
 	draperLog.logSystemActivity = function (actionDescription, softwareMetadata) {
 
 		if(!muteSystemActivityLogging) {
 			var msg = {
-				type: 'SYSACTION',
-				parms: {
-					desc: actionDescription,
-				},
-				meta: softwareMetadata
+					type: 'SYSACTION',
+					parms: {
+						desc: actionDescription,
+					},
+					meta: softwareMetadata
 			};
 			sendMessage(msg);
 
-      if (logToConsole) {
-        if (testing) {
-          console.log('DRAPER LOG: (TESTING) Logging SystemActivity', msg.parms);
-        } else {
-          console.log('DRAPER LOG: Logging SystemActivity', msg.parms);
-        }
-      }
+			if (logToConsole) {
+				if (testing) {
+					console.log('DRAPER LOG: (TESTING) Logging SystemActivity', msg.parms);
+				} else {
+					console.log('DRAPER LOG: Logging SystemActivity', msg.parms);
+				}
+			}
 		}
 	};
 
 	/**
-	* Send activity message to Draper's logging server.  This function uses Jquery's ajax
-	* function to send the created message to draper's server.
-	*
-	* @method sendMessage
-	* @param {JSON} msg the JSON message.
-	*/
+	 * Send activity message to Draper's logging server.  This function uses Jquery's ajax
+	 * function to send the created message to draper's server.
+	 *
+	 * @method sendMessage
+	 * @param {JSON} msg the JSON message.
+	 */
 	function sendMessage(msg) {
 		msg.timestamp = new Date().toJSON();
 		msg.client = draperLog.clientHostname;
@@ -202,37 +230,37 @@ function activityLogger(webWorkerURL) {
 		msg.apiVersion = draperLog.version;
 
 		// if (!testing) {
-			draperLog.worker.postMessage({
-		  	cmd: 'sendMsg',
-		  	msg: msg
-		  });
+		draperLog.worker.postMessage({
+			cmd: 'sendMsg',
+			msg: msg
+		});
 		// }
 	}
 
 	/**
-	* When set to true, logs messages to browser console.
-	*
-	* @method echo
-	* @param {Boolean} set to true to log to console
-	*/
+	 * When set to true, logs messages to browser console.
+	 *
+	 * @method echo
+	 * @param {Boolean} set to true to log to console
+	 */
 	draperLog.echo = function(d) {
 		if (!arguments.length) { return logToConsole; }
 		logToConsole = d;
 		draperLog.worker.postMessage({
-	  	cmd: 'setEcho',
-	  	msg: d
-	  });
+			cmd: 'setEcho',
+			msg: d
+		});
 		return draperLog;
 	};
 
-  /**
-	* Accepts an array of Strings telling logger to mute those type of messages.
-	* Possible values are 'SYS' and 'USER'.  These messages will not be sent to
-	* server.
-	*
-	* @method mute
-	* @param {Array} array of strings of messages to mute.
-	*/
+	/**
+	 * Accepts an array of Strings telling logger to mute those type of messages.
+	 * Possible values are 'SYS' and 'USER'.  These messages will not be sent to
+	 * server.
+	 *
+	 * @method mute
+	 * @param {Array} array of strings of messages to mute.
+	 */
 	draperLog.mute = function(d) {
 		d.forEach(function(d) {
 			if(d === 'USER') { muteUserActivityLogging = true; }
@@ -241,34 +269,34 @@ function activityLogger(webWorkerURL) {
 		return draperLog;
 	};
 
-  draperLog.unmute = function(d) {
-    d.forEach(function(d) {
-      if(d === 'USER') { muteUserActivityLogging = false; }
-      if(d === 'SYS') { muteSystemActivityLogging = false; }
-    });
-    return draperLog;
-  };
+	draperLog.unmute = function(d) {
+		d.forEach(function(d) {
+			if(d === 'USER') { muteUserActivityLogging = false; }
+			if(d === 'SYS') { muteSystemActivityLogging = false; }
+		});
+		return draperLog;
+	};
 
-  /**
-	* When set to true, no connection will be made against logging server.
-	*
-	* @method testing
-	* @param {Boolean} set to true to disable all connection to logging server
-	*/
+	/**
+	 * When set to true, no connection will be made against logging server.
+	 *
+	 * @method testing
+	 * @param {Boolean} set to true to disable all connection to logging server
+	 */
 	draperLog.testing = function(d) {
 		if (!arguments.length) { return testing; }
 		testing = d;
 		draperLog.worker.postMessage({
-	  	cmd: 'setTesting',
-	  	msg: d
-	  });
+			cmd: 'setTesting',
+			msg: d
+		});
 		return draperLog;
 	};
 
-  /**
-	* DOM Listener for specific events.
-	*
-	*/
+	/**
+	 * DOM Listener for specific events.
+	 *
+	 */
 	function classListener() {
 
 		$(document).ready(function() {
@@ -287,10 +315,10 @@ function activityLogger(webWorkerURL) {
 		});
 	}
 
-  /**
-	* Tag specific elements
-	*
-	*/
+	/**
+	 * Tag specific elements
+	 *
+	 */
 	draperLog.tag = function(elem, msg) {
 		$.each(msg.events, function(i, d) {
 			if (d === 'scroll') {
