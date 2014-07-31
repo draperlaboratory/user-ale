@@ -1,0 +1,13 @@
+{"name": "Message",
+ "type": "record",
+ "doc" : "The Message object describes a simple object we wish to send the the Draper Logging API."
+ "namespace": "org.draperlabs.userale.structs",
+ "fields": [
+        {"name": "timestamp", "type": ["null","string"], "default":null},
+        {"name": "client", "type": ["null","string"], "default":null},
+        {"name": "component", "type": {"type":"map", "values": ["null","string"]}, "default":{}},
+        {"name": "sessionID", "type": ["null","string"], "default":null},
+        {"name": "implLanguage", "type": ["null","string"], "default":null},
+        {"name": "apiVersion", "type": ["null","string"], "default":null}
+   ]
+}

@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ActivityLogger</groupId>
+  <artifactId>ActivityLogger</artifactId>
+  <version>2.2.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>Draper User-ALE Java API</name>
+  <description>
+    The Java API is specifically aimed to be used as an embedded logger 
+    for capturing software characteristics. An example of this would be an ETL 
+    (Extract-Transform-Load) scenario where there are many stages/steps executed 
+    sequentially or in parallel which when combined make up a unit of workflow.
+  </description>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>lewismc</id>
+      <name>Lewis John McGibbney</name>
+      <email>lewis [dot] j [dot] mcgibbney [at] jpl [dot] nasa [dot] gov</email>
+      <roles>
+        <role>Developer</role>
+        <role>Code Porter</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>rverma</id>
+      <name>Rishi Verma</name>
+      <email>rishi [dot] verma [at] jpl [dot] nasa [dot] gov</email>
+      <roles>
+        <role>Developer</role>
+        <role>Code Porter</role>
+      </roles>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:http://github.com/draperlaboratory/user-ale.git</connection>
+    <developerConnection>scm:git:https://github.com/draperlaboratory/user-ale.git</developerConnection>
+    <url>https://github.com/draperlaboratory/user-ale.git</url>
+  </scm>
+  
+  <dependencies>
+    <dependency>
+      <groupId>com.googlecode.json-simple</groupId>
+      <artifactId>json-simple</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId> 
+      <artifactId>httpclient</artifactId>
+      <version>4.1.1</version>
+    </dependency>
+  </dependencies>
+</project>
