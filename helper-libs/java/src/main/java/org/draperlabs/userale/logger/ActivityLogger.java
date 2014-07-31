@@ -16,9 +16,12 @@
  */
 package org.draperlabs.userale.logger;
 
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Date;
+
 import org.draperlabs.userale.worker.ActivityWorker;
 
 /**
@@ -34,6 +37,7 @@ import org.draperlabs.userale.worker.ActivityWorker;
  */
 public class ActivityLogger {
   
+  @SuppressWarnings("unused")
   private static String VERSION = "2.1.1";
 
   private ActivityWorker worker;
@@ -57,14 +61,15 @@ public class ActivityLogger {
   private Object sessionID = null;
 
   private Object clientHostName;
+  
+  // This is the static endpoint used within XDATA Workshop.
+  public static String LOGGING_ENDPOINT = "http://xd-draper.xdata.data-tactics-corp.com:1337";
 
   /**
    * The main constructor for the User-ALE ActivityLogger. 
-   * @param webWorkerURL the fully qualified {@link String} 
-   * representing the {@link org.draperlabs.userale.worker.ActivityWorker}.
    */
-  public ActivityLogger(String webWorkerURL) {
-    this.worker = new ActivityWorker(webWorkerURL);
+  public ActivityLogger() {
+    this.worker = new ActivityWorker();
     setMuteUserActivityLogging(false);
     setMuteSystemActivityLogging(false);
     setLogToConsole(false);
@@ -83,12 +88,19 @@ public class ActivityLogger {
    * @throws MalformedURLException
    */
   public void registerActivityLogger(String url, String componentName, String componentVersion) throws MalformedURLException {
-    setUrl(new URL(url));
+    if (url !=null) {
+      setUrl(new URL(url));
+    } else {
+      setUrl(new URL(LOGGING_ENDPOINT));
+    }
     setComponentName(componentName);
     setComponentVersion(componentVersion);
-    //get the session ID from the JRE
-    setSessionID(getJREParameterByName("USID")); //this needs to be constant. What aspect of JRE can we obtain.
-    setClientHostName(getJREParameterByName("host"));
+    setSessionID(System.getenv("user.name") + "-" + System.getenv("os.name") + "-" + System.getenv("os.version"));
+    try {
+      setClientHostName(InetAddress.getLocalHost().getHostName());
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+    }
 
     if (sessionID == null) {
       sessionID = componentName + new Date().getTime(); 
@@ -99,7 +111,7 @@ public class ActivityLogger {
     }
 
     // set the logging URL on the ActivityWorker
-    worker.postMessage("setLoggingUrl", getUrl());//should be brought back into ActivityLogger
+    worker.postMessage("setLoggingUrl", getUrl().toString());
 
     if (logToConsole) {
       if (testing) {
@@ -140,34 +152,35 @@ public class ActivityLogger {
 
   /**
    * Sends an activity message to Draper's logging server.
-   * @param string an arbitrary {@link String} used to describe the nature of the 
+   * @param actionType an arbitrary {@link String} used to describe the nature of the 
    * operation being logged and example would be 'SYSACTION'.
    * @param actionDescription a {@link String } description of the activity in natural language.
    * @param softwareMetadata
    */
-  private void sendMessage(String string, String actionDescription,
+  private void sendMessage(String actionType, String actionDescription,
       String softwareMetadata) {
 
-    /*
-    {
-      "type" : "SYSACTION",
-      "parms" : {
-        "desc" : "Kitware Twitter Browsing - updateGraph executed"
-      },
-      "timestamp" : "2014-02-21T16:21:43.151Z",
-      "client" : "172.16.3.43",
-      "component" : {
-        "name" : "Kitware_Twitter_Browsing",
-        "version" : "0.1"
-      },
-      "sessionID" : "53077d2f22c173f256000027",
-      "impLanguage" : "JavaScript",
-      "apiVersion" : "0.2.0"
-    }
-    */
-
+    //TODO define software metadata structure and description based upon
+    //existing wengine ontology. 
+    String message = 
+    "{ " +
+      "\"type\" : \"" + actionType + "\", " +
+      "\"parms\" : { " +
+        "\"desc\" : \"" + actionDescription + "\"" +
+      "}," +
+      "\"timestamp\" : \"" + System.currentTimeMillis() + "\"," +
+      "\"client\" : \"" + getClientHostName() + "\"," +
+      "\"component\" : {" +
+        "\"name\" : \"" + getComponentName() + "\"," +
+        "\"version\" : \"" + getComponentVersion() + "\"" +
+      "}," +
+      "\"sessionID\" : \"" + getSessionID() + "\"," +
+      "\"impLanguage\" : \"Java\"," +
+      "\"apiVersion\" : \"0.2.0\"" +
+    "}";
+    
     if (!testing) {
-      //worker.postMessage("sendMsg", msg);
+      worker.postMessage("sendMsg", message);
     }
   }
   
@@ -180,7 +193,7 @@ public class ActivityLogger {
     if (echo) { 
       setLogToConsole(true);
     }
-    worker.postMessage("setEcho", true);
+    worker.postMessage("setEcho", String.valueOf(getLogToConsole()));
   }
 
   /**
@@ -224,27 +237,14 @@ public class ActivityLogger {
     } else {
       setTesting(false);
     }
-    worker.postMessage("setTesting", getTesting());
+    worker.postMessage("setTesting", String.valueOf(getTesting()));
   }
-
-  /**
-   * This method should obtain the JRE sessionsID which can
-   * be used to consistently log events against a series of
-   * particular task executions.
-   * @param string
-   * @return returns a specific metric from the JRE/JVM.
-   */
-  private Object getJREParameterByName(String string) {
-    return null;
-  }
-
-
 
   /**
    * @param args
    */
   public static void main(String[] args) {
-
+    //TODO implement command line parsing using commons-cli
   }
 
   public boolean isMuteUserActivityLogging() {

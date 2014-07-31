@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 /**
- * This package contains the LoggingWorker e.g. the underlying
- * logging implementations.
+ * This package contains the LoggingWorker containing the underlying
+ * HTTP POST functionality.
  * For more information please see the
  * <a href="https://github.com/draperlaboratory/user-ale/tree/master/helper-libs">Draper Labs Github Repos</a>
  */

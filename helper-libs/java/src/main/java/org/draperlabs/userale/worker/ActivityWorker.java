@@ -16,16 +16,26 @@
  */
 package org.draperlabs.userale.worker;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.draperlabs.userale.logger.ActivityLogger;
 
 /**
  * The {@link ActivityWorker} is an encapsulated class 
  * which does all of the heavy lifting for the actual
- * {@link org.draperlabs.userale.logger.AcvtivityLogger}
+ * {@link org.draperlabs.userale.logger.ActivityLogger}
  * instance.
  */
 public class ActivityWorker {
-  
+
   private ArrayList<?> logBuffer = new ArrayList<Object>();
   private static String LOGGING_URL = "http://localhost:3001";
   private int intervalTime = 5000; //send every 5 seconds
@@ -33,9 +43,6 @@ public class ActivityWorker {
   private boolean echo = true;
   private String msg = "DRAPER LOG: ";
 
-  public ActivityWorker(String webWorkerURL) {
-  }
-  
   private void timerMethod() {
 
     if (getLogBuffer().size() != 0) {
@@ -44,9 +51,9 @@ public class ActivityWorker {
       }
       //This is the real thing, we are logging.
       if (!isTesting()) {
-        xmlHttpRequest(getLOGGING_URL() + "/send_log", getLogBuffer());
-          setLogBuffer(null);
-      // This is a test, we are not logging.
+        postMessage("", ""); //getLogBuffer()
+        setLogBuffer(null);
+        // This is a test, we are not logging.
       } else {
         setLogBuffer(null);
       }   
@@ -56,7 +63,7 @@ public class ActivityWorker {
       }
     }
   }
-  
+
   private void sendBuffer() {
     // method to force flushing the buffer
     timerMethod();
@@ -65,51 +72,6 @@ public class ActivityWorker {
     } 
   }
 
-  private void xmlHttpRequest(String string, ArrayList<?> logBuffer2) {
-    String xhr;//TODO define the HTTP REquest object, maybe as top level private variable.
-
-    //if(XMLHttpRequest type "undefined") xhr = new XMLHttpRequest();
-    //else {
-      String[] versions = {"MSXML2.XmlHttp.5.0", 
-                      "MSXML2.XmlHttp.4.0",
-                      "MSXML2.XmlHttp.3.0", 
-                      "MSXML2.XmlHttp.2.0",
-                      "Microsoft.XmlHttp"};
-
-      for(int i = 0, len = versions.length; i < len; i++) {
-        try {
-          //xhr = new ActiveXObject(versions[i]);
-          break;
-        }
-        catch(e){}
-      } 
-    //}
-
-    //xhr.onreadystatechange = ensureReadiness;
-
-    ensureReadiness();
-
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.send(JSON.stringify(log));
-    
-  }
-
-  private void ensureReadiness() {
-      if(xhr.readyState < 4) {
-        return;
-      }
-
-      if(xhr.status != 200) {
-        return;
-      }
-
-      // all is well  
-      if(xhr.readyState === 4) {
-        callback(xhr);
-      }     
-    
-  }
 
   /**
    * @param args
@@ -119,10 +81,39 @@ public class ActivityWorker {
 
   }
 
-  public void postMessage(String string, Object object) {
-    // TODO Auto-generated method stub
-    
+  public void postMessage(String string, String message) {
+
+    try {
+      DefaultHttpClient httpClient = new DefaultHttpClient();
+      HttpPost postRequest = new HttpPost(
+          ActivityLogger.LOGGING_ENDPOINT + "/send_msg");
+
+      StringEntity input = new StringEntity(message);
+      input.setContentType("application/json;charset=UTF-8");
+      postRequest.setEntity(input);
+
+      HttpResponse response = httpClient.execute(postRequest);
+
+      if (response.getStatusLine().getStatusCode() != 201) {
+        throw new RuntimeException("Failed : HTTP error code : "
+            + response.getStatusLine().getStatusCode());
+      }
+      BufferedReader br = new BufferedReader(
+          new InputStreamReader((response.getEntity().getContent())));
+
+      String output;
+      System.out.println("Output from Server .... \n");
+      while ((output = br.readLine()) != null) {
+        System.out.println(output);
+      }
+      httpClient.getConnectionManager().shutdown();
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
+
 
   /**
    * @return the logBuffer
