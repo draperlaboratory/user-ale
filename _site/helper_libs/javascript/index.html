@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>User-ALE</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.css" rel="stylesheet">
+
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/dashboard.css" rel="stylesheet">
+    <link href="/css/syntax.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/css/wf-colors.css" rel="stylesheet">
+
+
+  </head>
+  
+    
+  
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div style="z-index: 5000;" class="col-sm-3 col-md-2 sidebar">
+          <a href="index.html"><img src="/img/user-ale-small.png" alt=""></a>
+          <hr>
+          <div style="text-align: center">
+            <a href="https://github.com/draperlaboratory/User-ALE">Get from Github <i class="fa fa-github"></i></a>
+          </div>
+          <hr>
+          <ul class="nav nav-sidebar">
+            <li class=""><a href="/">Overview</a></li>
+            <li><a href="/quickstart/">JavaScript Quickstart</a></li>
+            <li><a href="/restful_api/">RESTful API</a></li>
+            <li class="sub-list">
+              <div class="sub-list header">Helper Libraries</div>
+              <ul class="sub-list list">
+  
+    
+
+    
+      
+    
+    <li class="active"><a href="/helper_libs/javascript/">JavaScript</a></li>
+  
+</ul>
+            </li>
+            <li class="sub-list">
+              <div class="sub-list header">Workflow Activities</div>
+              <ul class="sub-list list">
+  
+    
+
+    
+      
+    
+    <li class=""><a href="/wf_states/define/">Define Problem</a></li>
+  
+    
+
+    
+      
+    
+    <li class=""><a href="/wf_states/getdata/">Get Data</a></li>
+  
+    
+
+    
+      
+    
+    <li class=""><a href="/wf_states/explore/">Explore Data</a></li>
+  
+    
+
+    
+      
+    
+    <li class=""><a href="/wf_states/create/">Create View</a></li>
+  
+    
+
+    
+      
+    
+    <li class=""><a href="/wf_states/enrich/">Enrich Data</a></li>
+  
+    
+
+    
+      
+    
+    <li class=""><a href="/wf_states/transform/">Transform Data</a></li>
+  
+    
+
+    
+      
+    
+    <li class=""><a href="/wf_states/other/">Other</a></li>
+  
+</ul>
+            </li>
+          </ul>
+        </div>
+        <div  style="position: relative;" data-spy="scroll" data-target=".navbar-example" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">JavaScript Helper Library</h1>
+<p>Due to the high number of Data Analytic tools using web technologies, a JavaScript helper library was created to aid developers in instrumenting their JavaScript tools with logging capabilities.</p>
+
+<p>The current version of the JavaScript API uses <a href="https://developer.mozilla.org/en-US/docs/Web/API/Worker">Web Workers</a>, this allows logging to happen as a background process, and should have minimal interference with other processes that are happening on the web client.</p>
+
+<hr />
+
+<h2 id="getting-started">Getting Started</h2>
+
+<h3 id="download-both-the-latest-logging-library-and-the-latest-worker-library-from-github-a-hrefhttpsgithubcomdraperlaboratoryuser-aletreemasterhelper-libsjavascriptherea">Download both the latest logging library and the latest worker library from Github <a href="https://github.com/draperlaboratory/User-ALE/tree/master/helper-libs/javascript">here.</a></h3>
+
+<h3 id="include-the-logging-library">Include the logging library</h3>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/draper.activity_logger-2.1.1.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>;</code></pre></div>
+
+<h3 id="instantiate-the-logger">Instantiate the Logger</h3>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// web worker url</span>
+<span class="kd">var</span> <span class="nx">worker</span> <span class="o">=</span> <span class="s1">&#39;js/draper.activity_worker-2.1.1.js&#39;</span>
+<span class="kd">var</span> <span class="nx">ac</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">activityLogger</span><span class="p">(</span><span class="nx">worker</span><span class="p">);</span>
+<span class="p">.</span><span class="nx">testing</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="c1">// simulate POST, won&#39;t send log</span>
+<span class="p">.</span><span class="nx">echo</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="c1">// log to console</span>
+<span class="p">.</span><span class="nx">mute</span><span class="p">([</span><span class="s1">&#39;SYS&#39;</span><span class="p">]);</span> <span class="c1">// don&#39;t log SYSTEM actions</span></code></pre></div>
+
+<div class="alert alert-warning" role="alert">
+  If you plan to distribute software that is instrumented using User-ALE, please set testing=true to ensure that logging is not automatically turned on.
+</div>
+
+<h3 id="register-the-logger">Register the Logger</h3>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">ac</span><span class="p">.</span><span class="nx">registerActivityLogger</span><span class="p">(</span>
+<span class="s2">&quot;http://xd-draper.xdata.data-tactics-corp.com:1337&quot;</span><span class="p">,</span>
+<span class="s2">&quot;my-component&quot;</span><span class="p">,</span>
+<span class="s2">&quot;v0.1&quot;</span>
+<span class="p">);</span></code></pre></div>
+
+<h3 id="log-a-user-activity">Log a User Activity</h3>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#button&#39;</span><span class="p">).</span><span class="nx">mouseenter</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">ac</span><span class="p">.</span><span class="nx">logUserActivity</span><span class="p">(</span>
+  <span class="s1">&#39;User hovered over element to read popup&#39;</span><span class="p">,</span> <span class="c1">// description</span>
+  <span class="s1">&#39;hover_start&#39;</span><span class="p">,</span> <span class="c1">// activity_code</span>
+  <span class="nx">ac</span><span class="p">.</span><span class="nx">WF_EXPLORE</span> <span class="c1">// workflow State</span>
+  <span class="p">);</span>
+<span class="p">})</span></code></pre></div>
+
+<hr />
+
+<h2 id="function-reference">Function Reference</h2>
+<p><b class="function-name">activityLogger</b><code class="function-usage">new activityLogger(workerUrl)</code>
+<br /></p>
+<p>Instantiate a new activityLogger.  The activityLogger accepts a <b>workerUrl</b> that points to your local copy of the worker library.  This file contains the Web Worker component that makes XHR calls as a background process.</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// web worker url</span>
+<span class="kd">var</span> <span class="nx">worker</span> <span class="o">=</span> <span class="s1">&#39;js/draper.activity_worker-2.1.1.js&#39;</span>
+<span class="kd">var</span> <span class="nx">ac</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">activityLogger</span><span class="p">(</span><span class="nx">worker</span><span class="p">);</span></code></pre></div>
+
+<hr />
+
+<p><b class="function-name">testing</b><code class="function-usage">ac.testing(true/false)</code>
+<br /></p>
+<p>Set to true to disable XHR logging to remote server and  to false to enable XHR logging to remote server.</p>
+<div class="alert alert-warning" role="alert">
+  If you plan to distribute software that is instrumented using User-ALE, please set testing=true to ensure that logging is not automatically turned on.
+</div>
+<hr />
+
+<p><b class="function-name">echo</b><code class="function-usage">ac.echo(true/false)</code>
+<br /></p>
+<p>Set to true to echo all logs to console and to false to silence console messages.</p>
+<hr />
+
+<!-- <b class="function-name">mute</b><code class="function-usage">ac.mute(true/false)</code>
+<br>
+<p>Set to true to echo all logs to console and to false to silence console messages.</p>
+<hr> -->
+<p><b class="function-name">registerActivityLogger</b><code class="function-usage">ac.registerActivityLogger(url, componentName, componentVersion)</code>
+<br /></p>
+<p>registerActivityLogger accepts the <b>url</b> to which to send logs, a <b>componentName</b> used to name this tool, and a <b>componentVersion</b> to differentiate between varying version of the tools.  Registration uses these inputs to set up the logging message body that includes items such as <code>componentName</code>, <code>componentVersion</code>, <code>client</code>, and <code>sessionID</code>.  <code>sessionID</code> and <code>client</code> may be passed into via query parameters appended to the URL of the tool.  This allows a lot of flexibility to create tools with many tabs that are all logging to the same session for example.</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">ac</span><span class="p">.</span><span class="nx">registerActivityLogger</span><span class="p">(</span>
+  <span class="s2">&quot;http://xd-draper.xdata.data-tactics-corp.com:1337&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;my-component&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;v0.1&quot;</span>
+  <span class="p">);</span></code></pre></div>
+
+<hr />
+
+<p><b class="function-name">logUserActivity</b><code class="function-usage">ac.logUserActivity(activityDescription, activityCode, activityWorkflowState, [metaInformation])</code>
+<br /></p>
+<p>A user action message attempts to describe the activity the User was meaning to perform.  This activity is described at 3 levels of specificity:
+  <ul>
+    <li><b>activityDescription:</b> this a natural language description of the activity being performed and provides the most specific description of what the user was doing.</li>
+    <li><b>activityCode:</b> this is a coded description of the activity and attempts to summarize the action into a 1-4 word code that can ideally be generalized across various tools.</li>
+    <li><b>activityWorkflowState:</b> this is the least specific description of the activity and is used to provided meaningful correlations across various tools.
+    </li>
+  </ul>
+</p>
+
+<p>
+  The <b>activityWorkflowState</b> is an integer enumerated by the activityLogger, and can be one of 7 of the possible options (follow the links for more information):
+  <ul class="wfCodes">
+    <li class="badge wf_define light"><a href="define.html">ac.WF_DEFINE</a></li>
+    <li class="badge wf_getdata light"><a href="getdata.html">ac.WF_GETDATA</a></li>
+    <li class="badge wf_explore light"><a href="explore.html">ac.WF_EXPLORE</a></li>
+    <li class="badge wf_create light"><a href="create.html">ac.WF_CREATE</a></li>
+    <li class="badge wf_enrich light"><a href="enrich.html">ac.WF_ENRICH</a></li>
+    <li class="badge wf_transform light"><a href="transform.html">ac.WF_TRANSFORM</a></li>
+    <li class="badge wf_other light"><a href="other.html">ac.WF_OTHER</a></li>
+  </ul>
+</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#button&#39;</span><span class="p">).</span><span class="nx">mouseenter</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">ac</span><span class="p">.</span><span class="nx">logUserActivity</span><span class="p">(</span>
+  <span class="s1">&#39;User hovered over element to read popup&#39;</span><span class="p">,</span> <span class="c1">// description</span>
+  <span class="s1">&#39;hover_start&#39;</span><span class="p">,</span> <span class="c1">// activity_code</span>
+  <span class="nx">ac</span><span class="p">.</span><span class="nx">WF_EXPLORE</span> <span class="c1">// workflow State</span>
+  <span class="p">);</span>
+<span class="p">})</span></code></pre></div>
+
+<hr />
+
+<p><b class="function-name">logSystemActivity</b><code class="function-usage">ac.logSystemActivity(activityDescription, [metaInformation])</code>
+<br /></p>
+<p>logSystemActivity accepts a natural language <b>activityDescription</b> of the system activity.  A system action message attempts to describe actions that were being performed by the system, either independently of the user, or as a cascading effect of past user actions. The system action message only requires a description, but may need more structure in future implementations.</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">ac</span><span class="p">.</span><span class="nx">logSystemActivity</span><span class="p">(</span><span class="s1">&#39;asking server for data.&#39;</span><span class="p">);</span>
+
+<span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s1">&#39;https://my_endpoint/get_data&#39;</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">ac</span><span class="p">.</span><span class="nx">logSystemActivity</span><span class="p">(</span><span class="s1">&#39;received data from server.&#39;</span><span class="p">);</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#result&quot;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <!-- // <script src="../../assets/js/docs.min.js"></script> -->
+  </body>
+</html>

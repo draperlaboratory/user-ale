@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>User-ALE</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.css" rel="stylesheet">
+
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/dashboard.css" rel="stylesheet">
+    <link href="/css/syntax.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
+    <link href="/css/wf-colors.css" rel="stylesheet">
+
+
+  </head>
+  
+    
+  
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div style="z-index: 5000;" class="col-sm-3 col-md-2 sidebar">
+          <a href="index.html"><img src="/img/user-ale-small.png" alt=""></a>
+          <hr>
+          <div style="text-align: center">
+            <a href="https://github.com/draperlaboratory/User-ALE">Get from Github <i class="fa fa-github"></i></a>
+          </div>
+          <hr>
+          <ul class="nav nav-sidebar">
+            <li class=""><a href="/">Overview</a></li>
+            <li><a href="/quickstart/">JavaScript Quickstart</a></li>
+            <li><a href="/restful_api/">RESTful API</a></li>
+            <li class="sub-list">
+              <div class="sub-list header">Helper Libraries</div>
+              <ul class="sub-list list">
+  
+    
+
+    
+      
+    
+    <li class=""><a href="/helper_libs/javascript/">JavaScript</a></li>
+  
+</ul>
+            </li>
+            <li class="sub-list">
+              <div class="sub-list header">Workflow Activities</div>
+              <ul class="sub-list list">
+  
+    
+
+    
+      
+    
+    <li class=""><a href="/wf_states/define/">Define Problem</a></li>
+  
+    
+
+    
+      
+    
+    <li class=""><a href="/wf_states/getdata/">Get Data</a></li>
+  
+    
+
+    
+      
+    
+    <li class=""><a href="/wf_states/explore/">Explore Data</a></li>
+  
+    
+
+    
+      
+    
+    <li class=""><a href="/wf_states/create/">Create View</a></li>
+  
+    
+
+    
+      
+    
+    <li class="active"><a href="/wf_states/enrich/">Enrich Data</a></li>
+  
+    
+
+    
+      
+    
+    <li class=""><a href="/wf_states/transform/">Transform Data</a></li>
+  
+    
+
+    
+      
+    
+    <li class=""><a href="/wf_states/other/">Other</a></li>
+  
+</ul>
+            </li>
+          </ul>
+        </div>
+        <div  style="position: relative;" data-spy="scroll" data-target=".navbar-example" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h4 class="pull-right">WF_ENRICH</h4>
+<div class="pull-left wf wf_enrich light"></div>
+<h1 class="page-header">
+  Enrich Data
+</h1>
+
+<div class="workflow">
+  <h1 id="description">Description</h1>
+
+<p>In Enrich, the user actively adds insight value back into the tool.  Activities include annotating/tagging/labeling data with textual notes or links, bookmarking views, creating links between data elements.  Annotations may include external insight (from SMEs), algorithmic results (searching for patterns, denoising, etc.), identifying patterns/trends,  (Making notes or conclusions about patterns is in Enrich. Identifying/searching for them is in Transform.)</p>
+
+<h1 id="example-usages">Example Usages</h1>
+
+<ul class="list-group">
+  <li class="list-group-item">
+    <h5>If you are...</h5>
+    <p style="margin-left: 15px; ">
+      Letting the user organize their data, in a sandbox or workspace
+    </p>
+
+    <h5>Consider the following activities...</h5>
+    <div style="margin-left: 15px;">
+      <code>create_workspace, remove_workspace,
+add_to_workspace, remove_from_workspace, clear_workspace,
+export_data, import_data</code>
+    </div>
+  </li>
+  <li class="list-group-item">
+    <h5>If you are...</h5>
+    <p style="margin-left: 15px; ">
+      Letting your user annotate or mark the data. This is an active process of having the user document their insight within your tool
+    </p>
+
+    <h5>Consider the following activities...</h5>
+    <div style="margin-left: 15px;">
+      <code>annotate_graph, annotate_plot, annotate_chart, annotate_map,
+remove_graph_annotation, remove_map_annotation, remove_chart_annotation,
+bookmark_view, add_note, remove_note, highlight_data</code>
+    </div>
+  </li>
+</ul>
+
+</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <!-- // <script src="../../assets/js/docs.min.js"></script> -->
+  </body>
+</html>

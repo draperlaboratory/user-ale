@@ -1,106 +1,20 @@
+---
+layout: default
+---
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+<div class="home">
 
-    <title>User-ALE</title>
+  <h1>Posts</h1>
 
-    <!-- Bootstrap core CSS -->
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.css" rel="stylesheet">
+  <ul class="posts">
+    {% for post in site.posts %}
+      <li>
+        <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
+        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
 
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
 
-    <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css">
-    <script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
-    <!-- <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/styles/github.min.css"> -->
-    
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/languages/javascript.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-    <!-- Custom styles for this template -->
-    <link href="dashboard.css" rel="stylesheet">
-    <link href="custom.css" rel="stylesheet">
-    <link href="css/wf-colors.css" rel="stylesheet">
-
-  </head>
-
-<body>
-
-     <div class="container-fluid">
-      <div class="row">
-        <div style="z-index: 5000;" class="col-sm-3 col-md-2 sidebar">
-          <a href="index.html"><img src="img/user-ale-small.png" alt=""></a>
-          <hr>
-          <div style="text-align: center">
-            <a href="https://github.com/draperlaboratory/User-ALE">Get from Github <i class="fa fa-github"></i></a>
-          </div>
-          <hr>
-          <ul class="nav nav-sidebar">
-            <li  class="active"><a href="index.html">Overview</a></li>
-            <li ><a href="getting_started.html">JavaScript Quickstart</a></li>
-            <li ><a href="documentation.html">RESTful API</a></li>
-            <li class="sub-list">
-              <div class="sub-list header">Helper Libraries</div>
-              <ul class="sub-list list">
-                
-                  <li><a href="javascript.html">JavaScript</a></li>
-                
-              </ul>
-            </li>
-            <li class="sub-list">
-              <div class="sub-list header">Workflow Activities</div>
-              <ul class="sub-list list">
-                
-                  <li><a href="define.html">Define Problem</a></li>
-                
-                  <li><a href="getdata.html">Get Data</a></li>
-                
-                  <li><a href="explore.html">Explore Data</a></li>
-                
-                  <li><a href="create.html">Create View</a></li>
-                
-                  <li><a href="enrich.html">Enrich Data</a></li>
-                
-                  <li><a href="transform.html">Transform Data</a></li>
-                
-                  <li><a href="other.html">Other</a></li>
-                
-              </ul>
-            </li>            
-          </ul>
-        </div>
-        <div  style="position: relative;" data-spy="scroll" data-target=".navbar-example" class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          
-<h1 class="page-header">Overview</h1>  
-<h4>Background</h4>       
-<p>The User Activity Logging Engine, or User-ALE, is a logging mechanism used to quantitatively assess the behavioural and cognitive state of a data analyst while interacting with Big Data Exploitation Systems (BDES).</p>
-
-<p>
-  To accurately measure the cognitive state of the user, tool developers associate model based workflow states with each user action.  Did a user pan a map? Then they are exploring.  Did a user click a search button? Then they are getting new data.  These model based activities can then be processed to measure hidden empirical states that describe more accurately the user's workflow and behaviour.  
-</p>
-
-<div class="alert alert-info" role="alert">
-  More complete descriptions of the model based workflow activities can be found to the left.
 </div>
-
-<h4>Who is the package for?</h4>
-<p>This package is for developers creating <b>User</b> facing tools, and who would like to log the users interaction with this tool, in order to gain an insight into the behavioural and cognitive state of the user.</p>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <!-- // <script src="../../assets/js/docs.min.js"></script> -->
-  </body>
-</html>

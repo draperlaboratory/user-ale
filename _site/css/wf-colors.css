@@ -1,0 +1,160 @@
+.wf_unk.light {
+  background: #c9c9c9;
+  color: #000000;
+}
+.wf_unk.dark {
+  background: #000000;
+  color: #c9c9c9;
+}
+.wf_unk.fill-light {
+  fill: #000000;
+}
+.wf_unk.fill-dark {
+  fill: #c9c9c9;
+}
+.wf_unk.stroke-light {
+  stroke: #000000;
+}
+.wf_unk.stroke-dark {
+  stroke: #c9c9c9;
+}
+.wf_transform.light {
+  background: #0b3d5c;
+  color: #2b83ba;
+}
+.wf_transform.dark {
+  background: #2b83ba;
+  color: #0b3d5c;
+}
+.wf_transform.fill-light {
+  fill: #2b83ba;
+}
+.wf_transform.fill-dark {
+  fill: #0b3d5c;
+}
+.wf_transform.stroke-light {
+  stroke: #2b83ba;
+}
+.wf_transform.stroke-dark {
+  stroke: #0b3d5c;
+}
+.wf_enrich.light {
+  background: #4f8348;
+  color: #abdda4;
+}
+.wf_enrich.dark {
+  background: #abdda4;
+  color: #4f8348;
+}
+.wf_enrich.fill-light {
+  fill: #abdda4;
+}
+.wf_enrich.fill-dark {
+  fill: #4f8348;
+}
+.wf_enrich.stroke-light {
+  stroke: #abdda4;
+}
+.wf_enrich.stroke-dark {
+  stroke: #4f8348;
+}
+.wf_create.light {
+  background: #cc4037;
+  color: #f1b6da;
+}
+.wf_create.dark {
+  background: #f1b6da;
+  color: #cc4037;
+}
+.wf_create.fill-light {
+  fill: #f1b6da;
+}
+.wf_create.fill-dark {
+  fill: #cc4037;
+}
+.wf_create.stroke-light {
+  stroke: #f1b6da;
+}
+.wf_create.stroke-dark {
+  stroke: #cc4037;
+}
+.wf_explore.light {
+  background: #af6013;
+  color: #fdae61;
+}
+.wf_explore.dark {
+  background: #fdae61;
+  color: #af6013;
+}
+.wf_explore.fill-light {
+  fill: #fdae61;
+}
+.wf_explore.fill-dark {
+  fill: #af6013;
+}
+.wf_explore.stroke-light {
+  stroke: #fdae61;
+}
+.wf_explore.stroke-dark {
+  stroke: #af6013;
+}
+.wf_getdata.light {
+  background: #ffc0c0;
+  color: #d7191c;
+}
+.wf_getdata.dark {
+  background: #d7191c;
+  color: #ffc0c0;
+}
+.wf_getdata.fill-light {
+  fill: #d7191c;
+}
+.wf_getdata.fill-dark {
+  fill: #ffc0c0;
+}
+.wf_getdata.stroke-light {
+  stroke: #d7191c;
+}
+.wf_getdata.stroke-dark {
+  stroke: #ffc0c0;
+}
+.wf_define.light {
+  background: #f8d0fd;
+  color: #984ea3;
+}
+.wf_define.dark {
+  background: #984ea3;
+  color: #f8d0fd;
+}
+.wf_define.fill-light {
+  fill: #984ea3;
+}
+.wf_define.fill-dark {
+  fill: #f8d0fd;
+}
+.wf_define.stroke-light {
+  stroke: #984ea3;
+}
+.wf_define.stroke-dark {
+  stroke: #f8d0fd;
+}
+.wf_other.light {
+  background: #eeeeee;
+  color: #aaaaaa;
+}
+.wf_other.dark {
+  background: #aaaaaa;
+  color: #eeeeee;
+}
+.wf_other.fill-light {
+  fill: #aaaaaa;
+}
+.wf_other.fill-dark {
+  fill: #eeeeee;
+}
+.wf_other.stroke-light {
+  stroke: #aaaaaa;
+}
+.wf_other.stroke-dark {
+  stroke: #eeeeee;
+}

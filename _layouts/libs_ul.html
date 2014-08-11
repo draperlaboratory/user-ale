@@ -1,0 +1,12 @@
+<ul class="sub-list list">
+  {% for wf in site.data.helper_libs %}
+    {% assign wf_url = wf.url | prepend:"/wf_states/" | append:"/" %}
+
+    {% if wf_url == page.url %}
+      {% assign c = "active" %}
+    {% else %}
+      {% assign c = "" %}
+    {% endif %}
+    <li class="{{ c }}"><a href="{{ wf_url }}">{{ wf.title }}</a></li>
+  {% endfor %}
+</ul>

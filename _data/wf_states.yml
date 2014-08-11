@@ -1,0 +1,15 @@
+- title: Define Problem
+  url: define
+- title: Get Data
+  url: getdata
+- title: Explore Data
+  url: explore
+- title: Create View
+  url: create
+- title: Enrich Data
+  url: enrich
+- title: Transform Data
+  url: transform
+- title: Other
+  url: other
+
