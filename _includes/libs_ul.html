@@ -1,6 +1,6 @@
 <ul class="sub-list list">
   {% for wf in site.data.helper_libs %}
-    {% assign wf_url = wf.url | prepend:"/helper_libs/" | append:"/" %}
+    {% assign wf_url = wf.url | prepend:"/user-ale/helper_libs/" | append:"/" %}
 
     {% if wf_url == page.url %}
       {% assign c = "active" %}

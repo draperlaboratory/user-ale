@@ -1,6 +1,6 @@
 <ul class="sub-list list">
   {% for wf in site.data.wf_states %}
-    {% assign wf_url = wf.url | prepend:"/wf_states/" | append:"/" %}
+    {% assign wf_url = wf.url | prepend:"/user-ale/wf_states/" | append:"/" %}
 
     {% if wf_url == page.url %}
       {% assign c = "active" %}
