@@ -14,7 +14,7 @@
 function activityLogger(webWorkerURL) {
 	'use strict';
 
-  var draperLog = {version: "2.1.1"}; // semver  
+  var draperLog = {version: "2.1.1"}; // semver
 
   draperLog.worker = new Worker(webWorkerURL);
 
@@ -50,25 +50,25 @@ function activityLogger(webWorkerURL) {
 
 		draperLog.url = url;
 		draperLog.componentName = componentName;
-		draperLog.componentVersion = componentVersion;  
+		draperLog.componentVersion = componentVersion;
 
 		// get session id from url
 		function getParameterByName(name) {
 			name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
 			var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
 			results = regex.exec(location.search);
-			return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+			return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 		}
 
 		draperLog.sessionID = getParameterByName('USID');
-    draperLog.clientHostname = getParameterByName('client')
+    draperLog.clientHostname = getParameterByName('client');
 
     if (!draperLog.sessionID) {
-      draperLog.sessionID = draperLog.componentName.slice(0,3) + new Date().getTime()
+      draperLog.sessionID = draperLog.componentName.slice(0,3) + new Date().getTime();
     }
 
     if (!draperLog.clientHostname) {
-      draperLog.clientHostname = 'UNK'
+      draperLog.clientHostname = 'UNK';
     }
 
 		// set the logging URL on the Web Worker
@@ -84,21 +84,21 @@ function activityLogger(webWorkerURL) {
 				console.log('DRAPER LOG: (TESTING) Registered Activity Logger ' + draperLog.sessionID);
 			} else {
 				console.log('DRAPER LOG: Registered Activity Logger ' + draperLog.sessionID);
-			}			
+			}
 		}
 
 		draperLog.worker.postMessage({
 		  	cmd: 'sendBuffer',
 		  	msg: ''
 		  });
-		
+
 		window.onbeforeunload = function(){
       draperLog.logUserActivity(
         'window closing',
         'window_closed',
         draperLog.WF_OTHER
-        )
-      
+        );
+
 			draperLog.worker.postMessage({
 		  	cmd: 'sendBuffer',
 		  	msg: ''
@@ -110,16 +110,16 @@ function activityLogger(webWorkerURL) {
         'window gained focus',
         'window_focus',
         draperLog.WF_OTHER
-        )
-    }
+        );
+    };
 
     window.onblur = function() {
       draperLog.logUserActivity(
         'window lost focus',
         'window_blur',
         draperLog.WF_OTHER
-        )
-    }
+        );
+    };
 
 		return draperLog;
 	};

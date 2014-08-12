@@ -9,19 +9,19 @@ function timerMethod() {
 
 	if (logBuffer.length) {
     if (echo) {
-      console.log(msg + 'sent ' + logBuffer.length + ' logs to - ' + loggingUrl)
+      console.log(msg + 'sent ' + logBuffer.length + ' logs to - ' + loggingUrl);
     }
 		if (!testing) {
 			XHR(loggingUrl + '/send_log', logBuffer, function(d) {
 				logBuffer = [];
-			})			
+			});
 		} else {
       logBuffer = [];
-    }		
+    }
 	}	else {
 		if (echo) {
-			console.log(msg + 'no log sent, buffer empty.')
-		}		
+			console.log(msg + 'no log sent, buffer empty.');
+		}
 	}
 }
 
@@ -34,13 +34,13 @@ self.addEventListener('message', function(e) {
 			loggingUrl = data.msg;
       break;
     case 'sendMsg':
-      logBuffer.push(data.msg)
+      logBuffer.push(data.msg);
       break;
     case 'setTesting':
     	if (data.msg) {
-    		var msg = 'DRAPER LOG: (TESTING) ';
+    		msg = 'DRAPER LOG: (TESTING) ';
     	} else {
-    		var msg = 'DRAPER LOG: ';
+    		msg = 'DRAPER LOG: ';
     	}
       testing = data.msg;
       break;
@@ -50,7 +50,7 @@ self.addEventListener('message', function(e) {
     case 'sendBuffer':
     	sendBuffer();
     	break;
-  };
+  }
 }, false);
 
 
@@ -58,8 +58,8 @@ function sendBuffer() {
   // method to force send the buffer
 	timerMethod();
 	if (echo) {
-		console.log(msg + ' buffer sent')
-	}	
+		console.log(msg + ' buffer sent');
+	}
 }
 //simple XHR request in pure raw JavaScript
 function XHR(url, log, callback) {
@@ -67,11 +67,11 @@ function XHR(url, log, callback) {
 
 	if(typeof XMLHttpRequest !== 'undefined') xhr = new XMLHttpRequest();
 	else {
-		var versions = ["MSXML2.XmlHttp.5.0", 
+		var versions = ["MSXML2.XmlHttp.5.0",
 		 				"MSXML2.XmlHttp.4.0",
-		 			  "MSXML2.XmlHttp.3.0", 
+		 			  "MSXML2.XmlHttp.3.0",
 		 			  "MSXML2.XmlHttp.2.0",
-		 				"Microsoft.XmlHttp"]
+		 				"Microsoft.XmlHttp"];
 
 		 for(var i = 0, len = versions.length; i < len; i++) {
 		 	try {
@@ -81,24 +81,24 @@ function XHR(url, log, callback) {
 		 	catch(e){}
 		 } // end for
 	}
-	
+
 	xhr.onreadystatechange = ensureReadiness;
-	
+
 	function ensureReadiness() {
 		if(xhr.readyState < 4) {
 			return;
 		}
-		
+
 		if(xhr.status !== 200) {
 			return;
 		}
 
-		// all is well	
+		// all is well
 		if(xhr.readyState === 4) {
 			callback(xhr);
-		}			
+		}
 	}
-	
+
 	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 	xhr.send(JSON.stringify(log));

@@ -1,0 +1,12 @@
+{
+  "name": "user-ale",
+  "version": "0.0.1",
+  "description": "User Activity Logging Engine",
+  "main": "draper.activity_logger-2.1.1.js",
+  "dependencies": {
+    "jshint": "^2.5.3"
+  },
+  "devDependencies": {},
+  "author": "Draper Laboratory",
+  "license": "ISC"
+}
