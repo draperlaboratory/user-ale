@@ -4,7 +4,8 @@ Dashboard for XDATA logs.
 
 ## Getting Started
 ### On the server
-Install the module with: `npm install xdata-dashboard`
+Install the module with: `npm install`
+Start the server with: `node server/app.js`
 
 ## Documentation
 _(Coming soon)_
