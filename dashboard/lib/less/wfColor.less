@@ -1,0 +1,109 @@
+@other_fg: #aaa;
+@other_bg: #EEEEEE;
+
+@define_fg: #984ea3;
+@define_bg: #F8D0FD;
+
+@getdata_fg: #d7191c;
+@getdata_bg: rgb(255, 192, 192);
+
+@explore_fg: #fdae61;
+@explore_bg: #AF6013;
+
+@create_fg: #f1b6da;
+@create_bg: #cc4037;
+
+@enrich_fg: #abdda4;
+@enrich_bg: #4F8348;
+
+@transform_fg: #2b83ba;
+@transform_bg: #0B3D5C;
+
+@unk_fg: #000;
+@unk_bg: #C9C9C9;
+
+@colors: 'other', 'define', 'getdata', 'explore', 'create', 'enrich', 'transform', 'unk';
+
+.-(@i: length(@colors)) when (@i > 0) {
+    @name: e(extract(@colors, @i));
+    @fg: "@{name}_fg";
+    @bg: "@{name}_bg";
+    .wf_@{name}.light {
+    	background: @@bg;
+    	color: @@fg;
+    }
+    .wf_@{name}.dark {
+    	background: @@fg;
+    	color: @@bg;
+    }
+    .wf_@{name}.fill-light {
+        fill: @@fg;
+    }
+    .wf_@{name}.fill-dark {
+        fill: @@bg;
+    }
+    .wf_@{name}.stroke-light {
+        stroke: @@fg;
+    }
+    .wf_@{name}.stroke-dark {
+        stroke: @@bg;
+    }
+    .-((@i - 1));
+} .-;
+
+.under-text {
+    stroke: white;
+    stroke-width: 2;
+}
+
+.fixed-info {
+    position: absolute;
+    margin-top: 30px;
+    top: 0;
+    width: 100%;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.9);
+    border-bottom: 1px solid #ddd;
+    z-index: 2;
+}
+
+.fixed-info .axis{
+    position: absolute;
+    bottom: 0;
+}
+
+.canvas {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+    z-index: 1;
+    margin-top: 105px;
+}
+
+.sw2 {
+    stroke-width: 2;
+}
+
+.wfTitle {
+    font: 30px sans-serif;
+  }
+
+  .canvas text {
+    font: 18px sans-serif;
+  }
+
+  .axis {
+    font: 14px sans-serif;
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .bar {
+    shape-rendering: crispEdges;
+  }

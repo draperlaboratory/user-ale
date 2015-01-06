@@ -1,0 +1,207 @@
+.. _how-to:
+
+How-to Guide for Implementing the Activity Logging API
+======================================================
+
+Below, we provide a formal specification of the format of log messages sent to the Draper Log Server. But most developers will not need to concern themselves with specific formatting requirements, since Draper has developed helper libraries in JavaScript, Python, Java and C# 
+
+The current version of the client software (which includes the following details in-line) is available at
+   
+   `[xdatagit]/tools/utilities/draper/draper.activity_logger-2.0.js`
+
+The Logging server url is available on XNET, please contact look there or contact Draper for the url.
+
+.. NOTE::
+   the machine sending log messages must be connected to the XDATA VPN in order to access this server. 
+
+The following sections detail the use of the API client in several supported languages.
+
+Javascript
+----------
+The JavaScript helper library provides a background process via the use of `Web Workers <https://developer.mozilla.org/en-US/docs/Web/API/Worker>`_ to send activity logs to a logging server.  The library and server handle Cross Origin Resource Sharing from arbitrary domains. 
+
+The library consists of 2 files, a logger script and a worker script.  The logger script is included in your HTML code like any other javascript file.  The worker script should NOT be included, and is instead called from the the logger script.
+
+The JavaScript helper library is located at: https://github.com/draperlab/xdatalogger/javascript
+
+You can use this helper library in just 3 steps:
+1) Instantiate an ActivityLogger object
+2) Call registerActivityLogger(...) to pass in required networking  and version information.
+3) Call one of the logging functions:
+logSystemActivity(...)
+logUser(...)
+
+Example Implementation of JavaScript Helper Library
+***************************************************
+
+An example use of this library is included below:
+
+.. code-block:: html
+
+	<script src="draper.activity_logger-2.1.1.js"></script>
+
+Instantiate the Activity Logger
+
+.. code-block:: javascript
+
+   var ac = new activityLogger('draper.activity_logger-2.1.1.js');
+
+Register the logger. In this case, we register the logger to look for the logging server at `http://localhost:1337`. The component name is a descriptor that uniquely defines your tool from others, and the component version is used to make any distinction between component versions.
+
+.. code-block:: javascript
+	
+	var url = "http://localhost:1337";
+	ac.registerActivityLogger(url, "test-component", "3.04");
+
+Re-register the logger.  In this case, we register the logger to look for the logger at `http://localhost:1337`, telling it that this software component is version 3.04 of the software named "Draper Test Component"
+
+.. code-block:: javascript
+	
+	var url = "http://localhost:1337";
+	ac.registerActivityLogger(url, "Draper Test Component", "3.04");
+
+
+Send a System Activity Message with optional metadata included. In this case, we send a System Activity message with the action description 'Testing System Activity Message' and optional metadata with two key-value pairs of:
+'Test Window Val'='Main
+'Data Source'='healthcare'
+
+.. code-block:: javascript
+	
+	ac.logSystemActivity('Testing System Activity Message', {
+	  'Test Window Val': 'Main',
+	  'Data Source':'healthCare'
+	});
+
+Send a System Activity Message In this case, we send a System Activity message with the action description 'Testing System Activity Message'
+
+.. code-block:: javascript
+
+	ac.logSystemActivity('Testing System Activity Message');
+
+
+Send a User Activity Message In this case, we send a User Activity message with the action description 'Testing User Activity Message', a developer-defined user action "watch", and the workflow constant WF_EXPLORE, defined in the Activity Log API.
+
+.. code-block:: javascript
+
+	ac.logUserActivity('Testing User Activity Message', 'Watch', ac.WF_EXPLORE );
+
+Send a User Activity Message with optional metadata included In this case, we send a User Activity message with the action description 'Testing User Activity Message', a developer-defined user action "watch", and a the workflow constant WF_EXPLORE, defined in the Activity Log API. This message also contains optional metadata with two key-value pairs of:
+'Test Window Val'='Main
+'Data Source'='healthcare'
+
+.. code-block:: javascript
+
+   ac.logUserActivity('Testing User Activity Message', 'watch', ac.WF_EXPLORE, {
+     'Test Window Val':'Main', 
+     'Data Source':'healthCare'
+   });
+
+JavaScript Helper Library Reference
+***********************************
+
+Registration
+~~~~~~~~~~~~
+
+.. function:: registerActivityLogger(loggingServerUrl, componentName, componentVersion)
+
+   Registers the session with Draper server
+
+   :param loggingServerUrl: url of logging server
+   :param componentName: name of the software component or application sending log messages from this library
+   :param componentVersion: version number of the software component or application 
+
+
+Development Functionality
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The properties and function in this section allow developers to  echo log messages to the console, and disable the generation and  transmission of logging messages by this library.
+
+.. function:: echo(onOff)
+
+   Set to true to echo log messages to the console, even if they are sent successfully to the Logging Server.
+
+   :param onOff: bool
+
+.. function:: mute(msgArray)
+
+   Mute either the SYS actions, the USER actions, or both. Calling this function with the appropriate values disables the sending of messages to the server. Mute accepts an array of String values, acceptable values are ‘SYS’ or ‘USER’.
+
+   :param msgArray: 
+
+.. function:: unmute(msgArray)
+
+   Unmute either the SYS actions, the USER actions, or both. Calling this function with the appropriate values enables the sending of messages to the server. Unmute accepts an array of String values, acceptable values are ‘SYS’ or ‘USER’.
+
+   :param msgArray: 
+
+.. function:: testing(onOff)
+
+   Set to true to disable all connection with Draper’s server.  No registration will be done against Draper’s server, and no logs will be sent.  If echo is set to true, console messages will still be fired for debugging purposes.
+
+   :param onOff: bool
+
+Example:
+
+.. code-block:: javascript
+
+   var ac = new activityLogger().echo(true).testing(true).mute(['SYS','USER']);
+
+Activity Logging Functions
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The 2 functions in this section are used to send Activity Log Messages to an Activity Logging Server. Separate functions are used to log System Activity and User Activity. See the Activity Logging API by Draper Laboratory for more details about the use of these messages.
+
+.. function:: logSystemActivity(actionDescription [,softwareMetadata])
+
+   Log a System Activity. registerActivityLogger MUST be called before calling this function. Use logSystemActivity to log software actions that are not explicitly invoked by the user. For example, if a software component refreshes a data store after a pre-determined time span, the refresh event should be logged as a system activity. However, if the datastore was refreshed in response to a user clicking a Refresh UI element, that activity should NOT be logged as a System Activity, but rather as a User Activity.
+
+   :param actionDescription: A string describing the System  Activity performed by the component.
+   :param softwareMetadata: Any key/value pairs that will clarify or parameterize this system activity.
+
+.. function:: logUserActivity(actionDescription, userActivity, userWorkflowState [,softwareMetadata])
+
+   Log a User Activity. <registerActivityLogger> MUST be called before calling this function. Use <logUserActivity> to log actions initiated by an explicit user action. For example, if a software component refreshes a data store when the user clicks a Refresh UI element, that activity should be logged as a User Activity. However, if the datastore was refreshed automatically after a certain time span, that activity should NOT be logged as a User Activity, but rather as a System Activity.
+
+   :param actionDescription: A string describing the System  Activity performed by the component.
+   :param userActivity: A key word defined by each software component or application indicating which software-centric function is most likely indicated by the this user activity. See the Activity Logging API for a standard set of user activity key words.
+   :param userWorkflowState: This value must be one of the Workflow Codes defined in this library. See the Activity Logging API for definitions of each workflow code. 
+   :param softwareMetadata: Any key/value pairs that will clarify or parameterize this system activity.
+
+DOM Events and Listeners
+************************
+
+To assist the developers in the logging of User actions, Draper has added functionality to listen to specific events on elements classed and attributed appropriately.  The developer need only to class DOM elements they feel will involve interaction from the user with the class ‘draper’.  Workflow states and action descriptions are then added as data attributes on the element.  Using the included script, Draper will DOM events will be useful to track for logging activities of the user associated with mouse movements but are not explicity to any other implemented tool function.  These event types include:
+
+:click: occurs when a user clicks something
+:focusin: occurs when an element gains focus (input field)
+:focusout: occurs when an element looses focus
+:mouseover: occurs when the pointer is moved onto an element
+:mouseout: occurs when the pointer is moved out of an element
+:select: occurs when the user selects some text
+:scroll: occurs when users scrolls with either mouse wheel, or scrollbar
+	
+Example:
+
+.. code-block:: HTML
+
+	<input class=”my-input draper” data-wf=”2” data-description=”search box”></input>
+	<div style=”overflow-y: auto” class=”draper” data-wf=”3” data-description=”table container”>
+
+
+Python
+------
+Deprecated. Contact Draper for support
+
+Java
+----
+Deprecated. Contact Draper for support
+
+C#
+--
+Deprecated. Contact Draper for support
+
+
+Future Implementations of the Logging API (A.K.A. “Hey! You don’t support my favorite programming language _____”)
+------------------------------------------------------------------------------------------------------------------
+
+As stated earlier in this document, it’s a goal of the Logging API to make it very easy for XDATA teams to implement the API, and that means supporting other programming languages by authoring additional clients. If you have a specific language in mind that is not supported, please contact any member of the Draper team to discuss your software.

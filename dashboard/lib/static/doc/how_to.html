@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>How-to Guide for Implementing the Activity Logging API &mdash; XDATA API 2.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="XDATA API 2.1.1 documentation" href="index.html" />
+    <link rel="next" title="Logging Server Implementation Details" href="server.html" />
+    <link rel="prev" title="Draper Activity Logging API Requirements" href="log_reqs.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="server.html" title="Logging Server Implementation Details"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="log_reqs.html" title="Draper Activity Logging API Requirements"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">XDATA API 2.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="how-to-guide-for-implementing-the-activity-logging-api">
+<span id="how-to"></span><h1>How-to Guide for Implementing the Activity Logging API<a class="headerlink" href="#how-to-guide-for-implementing-the-activity-logging-api" title="Permalink to this headline">¶</a></h1>
+<p>Below, we provide a formal specification of the format of log messages sent to the Draper Log Server. But most developers will not need to concern themselves with specific formatting requirements, since Draper has developed helper libraries in JavaScript, Python, Java and C#</p>
+<p>The current version of the client software (which includes the following details in-line) is available at</p>
+<blockquote>
+<div><cite>[xdatagit]/tools/utilities/draper/draper.activity_logger-2.0.js</cite></div></blockquote>
+<p>The Logging server url is available on XNET, please contact look there or contact Draper for the url.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">the machine sending log messages must be connected to the XDATA VPN in order to access this server.</p>
+</div>
+<p>The following sections detail the use of the API client in several supported languages.</p>
+<div class="section" id="javascript">
+<h2>Javascript<a class="headerlink" href="#javascript" title="Permalink to this headline">¶</a></h2>
+<p>The JavaScript helper library provides a background process via the use of <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/API/Worker">Web Workers</a> to send activity logs to a logging server.  The library and server handle Cross Origin Resource Sharing from arbitrary domains.</p>
+<p>The library consists of 2 files, a logger script and a worker script.  The logger script is included in your HTML code like any other javascript file.  The worker script should NOT be included, and is instead called from the the logger script.</p>
+<p>The JavaScript helper library is located at: <a class="reference external" href="https://github.com/draperlab/xdatalogger/javascript">https://github.com/draperlab/xdatalogger/javascript</a></p>
+<p>You can use this helper library in just 3 steps:
+1) Instantiate an ActivityLogger object
+2) Call registerActivityLogger(...) to pass in required networking  and version information.
+3) Call one of the logging functions:
+logSystemActivity(...)
+logUser(...)</p>
+<div class="section" id="example-implementation-of-javascript-helper-library">
+<h3>Example Implementation of JavaScript Helper Library<a class="headerlink" href="#example-implementation-of-javascript-helper-library" title="Permalink to this headline">¶</a></h3>
+<p>An example use of this library is included below:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;draper.activity_logger-2.1.1.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+</div>
+<p>Instantiate the Activity Logger</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">ac</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">activityLogger</span><span class="p">(</span><span class="s1">&#39;draper.activity_logger-2.1.1.js&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Register the logger. In this case, we register the logger to look for the logging server at <cite>http://localhost:1337</cite>. The component name is a descriptor that uniquely defines your tool from others, and the component version is used to make any distinction between component versions.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:1337&quot;</span><span class="p">;</span>
+<span class="nx">ac</span><span class="p">.</span><span class="nx">registerActivityLogger</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="s2">&quot;test-component&quot;</span><span class="p">,</span> <span class="s2">&quot;3.04&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Re-register the logger.  In this case, we register the logger to look for the logger at <cite>http://localhost:1337</cite>, telling it that this software component is version 3.04 of the software named &#8220;Draper Test Component&#8221;</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:1337&quot;</span><span class="p">;</span>
+<span class="nx">ac</span><span class="p">.</span><span class="nx">registerActivityLogger</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="s2">&quot;Draper Test Component&quot;</span><span class="p">,</span> <span class="s2">&quot;3.04&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Send a System Activity Message with optional metadata included. In this case, we send a System Activity message with the action description &#8216;Testing System Activity Message&#8217; and optional metadata with two key-value pairs of:
+&#8216;Test Window Val&#8217;=&#8217;Main
+&#8216;Data Source&#8217;=&#8217;healthcare&#8217;</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ac</span><span class="p">.</span><span class="nx">logSystemActivity</span><span class="p">(</span><span class="s1">&#39;Testing System Activity Message&#39;</span><span class="p">,</span> <span class="p">{</span>
+  <span class="s1">&#39;Test Window Val&#39;</span><span class="o">:</span> <span class="s1">&#39;Main&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;Data Source&#39;</span><span class="o">:</span><span class="s1">&#39;healthCare&#39;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Send a System Activity Message In this case, we send a System Activity message with the action description &#8216;Testing System Activity Message&#8217;</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ac</span><span class="p">.</span><span class="nx">logSystemActivity</span><span class="p">(</span><span class="s1">&#39;Testing System Activity Message&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Send a User Activity Message In this case, we send a User Activity message with the action description &#8216;Testing User Activity Message&#8217;, a developer-defined user action &#8220;watch&#8221;, and the workflow constant WF_EXPLORE, defined in the Activity Log API.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ac</span><span class="p">.</span><span class="nx">logUserActivity</span><span class="p">(</span><span class="s1">&#39;Testing User Activity Message&#39;</span><span class="p">,</span> <span class="s1">&#39;Watch&#39;</span><span class="p">,</span> <span class="nx">ac</span><span class="p">.</span><span class="nx">WF_EXPLORE</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>Send a User Activity Message with optional metadata included In this case, we send a User Activity message with the action description &#8216;Testing User Activity Message&#8217;, a developer-defined user action &#8220;watch&#8221;, and a the workflow constant WF_EXPLORE, defined in the Activity Log API. This message also contains optional metadata with two key-value pairs of:
+&#8216;Test Window Val&#8217;=&#8217;Main
+&#8216;Data Source&#8217;=&#8217;healthcare&#8217;</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ac</span><span class="p">.</span><span class="nx">logUserActivity</span><span class="p">(</span><span class="s1">&#39;Testing User Activity Message&#39;</span><span class="p">,</span> <span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="nx">ac</span><span class="p">.</span><span class="nx">WF_EXPLORE</span><span class="p">,</span> <span class="p">{</span>
+  <span class="s1">&#39;Test Window Val&#39;</span><span class="o">:</span><span class="s1">&#39;Main&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;Data Source&#39;</span><span class="o">:</span><span class="s1">&#39;healthCare&#39;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="javascript-helper-library-reference">
+<h3>JavaScript Helper Library Reference<a class="headerlink" href="#javascript-helper-library-reference" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="registration">
+<h4>Registration<a class="headerlink" href="#registration" title="Permalink to this headline">¶</a></h4>
+<dl class="function">
+<dt id="registerActivityLogger">
+<tt class="descname">registerActivityLogger</tt><big>(</big><em>loggingServerUrl</em>, <em>componentName</em>, <em>componentVersion</em><big>)</big><a class="headerlink" href="#registerActivityLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the session with Draper server</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>loggingServerUrl</strong> &#8211; url of logging server</li>
+<li><strong>componentName</strong> &#8211; name of the software component or application sending log messages from this library</li>
+<li><strong>componentVersion</strong> &#8211; version number of the software component or application</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="development-functionality">
+<h5>Development Functionality<a class="headerlink" href="#development-functionality" title="Permalink to this headline">¶</a></h5>
+<p>The properties and function in this section allow developers to  echo log messages to the console, and disable the generation and  transmission of logging messages by this library.</p>
+<dl class="function">
+<dt id="echo">
+<tt class="descname">echo</tt><big>(</big><em>onOff</em><big>)</big><a class="headerlink" href="#echo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set to true to echo log messages to the console, even if they are sent successfully to the Logging Server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>onOff</strong> &#8211; bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="mute">
+<tt class="descname">mute</tt><big>(</big><em>msgArray</em><big>)</big><a class="headerlink" href="#mute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mute either the SYS actions, the USER actions, or both. Calling this function with the appropriate values disables the sending of messages to the server. Mute accepts an array of String values, acceptable values are ‘SYS’ or ‘USER’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>msgArray</strong> &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="unmute">
+<tt class="descname">unmute</tt><big>(</big><em>msgArray</em><big>)</big><a class="headerlink" href="#unmute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unmute either the SYS actions, the USER actions, or both. Calling this function with the appropriate values enables the sending of messages to the server. Unmute accepts an array of String values, acceptable values are ‘SYS’ or ‘USER’.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>msgArray</strong> &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="testing">
+<tt class="descname">testing</tt><big>(</big><em>onOff</em><big>)</big><a class="headerlink" href="#testing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set to true to disable all connection with Draper’s server.  No registration will be done against Draper’s server, and no logs will be sent.  If echo is set to true, console messages will still be fired for debugging purposes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>onOff</strong> &#8211; bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">ac</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">activityLogger</span><span class="p">().</span><span class="nx">echo</span><span class="p">(</span><span class="kc">true</span><span class="p">).</span><span class="nx">testing</span><span class="p">(</span><span class="kc">true</span><span class="p">).</span><span class="nx">mute</span><span class="p">([</span><span class="s1">&#39;SYS&#39;</span><span class="p">,</span><span class="s1">&#39;USER&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="activity-logging-functions">
+<h4>Activity Logging Functions<a class="headerlink" href="#activity-logging-functions" title="Permalink to this headline">¶</a></h4>
+<p>The 2 functions in this section are used to send Activity Log Messages to an Activity Logging Server. Separate functions are used to log System Activity and User Activity. See the Activity Logging API by Draper Laboratory for more details about the use of these messages.</p>
+<dl class="function">
+<dt id="logSystemActivity">
+<tt class="descname">logSystemActivity</tt><big>(</big><em>actionDescription</em><span class="optional">[</span>, <em>softwareMetadata</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#logSystemActivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log a System Activity. registerActivityLogger MUST be called before calling this function. Use logSystemActivity to log software actions that are not explicitly invoked by the user. For example, if a software component refreshes a data store after a pre-determined time span, the refresh event should be logged as a system activity. However, if the datastore was refreshed in response to a user clicking a Refresh UI element, that activity should NOT be logged as a System Activity, but rather as a User Activity.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>actionDescription</strong> &#8211; A string describing the System  Activity performed by the component.</li>
+<li><strong>softwareMetadata</strong> &#8211; Any key/value pairs that will clarify or parameterize this system activity.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="logUserActivity">
+<tt class="descname">logUserActivity</tt><big>(</big><em>actionDescription</em>, <em>userActivity</em>, <em>userWorkflowState</em><span class="optional">[</span>, <em>softwareMetadata</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#logUserActivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log a User Activity. &lt;registerActivityLogger&gt; MUST be called before calling this function. Use &lt;logUserActivity&gt; to log actions initiated by an explicit user action. For example, if a software component refreshes a data store when the user clicks a Refresh UI element, that activity should be logged as a User Activity. However, if the datastore was refreshed automatically after a certain time span, that activity should NOT be logged as a User Activity, but rather as a System Activity.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>actionDescription</strong> &#8211; A string describing the System  Activity performed by the component.</li>
+<li><strong>userActivity</strong> &#8211; A key word defined by each software component or application indicating which software-centric function is most likely indicated by the this user activity. See the Activity Logging API for a standard set of user activity key words.</li>
+<li><strong>userWorkflowState</strong> &#8211; This value must be one of the Workflow Codes defined in this library. See the Activity Logging API for definitions of each workflow code.</li>
+<li><strong>softwareMetadata</strong> &#8211; Any key/value pairs that will clarify or parameterize this system activity.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="dom-events-and-listeners">
+<h3>DOM Events and Listeners<a class="headerlink" href="#dom-events-and-listeners" title="Permalink to this headline">¶</a></h3>
+<p>To assist the developers in the logging of User actions, Draper has added functionality to listen to specific events on elements classed and attributed appropriately.  The developer need only to class DOM elements they feel will involve interaction from the user with the class ‘draper’.  Workflow states and action descriptions are then added as data attributes on the element.  Using the included script, Draper will DOM events will be useful to track for logging activities of the user associated with mouse movements but are not explicity to any other implemented tool function.  These event types include:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">click:</th><td class="field-body">occurs when a user clicks something</td>
+</tr>
+<tr class="field-even field"><th class="field-name">focusin:</th><td class="field-body">occurs when an element gains focus (input field)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">focusout:</th><td class="field-body">occurs when an element looses focus</td>
+</tr>
+<tr class="field-even field"><th class="field-name">mouseover:</th><td class="field-body">occurs when the pointer is moved onto an element</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">mouseout:</th><td class="field-body">occurs when the pointer is moved out of an element</td>
+</tr>
+<tr class="field-even field"><th class="field-name">select:</th><td class="field-body">occurs when the user selects some text</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">scroll:</th><td class="field-body">occurs when users scrolls with either mouse wheel, or scrollbar</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-HTML"><pre>&lt;input class=”my-input draper” data-wf=”2” data-description=”search box”&gt;&lt;/input&gt;
+&lt;div style=”overflow-y: auto” class=”draper” data-wf=”3” data-description=”table container”&gt;</pre>
+</div>
+</div>
+</div>
+<div class="section" id="python">
+<h2>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h2>
+<p>Deprecated. Contact Draper for support</p>
+</div>
+<div class="section" id="java">
+<h2>Java<a class="headerlink" href="#java" title="Permalink to this headline">¶</a></h2>
+<p>Deprecated. Contact Draper for support</p>
+</div>
+<div class="section" id="c">
+<h2>C#<a class="headerlink" href="#c" title="Permalink to this headline">¶</a></h2>
+<p>Deprecated. Contact Draper for support</p>
+</div>
+<div class="section" id="future-implementations-of-the-logging-api-a-k-a-hey-you-dont-support-my-favorite-programming-language">
+<h2>Future Implementations of the Logging API (A.K.A. “Hey! You don’t support my favorite programming language _____”)<a class="headerlink" href="#future-implementations-of-the-logging-api-a-k-a-hey-you-dont-support-my-favorite-programming-language" title="Permalink to this headline">¶</a></h2>
+<p>As stated earlier in this document, it’s a goal of the Logging API to make it very easy for XDATA teams to implement the API, and that means supporting other programming languages by authoring additional clients. If you have a specific language in mind that is not supported, please contact any member of the Draper team to discuss your software.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">How-to Guide for Implementing the Activity Logging API</a><ul>
+<li><a class="reference internal" href="#javascript">Javascript</a><ul>
+<li><a class="reference internal" href="#example-implementation-of-javascript-helper-library">Example Implementation of JavaScript Helper Library</a></li>
+<li><a class="reference internal" href="#javascript-helper-library-reference">JavaScript Helper Library Reference</a><ul>
+<li><a class="reference internal" href="#registration">Registration</a><ul>
+<li><a class="reference internal" href="#development-functionality">Development Functionality</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#activity-logging-functions">Activity Logging Functions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dom-events-and-listeners">DOM Events and Listeners</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#python">Python</a></li>
+<li><a class="reference internal" href="#java">Java</a></li>
+<li><a class="reference internal" href="#c">C#</a></li>
+<li><a class="reference internal" href="#future-implementations-of-the-logging-api-a-k-a-hey-you-dont-support-my-favorite-programming-language">Future Implementations of the Logging API (A.K.A. “Hey! You don’t support my favorite programming language _____”)</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="log_reqs.html"
+                        title="previous chapter">Draper Activity Logging API Requirements</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="server.html"
+                        title="next chapter">Logging Server Implementation Details</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/how_to.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="server.html" title="Logging Server Implementation Details"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="log_reqs.html" title="Draper Activity Logging API Requirements"
+             >previous</a> |</li>
+        <li><a href="index.html">XDATA API 2.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Draper .
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

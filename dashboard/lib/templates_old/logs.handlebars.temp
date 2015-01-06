@@ -1,0 +1,101 @@
+<ul class="list-group">
+  <li class="list-group-item">
+    <b>Session:</b>
+    <a href="data: {{unbound stuff}}" download="data.json">
+      {{session}}  <span class="glyphicon glyphicon-download"></span>
+    </a>       
+  </li>
+  <li class="list-group-item">
+    <b>Date Collected:</b> {{format-date-full minTime}} ({{format-duration-human duration}})
+  </li> 
+  <li class="list-group-item">
+    <b># logs:</b> {{length}}
+  </li>     
+</ul>
+<div style="height: 30px;">
+	{{legend-chart counts=counts}}
+</div>
+
+<div style="height: 150px;">
+{{context-chart wfData=wfData logs=userLogs}}
+</div>
+
+<div>
+	{{activity-chart logs=userLogs width=500 height=200}}
+</div>
+
+<ul class="list-group">
+	<li class="list-group-item header">  
+  	<div class="row">	  	
+	    <div class="col-md-2">
+	    Index    	
+	    </div>
+	    <div class="col-md-2">
+	    Timestamp    
+			</div>
+			<div class="col-md-2">
+	    Workflow State   
+			</div>
+			<div class="col-md-2">
+			Activity   
+			</div>
+			<div class="col-md-4">
+			Description   
+			</div>	    				
+		</div> 			
+  </li>
+	{{#each }}
+  <li {{bind-attr class=":list-group-item feedback:editable"}}>  
+  	<div class="row">
+  	{{!-- <div class="col-md-1">
+    	<a href="" {{action 'createLog' this}}><span class="glyphicon glyphicon-chevron-down add-new"></span></a> 
+    </div> --}}
+    
+    {{!-- <div class="timestamp">{{format-time timestamp}}</div> --}}
+    <div class="col-md-2">
+    <a href="" {{action 'createLog' this}}><span class="glyphicon glyphicon-chevron-down add-new"></span></a>
+    	{{format-id id}}
+    </div>
+    <div class="col-md-2">
+    {{#if isEditing}}
+		  {{input type="text" value=newTimestamp class="form-control dave" action="updateLog"}}
+		{{else}}
+		  {{format-time timestamp}}
+		{{/if}}
+		</div>  
+    {{!-- <span class="seperator"></span> --}}
+		<div class="col-md-2">
+		<div class="wf-code" {{bind-attr style="wfColor"}}"></div>
+    {{#if isEditing}}
+    	{{view Ember.Select
+       content=wfStates2
+       optionValuePath="content.id"
+       optionLabelPath="content.name"
+       class="form-control dave"
+       value=wfState 
+       action="updateLog"}}
+		  {{!-- {{view Ember.Select content=wfStates class="form-control dave" value=wfS action="updateLog"}} --}}
+		{{else}}
+		  {{wfStateFormat}}
+		{{/if}}    
+		</div>    
+    {{!-- <span class="seperator"></span> --}}
+    <div class="col-md-2">
+    {{#if isEditing}}
+		  {{input type="text" placeholder=activity value=activity class="form-control dave" action="updateLog"}}
+		{{else}}
+		  {{activity}}
+		{{/if}}
+		</div>
+		<div class="col-md-4">
+		{{#if feedback}}
+		<div class="pull-right">
+			<a href="" {{action "editLog"}}><span class="glyphicon glyphicon-edit"></span></a>
+			<a href="" {{action 'removeLog' this}}><span class="glyphicon glyphicon-remove"></span></a>
+		</div>		
+		{{/if}}
+		</div>
+		</div> 			
+  </li>
+  {{/each}}
+</ul>

@@ -1,0 +1,30 @@
+<h1>{{count}} Sessions</h1> 
+asdsasd
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th class="draper" data-wf="2" data-activity="sorting" style="cursor:pointer"># Msgs</th>
+      <th class="draper" data-wf="2" data-activity="sorting" style="cursor:pointer"># Sys</th>
+      <th class="draper" data-wf="2" data-activity="sorting" style="cursor:pointer"># User</th>
+      <th class="draper" data-wf="2" data-activity="sorting" style="cursor:pointer">Start</th>
+      <th class="draper" data-wf="2" data-activity="sorting"style="cursor:pointer">Stop</th>
+      <th class="draper" data-wf="2" data-activity="sorting" style="cursor:pointer">Duration</th>
+      <th class="draper" data-wf="2" data-activity="sorting" style="cursor:pointer">Client</th>  
+      <th class="draper" data-wf="2" data-activity="sorting" style="cursor:pointer">Component</th>          
+    </tr>
+  </thead>
+  <tbody>
+    {{#each}}
+    <tr class="draper" style="cursor:pointer" {{action "link" this}}>           
+      <td>{{numLogs}}</td>
+      <td>{{numSysActions}}</td>
+      <td>{{numUserActions}}</td>
+      <td>{{format-date minTime}}</td>
+      <td>{{format-date maxTime}}</td>
+      <td>{{format-duration duration}}</td>
+      <td>{{client}}</td>
+      <td>{{component}}</td>
+    </tr>       
+    {{/each}}
+  </tbody>
+</table>

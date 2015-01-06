@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+<h1>TESTING</h1>
+	
+	<script>
+	// $.getJSON('http://localhost:8080/awesome?PHPSESSID=72aa95axyz6cd67d82ba0f809277326dd', function(a,b) {
+	// 	console.log(a,b);
+	// })
+	function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+
+	function getCookie(cname){
+		var name = cname + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0; i<ca.length; i++) {
+		  var c = ca[i].trim();
+		  if (c.indexOf(name)==0) {
+		  	var tmp = c.substring(name.length,c.length);
+		  	return tmp.replace(/"/g, "")
+		  }
+		}
+		return "";
+	}
+
+	var a = getCookie('USID');
+	var b = getParameterByName('USID')
+
+	console.log(a,b,typeof a,typeof b, a==b)
+	</script>
+</body>
+</html>

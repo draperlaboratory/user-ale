@@ -1,0 +1,17 @@
+<ul class="list-group">
+  <li class="list-group-item">
+    <h1>{{component}}</h1>    
+    <b>Session:</b>
+    <a {{bind-attr href=downloadData}} download="data.json">
+      {{id}}  <span class="glyphicon glyphicon-download"></span>
+    </a>       
+  </li>
+  <li class="list-group-item">
+    <b>Date Collected:</b> {{format-date-full minTime}} <em>for {{format-duration-human duration}}</em>
+  </li> 
+  <li class="list-group-item">
+    <b># logs:</b> {{logs.length}}
+  </li>     
+</ul>
+{{render 'logs' logs}}
+

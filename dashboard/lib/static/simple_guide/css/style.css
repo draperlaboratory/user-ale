@@ -1,0 +1,158 @@
+body {
+	background: #FFF;
+	font-family: Georgia, Times New Roman, Times, serif;
+	font-size: 30px;
+	text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+	font-size: 60px;
+	font-weight: normal;
+	margin: 0;
+    font-family: 'Chelsea Market', Georgia, serif;
+    color: #000;
+	line-height: 1;
+}
+
+h2 {
+	font-size: 70px;
+	font-weight: normal;
+	margin: 0;
+	color: #FFB000;
+    font-family: 'Chelsea Market', Georgia, serif;
+	text-transform: lowercase;
+}
+
+h3 {
+	font-size: 40px;
+	font-weight: normal;
+	margin: 0;
+    margin-top: 40px;
+	text-transform: lowercase;
+}
+
+p {
+	width: 960px;
+	margin: 40px auto;
+	color: #000;
+    line-height: 200%;
+}
+
+a, a:visited {
+	color: cornflowerblue;
+    font-size: 30px;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+ul {
+	list-style: none;
+}
+
+.download {
+	padding: 10px;
+}
+
+pre {
+	font-size: 18px;
+}
+
+blockquote {
+	text-align: left;
+	width: 720px;
+	margin: 10px auto;
+	background: #C5C3DE;
+	border: solid 2px #69697A;
+	padding: 0 40px;
+}
+
+code {
+    background-color: #000;
+	font-style: normal;
+    border-radius: 10px;
+    color: white;
+    padding: 5px 15px;
+    font-family: menlo, monospace;
+}
+
+/*----------------------------------------  BLOCKS */
+
+.scrollblock {
+	position: relative;
+	margin: 0;
+	width: 100%;
+    color: white;
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.scrollblock h2 {
+
+}
+
+.block-title { 
+	margin-top: 150px; 
+	background-color: #FFF; 
+	padding: 0;
+	height: calc(100% - 150px);
+	/*padding-bottom: 50px; */
+}
+
+/*.block-title>div {
+	margin-top: 100px;
+}*/
+.block-title h2 { color: #000; }
+.block-title .meta { font-size: 16px; color: #999; }
+.block-title .meta a { font-size: 16px; color: #333; }
+.block-setup { background-color: #348fd4; }
+.block-setup h2 { color: #06406c; }
+.block-setup h2 a { background: none; padding: 0; font-size: normal; }
+.block-setup a { color: #FFF; font-size: 40px; font-weight: normal;font-style: normal; background-color: #06406c; padding: 10px 15px; border-radius: 10px; text-decoration: none; }
+.block-setup a:hover { text-decoration: underline; }
+
+.block-register { background-color: #06406c; }
+.block-register h2 { color: #FFF; }
+.block-register p { color: #FFF; }
+/*.block-register code { background-color: #000; color: #FFF; }*/
+
+.block-user { background-color: #4c0d09; }
+.block-user h2 { color: #d3b2af; }
+.block-user p { color: #d3b2af; }
+.block-user div.definitions { 
+	color: #d3b2af; 
+	/*font-family: 'Chelsea Market', Georgia, serif;*/
+}
+/*.block-user code { color: #000; background-color: white; }*/
+
+.block-system { background-color: #ffc19f; }
+.block-system h2 { color: #cc4037; }
+
+.block-dashboard .content{
+	margin: 70px auto;
+	/*width: 900px;*/
+}
+
+.block-dashboard p{
+	margin: 0 auto;
+	line-height: 160%;
+	/*width: 900px;*/
+}
+
+
+code {
+	font-size: 1.5em;
+	text-align: left;
+}
+
+pre {
+	margin: 0 10%;
+}
+
+html, body {
+	height: 100%;
+}

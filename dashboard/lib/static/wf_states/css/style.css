@@ -1,0 +1,215 @@
+body {
+	background: #FFF;
+	font-family: Georgia, Times New Roman, Times, serif;
+	font-size: 30px;
+	text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+	font-size: 60px;
+	font-weight: normal;
+	margin: 0;
+    font-family: 'Chelsea Market', Georgia, serif;
+    color: #000;
+	line-height: 1;
+}
+
+h2 {
+	font-size: 70px;
+	font-weight: normal;
+	margin: 0;
+	color: #FFB000;
+    font-family: 'Chelsea Market', Georgia, serif;
+	text-transform: lowercase;
+}
+
+h3 {
+	font-size: 40px;
+	font-weight: normal;
+	margin: 0;
+    margin-top: 40px;
+	text-transform: lowercase;
+}
+
+p {
+	width: 960px;
+	margin: 40px auto;
+	color: #000;
+    line-height: 200%;
+}
+
+a, a:visited {
+	color: #000;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+ul {
+	list-style: none;
+}
+
+.download {
+	padding: 10px;
+}
+
+pre {
+	font-size: 18px;
+}
+
+blockquote {
+	text-align: left;
+	width: 720px;
+	margin: 10px auto;
+	background: #C5C3DE;
+	border: solid 2px #69697A;
+	padding: 0 40px;
+}
+
+code {
+    background-color: #000;
+	font-style: normal;
+    border-radius: 10px;
+    color: white;
+    padding: 5px 15px;
+    font-family: menlo, monospace;
+}
+
+/*----------------------------------------  BLOCKS */
+
+.scrollblock {
+	position: relative;
+	margin: 0;
+	width: 100%;
+    color: white;
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.scrollblock h2 {
+
+}
+
+.block-title { 
+	margin-top: 150px; 
+	background-color: #FFF; 
+	padding: 0;
+	height: calc(100% - 150px);
+	/*padding-bottom: 50px; */
+}
+
+/*.block-title>div {
+	margin-top: 100px;
+}*/
+.block-title h2 { color: #000; }
+.block-title .meta { font-size: 16px; color: #999; }
+.block-title .meta a { font-size: 16px; color: #333; }
+.block-setup { background-color: #348fd4; }
+.block-setup h2 { color: #06406c; }
+.block-setup h2 a { background: none; padding: 0; font-size: normal; }
+.block-setup a { color: #FFF; font-size: 40px; font-weight: normal;font-style: normal; background-color: #06406c; padding: 10px 15px; border-radius: 10px; text-decoration: none; }
+.block-setup a:hover { text-decoration: underline; }
+/*.block-create { background-color: #06406c; }
+.block-create h2 { color: #FFF; }
+.block-create p { color: #FFF; }
+.block-create code { background-color: #000; color: #FFF; }*/
+
+.block-define { background-color: #984ea3; }
+.block-define h2 { color: #F8D0FD; }
+.block-define p { color: #F8D0FD; }
+.block-define code.label { 
+	background-color: #F8D0FD;
+	color: #984ea3; 
+}
+
+.block-getdata { background-color: #d7191c; }
+.block-getdata h2 { color: rgb(255, 192, 192); }
+.block-getdata p { color: rgb(255, 192, 192); }
+.block-getdata code.label { 
+	background-color: rgb(255, 192, 192);
+	color: #d7191c; 
+}
+
+.block-exploredata { background-color: #fdae61; }
+.block-exploredata h2 { color: #AF6013; }
+.block-exploredata p { color: #AF6013; }
+.block-exploredata code.label { 
+	background-color: #AF6013;
+	color: #fdae61; 
+}
+
+.block-create { background-color: #f1b6da; }
+.block-create h2 { color: #cc4037; }
+.block-create p { color: #cc4037; }
+.block-create code.label { 
+	background-color: #cc4037;
+	color: #f1b6da; 
+}
+
+.block-enrich { background-color: #abdda4}
+.block-enrich h2 { color: #4F8348;}
+.block-enrich p { color: #4F8348; }
+.block-enrich code.label { 
+	background-color: #4F8348;
+	color: #abdda4; 
+}
+
+.block-transform { background-color: #2b83ba}
+.block-transform h2 { color: #0B3D5C;}
+.block-transform p { color: #0B3D5C; }
+.block-transform code.label { 
+	background-color: #0B3D5C;
+	color: #2b83ba; 
+}
+
+code {
+	/*font-size: 1.em;*/
+	text-align: left;
+}
+
+pre {
+	margin: 0 10%;
+}
+
+html, body {
+	height: 100%;
+}
+
+.row:after {
+	clear: both;
+}
+
+.col {
+	float: left;
+	width: 50%;
+}
+
+.example > p {
+	text-align: left;
+	margin: 0 auto;
+	line-height: 1em;
+}
+
+.activities > p {
+	text-align: left;
+	margin: 0 auto;
+	line-height: 1em;
+	margin-bottom: 20px;
+}
+
+.activities > div {
+	margin: 0 10%;
+	background-color: white;
+	padding: 13px;
+	color: #000;
+	line-height: 2em;
+	text-align: left;
+	border-radius: 10px;
+	font-size: 21px;
+
+}

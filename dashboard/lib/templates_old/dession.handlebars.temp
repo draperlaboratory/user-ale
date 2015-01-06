@@ -1,0 +1,5 @@
+Logs
+{{extra}}
+
+{{render "logs" logs}}
+

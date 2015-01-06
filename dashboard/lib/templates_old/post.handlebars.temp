@@ -1,0 +1,5 @@
+<article class="post">
+  <h2>{{title}}</h2>
+  <p>{{content}}</p>
+  <aside></aside>
+</article>

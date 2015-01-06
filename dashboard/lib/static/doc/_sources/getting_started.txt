@@ -1,0 +1,108 @@
+Quick Start
+===========
+
+Install
+-------
+Clone the Draper Logging Repository from Github
+
+.. code-block:: bash
+
+	$ git clone https://github.com/draperlab/xdatalogger.git
+
+Add Draper helper library to your tool
+
+.. NOTE::
+	requires JQuery
+
+.. code-block:: html
+
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script src="javascript/draper.activity_logger-2.1.1.js"></script>
+
+Register
+--------
+
+.. NOTE::
+	Draper Logger URL is available on XNET. Please look there or contact Draper.
+
+.. code-block:: javascript
+
+	// Instantiate the javascript logger, and pass the location of the web worker javascript file
+	var ac = new activityLogger('js/draper.activity_worker-2.1.1.js');
+
+	// Register the activity logger
+	var url = "http://localhost:1337";
+	ac.registerActivityLogger(url, "", "3.04");
+
+Log a USER action
+-----------------
+
+General message
+
+.. code-block:: javascript
+
+	ac.logUserActivity('action description', 'activity', wf_state);
+
+------------
+
+An example of logging *hover* actions on d3 objects:
+
+.. code-block:: javascript
+
+	vis.selectAll("circle")
+	.data([1,2,3])
+	.enter()
+	.append("svg:circle")
+	.attr("cx", function(d) { return 10*d; })
+	.attr("cy", function(d) { return 10*d; })
+	.attr("r", 10)
+	.on("mouseenter", function() {
+	  ac.logUserActivity(
+	    'User hovered over element to read popup',
+	    'read_hover_enter',
+	    ac.WF_EXAMINE
+	  );
+	})
+	.on("mouseleave", function() {
+	  ac.logUserActivity(
+	    'User left hover element',
+	    'read_hover_exit',
+	    ac.WF_EXAMINE
+	  );
+	});
+
+------------
+
+An example of tagging an HTML element.  We will listen for events.
+
+.. code-block:: html
+
+	<input class="draper" data-wf="2" data-activity="query_input"/>
+
+------------
+
+Selecting elements to be logged.
+
+.. code-block:: javascript
+
+	ac.tag('.query-div > .query-input', {
+	  events: ['click', 'focus'],
+	  wf_state: ac.WF_GETDATA,
+	  activity: 'write_query',
+	  desc: 'user clicked/focused on query input box'
+	})
+
+Log a SYS action
+----------------
+
+Here is an example of adding a SYSACTION when asking the server for data.
+
+.. code-block:: javascript
+
+	ac.logSystemActivity('asking server for data.');
+
+	$.getJSON('https://my_endpoint/get_data', data, function(data) {
+	  ac.logSystemActivity('received data from server.');
+	  $("#result").text(data.result);
+	});
+

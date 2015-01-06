@@ -1,0 +1,27 @@
+.. _wf-trans:
+
+Worflow Coding Transition
+-------------------------
+
+The previous version of this document used a different set of workflow codes.  This table describes how these old codes have transitioned over to the new codes.
+
+.. list-table:: Workflow Coding Transition from Version 1 to Version 2
+   :widths: 30 30
+   :header-rows: 1
+
+   * - Version 1
+     - Version 2
+   * - 0-Other
+     - 0-Other
+   * - 1-Plan
+     - 1-Define Problem
+   * - 2-Search
+     - 2-Get Data
+   * - 3-Examine
+     - 3-Explore Data
+   * - 3-Examine
+     - 6-Transform Data
+   * - 4-Marshall
+     - 4-Create View of Data
+   * - 5-Reason
+     - 5-Enrich

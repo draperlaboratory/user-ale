@@ -1,0 +1,214 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Quick Start &mdash; XDATA API 2.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="XDATA API 2.1.1 documentation" href="index.html" />
+    <link rel="next" title="Overview" href="overview.html" />
+    <link rel="prev" title="Welcome to XDATA API’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to XDATA API’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">XDATA API 2.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="quick-start">
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="install">
+<h2>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h2>
+<p>Clone the Draper Logging Repository from Github</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/draperlab/xdatalogger.git
+</pre></div>
+</div>
+<p>Add Draper helper library to your tool</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">requires JQuery</p>
+</div>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;javascript/draper.activity_logger-2.1.1.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="register">
+<h2>Register<a class="headerlink" href="#register" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Draper Logger URL is available on XNET. Please look there or contact Draper.</p>
+</div>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// Instantiate the javascript logger, and pass the location of the web worker javascript file</span>
+<span class="kd">var</span> <span class="nx">ac</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">activityLogger</span><span class="p">(</span><span class="s1">&#39;js/draper.activity_worker-2.1.1.js&#39;</span><span class="p">);</span>
+
+<span class="c1">// Register the activity logger</span>
+<span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:1337&quot;</span><span class="p">;</span>
+<span class="nx">ac</span><span class="p">.</span><span class="nx">registerActivityLogger</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;3.04&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="log-a-user-action">
+<h2>Log a USER action<a class="headerlink" href="#log-a-user-action" title="Permalink to this headline">¶</a></h2>
+<p>General message</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ac</span><span class="p">.</span><span class="nx">logUserActivity</span><span class="p">(</span><span class="s1">&#39;action description&#39;</span><span class="p">,</span> <span class="s1">&#39;activity&#39;</span><span class="p">,</span> <span class="nx">wf_state</span><span class="p">);</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<p>An example of logging <em>hover</em> actions on d3 objects:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">vis</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">&quot;circle&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">data</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="p">.</span><span class="nx">enter</span><span class="p">()</span>
+<span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;svg:circle&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;cx&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">10</span><span class="o">*</span><span class="nx">d</span><span class="p">;</span> <span class="p">})</span>
+<span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;cy&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="mi">10</span><span class="o">*</span><span class="nx">d</span><span class="p">;</span> <span class="p">})</span>
+<span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;mouseenter&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">ac</span><span class="p">.</span><span class="nx">logUserActivity</span><span class="p">(</span>
+    <span class="s1">&#39;User hovered over element to read popup&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;read_hover_enter&#39;</span><span class="p">,</span>
+    <span class="nx">ac</span><span class="p">.</span><span class="nx">WF_EXAMINE</span>
+  <span class="p">);</span>
+<span class="p">})</span>
+<span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;mouseleave&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">ac</span><span class="p">.</span><span class="nx">logUserActivity</span><span class="p">(</span>
+    <span class="s1">&#39;User left hover element&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;read_hover_exit&#39;</span><span class="p">,</span>
+    <span class="nx">ac</span><span class="p">.</span><span class="nx">WF_EXAMINE</span>
+  <span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<p>An example of tagging an HTML element.  We will listen for events.</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;input</span> <span class="na">class=</span><span class="s">&quot;draper&quot;</span> <span class="na">data-wf=</span><span class="s">&quot;2&quot;</span> <span class="na">data-activity=</span><span class="s">&quot;query_input&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<p>Selecting elements to be logged.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ac</span><span class="p">.</span><span class="nx">tag</span><span class="p">(</span><span class="s1">&#39;.query-div &gt; .query-input&#39;</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">events</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="s1">&#39;focus&#39;</span><span class="p">],</span>
+  <span class="nx">wf_state</span><span class="o">:</span> <span class="nx">ac</span><span class="p">.</span><span class="nx">WF_GETDATA</span><span class="p">,</span>
+  <span class="nx">activity</span><span class="o">:</span> <span class="s1">&#39;write_query&#39;</span><span class="p">,</span>
+  <span class="nx">desc</span><span class="o">:</span> <span class="s1">&#39;user clicked/focused on query input box&#39;</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="log-a-sys-action">
+<h2>Log a SYS action<a class="headerlink" href="#log-a-sys-action" title="Permalink to this headline">¶</a></h2>
+<p>Here is an example of adding a SYSACTION when asking the server for data.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ac</span><span class="p">.</span><span class="nx">logSystemActivity</span><span class="p">(</span><span class="s1">&#39;asking server for data.&#39;</span><span class="p">);</span>
+
+<span class="nx">$</span><span class="p">.</span><span class="nx">getJSON</span><span class="p">(</span><span class="s1">&#39;https://my_endpoint/get_data&#39;</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">ac</span><span class="p">.</span><span class="nx">logSystemActivity</span><span class="p">(</span><span class="s1">&#39;received data from server.&#39;</span><span class="p">);</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#result&quot;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Quick Start</a><ul>
+<li><a class="reference internal" href="#install">Install</a></li>
+<li><a class="reference internal" href="#register">Register</a></li>
+<li><a class="reference internal" href="#log-a-user-action">Log a USER action</a></li>
+<li><a class="reference internal" href="#log-a-sys-action">Log a SYS action</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to XDATA API&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="next chapter">Overview</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/getting_started.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to XDATA API’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">XDATA API 2.1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Draper .
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

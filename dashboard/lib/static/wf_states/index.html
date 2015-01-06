@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>Logging API</title>
+
+    <link href='http://fonts.googleapis.com/css?family=Chelsea+Market' rel='stylesheet' type='text/css'>
+    
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css">
+    <script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+    
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/languages/javascript.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" href="css/normalize.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+</head>
+<body>
+    <div class="scrollblock block-title">
+        <div>
+            <h1>Draper Logging API</h1>
+            <br>
+            <h1>-Simple Guide to</h1>
+            <h1>Workflow Coding</h1>
+        </div>
+    </div>
+    <a name="instantiate"></a>
+    <div id="WF_DEFINE" class="scrollblock block-define">
+        <h2>Define Problem</h2>
+        <br>
+        <code class="label">WF_DEFINE</code>
+        
+        <div class="example">
+          <p>Examples</p>
+          <pre>
+              <code>
+ac.logUserActivity(
+  'Define Hypothesis', // description
+  'define_hypothesis', // activity code
+  ac.WF_DEFINE // workflow state
+  );
+              </code>
+          </pre>
+        </div>
+
+        <div class="activities">
+          <p>More Activities</p>
+          <div>define_hypothesis</div>
+        </div>
+    </div>
+    <!-- instantiate -->
+    <a name="instantiate"></a>
+    <div id="WF_GETDATA" class="scrollblock block-getdata">
+        <h2>Get Data</h2>
+        <br>
+        <code class="label">WF_GETDATA</code>
+        
+        <div class="example">
+          <p>Examples</p>
+          <pre>
+              <code>
+ac.logUserActivity(
+  'Execute attribute search', // description
+  'execute_query', // activity code
+  ac.WF_GETDATA // workflow state
+  );
+
+ac.logUserActivity(
+  'User has requested to load a new community.', // description
+  'execute_query', // activity code
+  ac.WF_GETDATA // workflow state
+  );
+              </code>
+          </pre>
+        </div>
+
+        <div class="activities">
+          <p>More Activities</p>
+          <div>write_query, select_option, execute_query, monitor_query</div>
+        </div>
+    </div>
+
+    <a name="instantiate"></a>
+    <div id="WF_EXPLORE" class="scrollblock block-exploredata">
+        <h2>Explore Data</h2>
+        <br>
+        <code class="label">WF_EXPLORE</code>
+        <div class="example">
+          <p>Example Usage</p>
+          <pre>
+              <code>
+ac.logUserActivity(
+  'User has selected new date range filter parameters.', // description
+  'select', // activity code
+  ac.WF_EXPLORE // workflow state
+  );
+
+ac.logUserActivity(
+  'User scrolled window', // description
+  'scroll', // activity code
+  ac.WF_EXPLORE // workflow state
+  );
+
+ac.logUserActivity(
+  'User hovered over element to read popup',
+  'hover_start',
+  ac.WF_EXPLORE
+);
+
+ac.logUserActivity(
+  'User left hover element',
+  'hover_end',
+  ac.WF_EXPLORE
+);
+              </code>
+          </pre>
+        </div>
+        <div class="activities">
+          <p>More Activities</p>
+          <div>browse, pan, zoom_in, zoom_out, scale, rotate, filter, drill, crossfilter, scroll, hover_start, hover_end, toggle_option, highlight, sort, select, deselect</div>
+        </div>
+    </div>
+    
+    <a name="instantiate"></a>
+    <div id="WF_CREATE" class="scrollblock block-create">
+        <h2>Create View</h2>
+        <br>
+        <code class="label">WF_CREATE</code>
+        <div class="example">
+          <p>Example Usage</p>
+          <pre>
+              <code>
+ac.logUserActivity(
+  'Import a chart of all filed content from the local computer.', // description
+  'import-graph-request', // activity code
+  ac.WF_CREATE // workflow state
+  );
+              </code>
+          </pre>
+        </div>
+
+        <div class="activities">
+          <p>More Activities</p>
+          <div>create_visualization, define_axes, define_chart_type, define_table, move_window, resize_window, set_color_palette, select_layers, {add,remove,split,merge}_{rows,columns}, arrange_windows</div>
+        </div>
+    </div>
+
+    <a name="instantiate"></a>
+    <div id="WF_ENRICH" class="scrollblock block-enrich">
+        <h2>Enrich Data</h2>
+        <br>
+        <code class="label">WF_ENRICH</code>
+        <div class="example">
+          <p>Example Usage</p>
+          <pre>
+              <code>
+ac.logUserActivity(
+  'Add edge between nodes', // description
+  'add_connection', // activity code
+  ac.WF_ENRICH // workflow state
+  );
+
+ac.logUserActivity(
+  'Remove edge between nodes', // description
+  'remove_connection', // activity code
+  ac.WF_ENRICH // workflow state
+  );
+              </code>
+          </pre>
+        </div>
+
+        <div class="activities">
+          <p>More Activities</p>
+          <div>add_note, bookmark_view, label</div>
+        </div>
+    </div>
+
+    <a name="instantiate"></a>
+    <div id="WF_TRANSFORM" class="scrollblock block-transform">
+        <h2>Transform Data</h2>
+        <br>
+        <code class="label">WF_TRANSFORM</code>
+        <div class="example">
+          <p>Example Usage</p>
+          <pre>
+              <code>
+ac.logUserActivity(
+  'low-pass filter image', // description
+  'denoise', // activity code
+  ac.WF_TRANSFORM // workflow state
+  );
+
+ac.logUserActivity(
+  'subtract mean from signal', // description
+  'tranform_data', // activity code
+  ac.WF_TRANSFORM // workflow state
+  );
+              </code>
+          </pre>
+        </div>
+
+        <div class="activities">
+          <p>More Activities</p>
+          <div>denoise, detrend, pattern_search, do_math, transform_data, coordinate_transform</div>
+        </div>
+    </div>
+    <div style="font-size: 12px">
+      Inspired by <a href="http://rogerdudler.github.io/git-guide/">http://rogerdudler.github.io/git-guide/</a>
+    </div>
+</body>
+</html>

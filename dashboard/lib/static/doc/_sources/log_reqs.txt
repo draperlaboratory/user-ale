@@ -1,0 +1,153 @@
+Draper Activity Logging API Requirements
+========================================
+
+In order to evaluate XDATA software components, user action and system action log messages will be collected. The data required for each of these types of log messages are formally specified in this section, but Draper has also provided helper libraries in a number of common languages to ease the implementation of this API in your software component (see :ref:`how-to` for information about using these helper libraries). 
+
+:User Actions: User action log messages should be sent when the user explicitly interacts with a software component.  Examples of user actions that should be logged are zooming in on a map, clicking buttons, sending queries, mouse clicks, keyboard events, view switches, etc. As is apparent from the preceding list of examples, user actions will span a wide range events from high-level, application-specific actions (e.g. zooming on a map) to more generic actions (e.g. keyboard events). The common element of all user action log messages is that they are sent only when a user takes explicit action in the UI (see :ref:`user-message-reqs` below for a specification of user action log messages). 
+
+:System Actions: System action log messages should be sent when the software performs an action that will affect its user interface, but which has not been explicitly performed by the user. For example, a if a table view is refreshed because the user clicked a refresh button on that view, that action should be logged as a user action. But if the same table is refreshed automatically every minute, a system action should be dispatched each time that timer fires.  System actions also indicate any latency in the system; for example if the user requests data from a database, a USER action is sent, and when the data arrives 20ms or 30s later, a SYSTEM action is fired. Other actions which should send system action messages are error messages, prompts, assists, when the UI has loaded, etc (see :ref:`sys-message-reqs` below for a specification of user action log messages).
+
+.. _message-reqs:
+
+Activity Log Message Requirements
+---------------------------------
+Each activity log message shall contain the following elements:
+
+:componentName:	This is the unique identifying name of the software component generating this log entry.
+
+:componentVersion: Specifies the version of the software component identified in  componentName
+
+:client: The hostname of the computer or VM on which the software component send this log message is running. In the case of a web-based user interface component, this should be the host name of the computer on which the web browser displaying the UI is running. Ideally, this hostname should describe a physical terminal or experimental setup as persistently as possible.
+
+:sessionID: The unique session ID identifying a specific user interacting with this software component as a specific time. During registration, this identifier is created on the server and passed back to the client for subsequent messages.
+
+:timestamp: This is the timestamp for the log entry. The timestamp string shall be a date-time string that complies with the World Wide Web Consortium date-time standard.
+
+:impLanguage: The software environment from which this log message was sent.
+
+:apiVersion: The version of this API document. See the title section of this document for the current version.
+
+:type: "USERACTION" or “SYSACTION”
+
+:desc: A natural-language description of the action that the user has taken.
+
+:metadata: Developers may optionally include structured data that provides context or elaboration to the information included in this log message. This string must comply with the JSON standard.
+
+.. _user-message-reqs:
+
+User Action Log Message Requirements
+------------------------------------
+
+User Action log messages are used to describe the behavior and workflow of the user from the perspective of your application. In addition to the standard fields, a user action log message (i.e. a log message where `type==USERACTION`) shall contain the following fields:
+
+:activity: An application-specific keyword used to categorize the action taken by the user. This string should not contain whitespace.
+	
+:wf_state: This number indicates which of workflow state is most likely indicated by the current User Action. Possible values of wf_state enumeration are listed below. 
+
+.. _wf-coding:
+
+.. .. tabularcolumns:: |c{0.5cm}|c{2cm}|p{3.5cm}|p{9cm}|  
+
+.. tabularcolumns:: |c|c|c|p{9cm}|  
+
+.. list-table:: Workflow Coding (v2)
+   :widths: 25,10,25,40
+   :header-rows: 1
+
+   * - #
+     - State
+     - Code
+     - Suggested Activities
+   * - 0
+     - Other
+     - WF_OTHER
+     - This user action does not correspond to any other workflow state. Please contact Draper for guidance.
+   * - 1
+     - Define Problem
+     - WF_DEFINE
+     - define_hypothesis
+   * - 2
+     - Get Data
+     - WF_GETDATA
+     - write_query, select_option, execute_query, monitor_query
+   * - 3
+     - Explore Data
+     - WF_EXPLORE
+     - browse, pan, zoom_in, zoom_out, scale, rotate, filter, drill, crossfilter, scroll, hover_start, hover_end, toggle_option, highlight, sort, select, deselect
+   * - 4
+     - Create View of Data
+     - WF_CREATE
+     - create_visualization, define_axes, define_chart_type, define_table, move_window, resize_window, set_color_palette, select_layers, {add,remove,split,merge}_{rows,columns}, arrange_windows
+   * - 5
+     - Enrich
+     - WF_ENRICH
+     - add_note, bookmark_view, label
+   * - 6
+     - Transform Data
+     - WF_TRANSFORM
+     - denoise, detrend, pattern_search, do_math, transform_data, coordinate_transform
+
+Each of these workflow states is described in more detail :ref:`below <state-defs>`. 
+
+.. NOTE::
+  the workflow codes have changed since the last revision (see :ref:`wf-trans` for more details).
+
+Describing User Actions
+-----------------------
+Each component development team will understand best which user actions are related to both user activity within the software and workflow state. The challenge faced by this API is to capture a user’s activity with enough specificity to characterize her use of your particular application, while also describing the behavior in a general way so that user activity logs can be compared across applications. To accomplish this, we ask developers to describe each user action at 3 levels of abstraction, using the fields action description, activity, and workflow state. Each component development team will understand best which user actions are related to both user activity within the software and workflow state, and so is best placed to instrument their own software. The analysis of the log messages will allow insight into the application-specific activity of the user, and will enable analysis of user workflow both within a single XDATA tool and across the set of XDATA tools. All analyses will leverage the Workflow State information, which is required to be consistently defined and applied across all tools.  Within-tool analysis may be further refined with tool-specific Activity and Action Description information, which can have custom meaning to the tool developers.
+
+.. _wf-diagram:
+
+.. figure:: wf.png
+   :scale: 50 %
+   :alt: workflow figure
+
+   User activities are described using 3 levels of abstraction.  
+
+Each program team will ultimately be responsible for deciding when a logging event is recorded. Logs capture user actions at the micro-level (e.g. individual clicks) and user activities as the macro-level (e.g., “searching for data”).
+
+.. _state-defs:
+
+Definition of User Workflow States
+----------------------------------
+
+Each event described above labels the current user workflow state. These states come from the following list of activities, and it will be up to each performer team to map the following user activities to the activities of the users of their software. If a user activity does not appear to correspond to any of the workflow states below, it can be assigned the value Other (0). If you find it necessary to categorize an activity as Other, please notify Draper.  The expectation of this set of workflow states is that it can be use to categorize any user activity in your software. 
+
+The full workflow coding can be seen :ref:`above <wf-coding>` which includes example activities for each workflow state.  The full coding chart also includes workflow states that have not been implemented for Year 2 based on expectations of experimental outcomes.
+
+.. NOTE::
+   future revisions of tools and the API could include activities that necessitate coding of new workflow states.
+
+:Other: This user action does not correspond to any other workflow state. Please contact Draper for guidance.
+
+:Define the Problem: Most of Define the Problem will be accomplished outside of XDATA tools (largely in the challenge problem assignment interface).  This state includes:  receiving tasking, refining the request (perhaps with the requestor), defining specific goals and objectives for the request, specifying research questions and/or hypotheses to test, and justifying the tasking.   
+
+:Get Data: Get Data involves creating (formulating and writing), executing, and refining search queries.  Refining may include drilling down, augmenting (e.g., for multiple spellings).  We use the term 'query' loosely -- a database is not required.   Because some searches are on-going, any action involved in monitoring the status or checking for new results from a persistent search also fall into this activity.   Operationally, this state would include requesting data from others, but that is out of scope for XDATA.
+
+:Explore Data: Explore Data involves consuming data (reading, listening, watching) or visualizations of data. This activity may involve the examination of a visualization, or the comparing of multiple views of a dataset.  Explore may be dynamic, but is a passive state (vs. Enrich).  This is the triage step of taking a first look at the data.  This is typically a big picture view.
+
+:Create View of Data: Create View of Data involves the organization of data. Creating and manipulating the spatial layout in a visualization, creating categories, deriving higher-level structures, and merging pieces of information all fall under this activity. 
+
+:Enrich: In Enrich, the user actively adds insight value back into the tool.  Activities include annotating/tagging/labeling data with textual notes or links, bookmarking views, creating links between data elements.  Annotations may include external insight (from SMEs), algorithmic results (searching for patterns, denoising, etc.), identifying patterns/trends,  (Making notes or conclusions about patterns is in Enrich. Identifying/searching for them is in Transform.)
+
+:Transform Data: In Transform, the user takes a deeper look at the data. The user applies algorithms to transform the data (reduce, denoise, etc.) and searches for patterns.  Actions may be informed by SME knowledge or knowledge gained from other datasets.  Actions may include interpolating or extrapolating, comparing across data sets or models, correlating.  (Making notes or conclusions about patterns is in Enrich. Identifying/searching for them is in Transform.)
+
+.. _sys-message-reqs:
+
+System Action Log Message Requirements
+--------------------------------------
+
+System action log messages should be sent when the software performs an action that will affect its user interface, but which has not been explicitly by the user. For example, a if a table view is refreshed because the user clicked a refresh button on that view, that action should be logged as a user action. But if the same table is refreshed automatically every minute, a system action should be dispatched each time that timer fires. Other actions which should which should send system action messages are error messages, error messages, prompts, assists, when the UI has loaded, etc. 
+In this version of the API, there are no additional fields required for a System Action log message other than those listed in Section 2.1, which apply to all log messages. The only requirement to specify a System Action log message is that the type field  is set to ”SYSACTION”.
+
+UI Layout Log Message Requirements
+----------------------------------
+UI Layout Logging is no longer supported.  Please contact Draper for support.
+
+DOM Logging
+-----------
+Mouse events are notifications that track mouse interaction with other components.  These events will be useful to track a user’s interaction with on-screen components that do not explicity log a message for a particular activity.  Such activities include new or updates to information displays when the mouse is placed over a component and when the focus is changed to a particular component such as a text input box among others.  
+
+Subject and data security
+-------------------------
+TBD

@@ -1,0 +1,6 @@
+<ul class="pagination">
+  <li ng-repeat="p in pages" ng-class="{active: p.cls=='active', disabled: p.cls=='disabled'}">
+	  <a ng-show="p.cls=='disabled'">{{p.text}}</a>
+	  <a ng-hide="p.cls=='disabled'" ng-click="$parent.currentPage = p.text" href="">{{p.text}}</a>
+  </li>
+</ul>

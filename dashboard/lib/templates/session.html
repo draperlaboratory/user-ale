@@ -1,0 +1,55 @@
+<ul class="list-group">
+  <li class="list-group-item">
+    <h1>{{component.name}}</h1>
+    <div><b>Version:</b> {{component.version}}</div>
+    <div>
+      <b>Session:</b>
+      {{logs[0].sessionID}}
+      <!-- <my-download id="content" get-data="getBlob()">
+      </my-download> -->
+    </div>
+  </li>
+  <li class="list-group-item">
+    <b>Date Collected:</b> {{logs[0].timestamp | date : 'medium'}}<em style="color: #aaa"> for {{duration() | duration}}</em>
+  </li>
+  <li class="list-group-item">
+    <b># logs:</b> {{logs.length}}
+  </li>
+</ul>
+<h4>Workflow Legend:</h4>
+<wf-legend height=30></wf-legend>
+<hr>
+<div style="cursor: pointer" ng-click="activityModal()" class="pull-right">{{activities.length}} Unique Activites &nbsp;<span class="glyphicon glyphicon-th-large"></span></div>
+<h4>Recorded Activities</h4> 
+<wf-state-chart height=100 logs=logs timebounds=timebounds></wf-state-chart>
+<hr>
+<h3>{{filtData.length}} of {{logs.length}}</h3>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr class="mysize-100" >
+      <th class="dr width1"></th>
+      <th class="dr width5"></th>
+      <th class="dr width5">Type</th>
+      <th class="dr width12">Workflow</th>
+      <th class="dr width22">Activity</th>
+      <th class="dr width40">Description</th>
+      <th class="dr width15" sort-header label="'timestamp'" order=orderBy>Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+    style="cursor:pointer"
+    ng-click="redirect(session)"
+    ng-repeat="log in pagedData"
+    class="animate">
+      <td style="background-color: {{log.color}}"class="dr wf marker"></td>
+      <td>{{log.index}}</td>
+      <td>{{log.type}}</td>
+      <td>{{log.parms.name}}</td>
+      <td>{{log.parms.activity}}</td>
+      <td>{{log.parms.desc}}</td>
+      <td>{{log.timestamp | date : 'hh:mm:ss.sss a'}}</td>
+    </tr>
+  </tbody>
+</table>
+<paginate current-page=currentPage number-of-pages=numberOfPages></paginate>

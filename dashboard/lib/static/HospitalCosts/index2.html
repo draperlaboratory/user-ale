@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<meta charset=utf-8>
+<html>
+    <head>
+        <link rel="icon" type="image/png" href="favicon.png">
+        <link href="lib/tangelo.css" rel=stylesheet type="text/css">
+        <title>Hospital Costs</title/>
+        <script src="lib/jquery-1.8.2.min.js"></script>
+        <script src="lib/tangelo.min.js"></script>
+        <script src="lib/bootstrap.js"></script>
+        <script src="lib/d3.v3.min.js"></script>
+        <script src="lib/geoPosition.min.js"></script>
+    	<!-- // <script src="ActivityLogger.js"></script> -->
+        <script src="draper.activity_logger-2.1.0.js"></script>
+        <script src="hospital.js"></script>
+
+        <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-6042509-20', 'kitware.com');
+  ga('send', 'pageview');
+        </script>
+
+        <style>
+
+/* Sticky footer styles
+-------------------------------------------------- */
+
+html,
+body {
+  height: 100%;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -50px;
+}
+
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+  height: 50px;
+}
+#footer {
+  background-color: #f5f5f5;
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+  #footer {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+.container .credit {
+  margin: 10px 0 0 0;
+}
+
+    body {
+        background-color: #eee;
+    }
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #888;
+        opacity: 0.5;
+        shape-rendering: crispEdges;
+    }
+        </style>
+    </head>
+    <body>
+        <div id="wrap">
+        <div class="container">
+            <h1>Hospital Costs</h1>
+<!--            <p>-->
+                <!--Compare your hospital to state or national averages.-->
+                <!--Data obtained from-->
+                <!--<a href="https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/index.html">CMS.gov</a>.-->
+            <!--</p>-->
+
+            <p>The federal government recently <a
+                href=https://www.cms.gov/Research-Statistics-Data-and-Systems/Statistics-Trends-and-Reports/Medicare-Provider-Charge-Data/index.html>released
+                data</a> about what hospitals charge for procedures, and how
+                much Medicare reimburses them.  We have visualized some of this
+                data, along with publicly available data about <a href="https://data.medicare.gov/Hospital-Compare/Hospital-Outcome-Of-Care-Measures/f24z-mvb9">mortality rates</a>
+                under these same procedures.  How does your hospital stack up
+                against national averages?
+            </p>
+
+<!--
+            <ul class="nav nav-tabs">
+                <li class=active><a href=#home data-toggle=tab>Home</a>
+                <li><a href=#scatter data-toggle=tab>Scatter Plot</a>
+            </ul>
+-->
+
+<!--
+            <div class=tab-content>
+-->
+                <div id="home">
+                    <h4 id="chart-title">&nbsp;</h4>
+                    <div class="row">
+                        <div class="span12">
+                            <svg id="vis">
+                                <g id=legendtext class=axis></g>
+                                <g class=legend></g>
+                                <text id=mortlabel>Mortality rate</text>
+                                <text id=axislabelleft style="text-anchor:start;"></text>
+                                <text id=axislabelright style="text-anchor:end;"></text>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="details" class="span12">
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span4">
+                            <h5>Show</h5>
+                            <select id="scope" class="span2"></select>
+                            <label class=checkbox>
+                                <input type=checkbox id=national-avg> National average
+                            </label>
+                            <label class=checkbox>
+                                <input type=checkbox id=moving-avg> Moving average
+                            </label>
+                        </div>
+                        <div class="span8">
+                            <h5>Highlight<svg width=15 height=10><circle cx=10 cy=5 r=5 style="fill:steelblue; opacity:0.5;"></svg></h5>
+                            <div class="row">
+                                <div class="span8">
+                                  <div class="form-inline">
+                                    <select id="state" class="span2"></select>
+                                    <select id="hospital" class="span3"></select>
+                                    <button id="highlight-closest-hospital" style="display:none" class="btn" data-placement="top" data-animation="true" data-toggle="tooltip" title="You will be prompted to share your current location."></button>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span4">
+                            <h5>Condition</h5>
+                            <div class="btn-group" data-toggle="buttons-radio">
+                                <button id="treatment-pneumonia" class="btn btn-small active">Pneumonia</button>
+                                <button id="treatment-heart" class="btn btn-small">Heart Failure</button>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <h5>Vertical Axis</h5>
+                            <div class="btn-group" data-toggle="buttons-radio">
+                                <button id="scale-cost" class="btn btn-small active">Cost</button>
+                                <button id="scale-reimbursement" class="btn btn-small">Reimbursement</button>
+                                <button id="scale-mortality" class="btn btn-small">Mortality</button>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <h5>Sort Horizontally By</h5>
+                            <div class="btn-group" data-toggle="buttons-radio">
+                                <button id="order-cost" class="btn btn-small active">Cost</button>
+                                <button id="order-reimbursement" class="btn btn-small">Reimbursement</button>
+                                <button id="order-mortality" class="btn btn-small">Mortality</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div>&nbsp;</div>
+                    Go to <a id="scatter-link" href="#">scatterplot</a>.
+                    <div>&nbsp;</div>
+                </div>
+
+                <div id="scatter" style="display:none">
+                    <h4 id=scatter-chart-title></h4>
+                    <div class="row">
+                        <div class="span12">
+                            <svg id="scatter-vis">
+                                <g class="x axis"></g>
+                                <g class="y axis"></g>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class=row>
+                        <div class="offset3 span9">
+                            <p><strong>Correlation:</strong> <span id="scatter-corr"></span></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="scatter-details" class="span12">
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+                            <div>&nbsp;</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span4">
+                            <h5>Show</h5>
+                            <select id="scatter-state"></select>
+                        </div>
+                        <div class="span8">
+                            <h5>Highlight</h5>
+                            <div class="row">
+                                <div class="span8">
+                                    <select id="scatter-hl-state" class="span2"></select>
+                                    <select id="scatter-hl-hospital" class="span3"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span4">
+                            <h5>Condition</h5>
+                            <div class="btn-group" data-toggle="buttons-radio">
+                                <button id="scatter-treatment-pneumonia" class="btn btn-small active">Pneumonia</button>
+                                <button id="scatter-treatment-heart" class="btn btn-small">Heart Failure</button>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <h5>Horizontal Axis</h5>
+                            <div class="btn-group" data-toggle="buttons-radio">
+                                <button id="scatter-x-cost" class="btn btn-small active">Cost</button>
+                                <button id="scatter-x-reimbursement" class="btn btn-small">Reimbursement</button>
+                                <button id="scatter-x-mortality" class="btn btn-small">Mortality</button>
+                            </div>
+                        </div>
+                        <div class="span4">
+                            <h5>Vertical Axis</h5>
+                            <div class="btn-group" data-toggle="buttons-radio">
+                                <button id="scatter-y-cost" class="btn btn-small active">Cost</button>
+                                <button id="scatter-y-reimbursement" class="btn btn-small">Reimbursement</button>
+                                <button id="scatter-y-mortality" class="btn btn-small">Mortality</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div>&nbsp;</div>
+                    Go to <a id="home-link" href="#">bar chart</a>.
+                    <div>&nbsp;</div>
+                </div>
+            </div>
+<!--
+        </div>
+-->
+
+<!--
+        <div class="row">
+            <div class="span4">
+                <h5>Vertical Axis</h5>
+                <div class="btn-group" data-toggle="buttons-radio">
+                    <button id="scatter-y-cost" class="btn btn-small active">Cost</button>
+                    <button id="scatter-y-reimbursement" class="btn btn-small">Reimbursement</button>
+                    <button id="scatter-y-mortality" class="btn btn-small">Mortality</button>
+                </div>
+            </div>
+        </div>
+-->
+        <div id="push"></div>
+    </div>
+    <div id="footer">
+        <div class="container">
+            <p class="muted credit pull-right">
+            Created by
+            <a href="http://www.kitware.com/solutions/informatics/informatics.html">Kitware, Inc.</a>
+            This effort is sponsored by the Air Force Research Laboratory and DARPA XDATA program.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
