@@ -1,4 +1,0 @@
-<h1>{{component}}</h1>
-<h6>{{id}}</h6>
-{{render 'albums' albums}}
-

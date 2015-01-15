@@ -1,28 +1,36 @@
-# xdata-dashboard
+# User-ALE Dashboard
 
-Dashboard for XDATA logs.
+Fully running User-ALE
 
 ## Getting Started
-### On the server
-Install the module with: `npm install`
-Start the server with: `node server/app.js`
 
-## Documentation
-_(Coming soon)_
+## Install Dependencies
 
-## Examples
-_(Coming soon)_
+- Install Vagrant
+- Install VirtualBox
 
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+## Start Vagrant
 
-_Also, please don't edit files in the "dist" subdirectory as they are generated via Grunt. You'll find source code in the "lib" subdirectory!_
+This will provision the base box which is an Ubuntu 14.04 machine.
 
-## Release History
-_(Nothing yet)_
+    vagrant up
 
-## License
-Copyright (c) 2014 David Reed  
-Licensed under the MIT license.
+## SSH into Vagrant
 
-This package was created using the dvreedjs scaffold.  Find it at: https://github.com/dvreed77/dvreedjs
+    vagrant ssh
+
+## Install necessary packages
+
+    bash /vagrant/scripts/install.sh
+
+## Set indices in ElasticSearch
+
+    bash /vagrant/scripts/restart.sh
+
+## Start Twisted Server
+
+    sudo twistd -y /vagrant/twisted_app.py
+
+## Go to Kibana at http://localhost:9000/kibana
+
+## Send logs by going here: http://localhost:9000/test/
