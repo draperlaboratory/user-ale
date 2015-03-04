@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+#note: apt-get proxy settings require http:// prefix
 sudo -E apt-get update
 
+#if there are errors about prereqs force install them with: sudo -E apt-get -y -f install
 sudo -E apt-get -y install openjdk-7-jdk
 
 wget http://repo.continuum.io/miniconda/Miniconda-3.7.0-Linux-x86_64.sh
@@ -37,4 +39,8 @@ sudo cp /vagrant/files/xdata.conf /etc/logstash/conf.d/
 #logstash conf
 # /etc/logstash/conf.d/test.conf
 
-#sudo twistd -y twisted_app.py
+# create required log dir
+sudo mkdir /var/log/xdata
+
+# start twisted
+sudo twistd -y twisted_app.py
