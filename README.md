@@ -42,3 +42,7 @@ $('#button').mouseenter(function() {
   );
 })
 ```
+
+##ELK stack installation
+
+See the README file in the dasboard subdirectory
