@@ -43,4 +43,4 @@ sudo cp /vagrant/files/xdata.conf /etc/logstash/conf.d/
 sudo mkdir /var/log/xdata
 
 # start twisted
-sudo twistd -y twisted_app.py
+sudo twistd -y /vagrant/twisted_app.py &
