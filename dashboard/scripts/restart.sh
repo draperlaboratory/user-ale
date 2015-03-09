@@ -1,3 +1,20 @@
+sudo service elasticsearch restart
+sudo service logstash restart
+
+# For Logstash and ElasticSearch, it takes a while before the
+# network port is established by the process. Here we wait until
+# the port is open.
+# TODO: Exit counter.
+while true;
+do
+	nc -z localhost 9200
+	if [ "$?" == "0" ]; then
+		break
+	fi
+	sleep 1;
+done
+
+
 curl -XDELETE 'http://127.0.0.1:9200/xdata/'
 
 curl -XPUT 'http://127.0.0.1:9200/xdata/'
@@ -78,5 +95,6 @@ curl -XPUT 'http://127.0.0.1:9200/xdata/_mapping/USERACTION' -d '
 }
 '
 
-# sudo service elasticsearch restart
-# sudo service logstash restart
+# Start the webservice that allows us to ping ELK and
+# dump data to the ELK service
+sudo -E twistd -y /vagrant/twisted_app.py &

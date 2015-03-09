@@ -64,7 +64,7 @@ logger = logging.getLogger('xdata')
 logger_err = logging.getLogger('error')
 
 kibana = File('/home/vagrant/kibana-3.1.2')
-test = File('/vagrant/test')
+#test = File('/vagrant/test')
 
 wf_dict = {
     0: "WF_OTHER",
@@ -86,9 +86,21 @@ class Counter(Resource):
         return "I am request #" + str(self.numberRequests) + "\n"
 
 class Logger(Resource):
+    def render_OPTIONS(self, request):
+        request.setHeader('Access-Control-Allow-Origin', 'http://192.168.86.10')
+        request.setHeader('Access-Control-Allow-Methods', 'POST')
+        request.setHeader('Access-Control-Allow-Headers', 'x-prototype-version,x-requested-with,Content-Type')
+        request.setHeader('Access-Control-Max-Age', 2520) # 42 hours
+        return ''
+
     def render_POST(self, request):
         newdata = request.content.getvalue()
         newdata = simplejson.loads(newdata)
+        request.setHeader('Access-Control-Allow-Origin', 'http://192.168.86.10')
+        request.setHeader('Access-Control-Allow-Methods', 'POST')
+        request.setHeader('Access-Control-Allow-Headers', 'x-prototype-version,x-requested-with,Content-Type')
+        request.setHeader('Access-Control-Max-Age', 2520) # 42 hours
+        
         try:
             for a in newdata:
                 if 'wf_state' in a['parms']:
@@ -102,10 +114,8 @@ class Logger(Resource):
 
 root = Resource()
 root.putChild("kibana", kibana)
-root.putChild("test", test)
-
 root.putChild("counter", Counter())
 root.putChild("send_log", Logger())
 
-reactor.listenTCP(9000, Site(root))
+reactor.listenTCP(80, Site(root))
 reactor.run()
