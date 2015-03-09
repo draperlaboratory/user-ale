@@ -43,6 +43,26 @@ $('#button').mouseenter(function() {
 })
 ```
 
-##ELK stack installation
+## ELK Stack Getting Started
 
-See the README file in the dasboard subdirectory
+## Install Dependencies
+
+- Install Vagrant
+	(This may require downloading the newest version from their website rather than trusting apt-get)
+- Install VirtualBox
+
+## If behind a proxy, modify Vagrantfile
+- Modifiy the vagantfile to point to your proxy. 
+- Don't forget to add "http://" as leaving that off may break apt-get in the vagrant vm
+- Example: config.proxy.http="http://1.2.3.4:5678"
+- If your host system is also the proxy (e.g. CNTLM): setting the proxy as http://127.0.0.1:3128 or localhost may confuse the Vagrant VM and prevent net access
+
+## Start Vagrant
+
+This will provision the base box which is an Ubuntu 14.04 machine. The Kibana/ELK server is running on http://192.168.86.100 while the developer box is running on http://192.168.86.10
+
+    vagrant up
+
+## Go to Kibana Dashboard at http://192.168.86.100/kibana
+
+## Send logs by going here: http://192.168.86.10/test
