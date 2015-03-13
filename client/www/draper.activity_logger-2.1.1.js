@@ -13,7 +13,7 @@
 /*jshint unused:false*/
 function activityLogger(webWorkerURL) {
     'use strict';
-    var draperLog = {version: "2.1.1"}; // semver
+    var draperLog = {version: "2.1.2"}; // semver
     draperLog.worker = new Worker(webWorkerURL);
 
     var muteUserActivityLogging = false,
@@ -30,6 +30,56 @@ function activityLogger(webWorkerURL) {
     draperLog.WF_CREATE      = 4;
     draperLog.WF_ENRICH      = 5;
     draperLog.WF_TRANSFORM   = 6;
+
+
+    // User intent enumeration. This allows the developer to select a finite list
+    // of intents the user maybe doing in order to log the event properly.
+    draperLog.LOGGING_INTENT = {
+        ADD        : "add",
+        REMOVE     : "remove",
+        CREATE     : "create",
+        DELETE     : "delete",
+        SELECT     : "select",
+        ENTER      : "enter",
+        LEAVE      : "leave",
+        EXEC       : "execute",
+        EXPLORE    : "explore",
+        INSPECT    : "inspect",
+    };
+
+    // User Action: This allows the developer to select a finite actions the 
+    // developer is performing within the application.
+    draperLog.LOGGING_ACTION = {
+        SCROLL     :   "scroll",
+        KEYPRESS   :   "keypress",
+        TYPE       :   "type",
+        SELECT     :   "click",
+        ZOOM       :   "zoom",
+        HOVER      :   "hover",
+        DROP       :   "drop",
+        DRAG       :   "drag",
+        CLICK      :   "click",
+        DBLCLK     :   "dblclk",
+    };
+
+    // draperLog.LOGGING_COMPONENT = {
+    //     WINDOW       : "window",
+    //     FRAME        : "frame",
+    //     MAP          : "map",
+    //     CANVAS       : "canvas",
+    //     BUTTON       : "button",
+    //     RADIO_BUTTON : "radio_btn",
+    //     CHECKBOX     : "checkbox",
+    //     TEXTBOX      : "textbox",
+    //     LIST         : "list",
+    //     TABLE        : "table",
+
+    //     // Other is used in conjunction with softwareMetadata in order
+    //     // to provide a component in which is not currently listed within
+    //     // the COMPONENT list.
+    //     OTHER        : "other",
+    // }
+
 
     /**
     * Registers this component with Draper's logging server.  The server creates
@@ -73,7 +123,9 @@ function activityLogger(webWorkerURL) {
             msg: url
         });
 
-        classListener();
+        // Felipe: Commented this out currently so we don't have a mix of logs being 
+        // sent to the log server.
+        //classListener();
 
         if (logToConsole) {
             if (testing) {
@@ -91,12 +143,19 @@ function activityLogger(webWorkerURL) {
         // Log the activity that we are closing the window of the web browser
         // before we exit. In order to do this, we register a onBeforeUnload 
         // callback which logs the closing and sends the buffer.
-        window.onbeforeunload = function(){
+        window.onbeforeunload = function(e){
             draperLog.logUserActivity(
-                'window closing',
-                'window_closed',
-                draperLog.WF_OTHER);
+                draperLog.LOGGING_INTENT.REMOVE,
+                
+                // This could be a number of ways
+                // in which this could be closed.
+                draperLog.LOGGING_ACTION.CLICK,
 
+                // The type of object that is being used.
+                "draper_browser");
+
+            // Since the window is closing and the script will be forced closed,
+            // ensure the buffer is being sent to the server.
             draperLog.worker.postMessage({
                 cmd: 'sendBuffer',
                 msg: ''});
@@ -105,23 +164,33 @@ function activityLogger(webWorkerURL) {
         // Log the activity when the user gains focus on the web browser
         // window. In order to do this, we register an onFocus callback function
         // which will log the gained focus of the element.
-        window.onfocus = function() {
-          draperLog.logUserActivity(
-            'window gained focus',
-            'window_focus',
-            draperLog.WF_OTHER
-            );
+        window.onfocus = function(e) {
+            console.log(e.detail);
+            draperLog.logUserActivity(
+                draperLog.LOGGING_INTENT.ENTER,
+                
+                // This could be a number of ways the window
+                // focus was gained
+                draperLog.LOGGING_ACTION.CLICK,
+                
+                // The type of object that is being used.
+                "draper_browser");
         };
 
         // Log the activity when the user leaves focus on the web browser
         // window. In order to do this, we register an onBlur callback function
         // which will log the lost focus
-        window.onblur = function() {
-          draperLog.logUserActivity(
-            'window lost focus',
-            'window_blur',
-            draperLog.WF_OTHER
-            );
+        window.onblur = function(e) {
+            console.log(e.detail);
+            draperLog.logUserActivity(
+                draperLog.LOGGING_INTENT.LEAVE,
+                
+                // This could be a number of ways the window
+                // focus was gained
+                draperLog.LOGGING_ACTION.CLICK,
+                
+                // The type of object that is being used.
+                "draper_browser");
         };
 
         return draperLog;
@@ -131,20 +200,25 @@ function activityLogger(webWorkerURL) {
     * Create USER activity message.
     *
     * @method logUserActivity
-    * @param {String} actionDescription a description of the activity in natural language.
-    * @param {String} userActivity a more generalized one word description of the current activity.
-    * @param {Integer} userWorkflowState an integer representing one of the enumerated states above.
+    * @param {LOGGING_INTENT} userIntent a description of the natural activity that is being performed.
+    * @param {LOGGING_ACTION} userActivity a more user input specific action the user is doing.
+    * @param {JSON} componentInfo is a more generalized component information. This will contain 
+    * a specific component type and component ID
     * @param {JSON} softwareMetadata any arbitrary JSON that may support this activity
     */
-    draperLog.logUserActivity = function (actionDescription, userActivity, userWorkflowState, softwareMetadata) {
+    draperLog.logUserActivity = function (userIntent, userActivity, componentId, softwareMetadata) 
+    {
         if(!muteUserActivityLogging) {
+            // Construct the initial log message with the information provided by the user.
+            // This will allow us to see what is being logged by the developer.
             var msg = {
                 type: 'USERACTION',
                 parms: {
-                    desc: actionDescription,
+                    desc: userIntent,
                     activity: userActivity,
-                    wf_state: userWorkflowState,
-                    wf_version: workflowCodingVersion
+                    wf_state: {},
+                    wf_version: workflowCodingVersion,
+                    component: componentId,
                 },
                 meta: softwareMetadata
             };
@@ -204,12 +278,12 @@ function activityLogger(webWorkerURL) {
         msg.impLanguage = 'JavaScript';
         msg.apiVersion = draperLog.version;
 
-        // if (!testing) {
+        if (!testing) {
             draperLog.worker.postMessage({
             cmd: 'sendMsg',
             msg: msg
           });
-        // }
+        }
     }
 
     /**
@@ -228,7 +302,7 @@ function activityLogger(webWorkerURL) {
         return draperLog;
     };
 
-  /**
+   /**
     * Accepts an array of Strings telling logger to mute those type of messages.
     * Possible values are 'SYS' and 'USER'.  These messages will not be sent to
     * server.
@@ -252,7 +326,7 @@ function activityLogger(webWorkerURL) {
         return draperLog;
     };
 
-  /**
+   /**
     * When set to true, no connection will be made against logging server.
     *
     * @method testing
@@ -268,7 +342,7 @@ function activityLogger(webWorkerURL) {
         return draperLog;
     };
 
-  /**
+   /**
     * DOM Listener for specific events.
     *
     */
@@ -277,7 +351,9 @@ function activityLogger(webWorkerURL) {
         $(document).ready(function() {
             $(".draper").each(function(i,d){
                 $(d).on("click", function(a){
-                    draperLog.logUserActivity('User clicked element', $(this).data('activity'), $(this).data('wf'));
+                    draperLog.logUserActivity('User clicked element', 
+                                              $(this).data('activity'),
+                                              $(this).data('wf'));
                 });
             });
 
