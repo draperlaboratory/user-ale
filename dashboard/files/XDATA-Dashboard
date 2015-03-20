@@ -10,21 +10,11 @@
           "pin": false,
           "type": "lucene",
           "enable": true,
-          "query": "sessionID:\"my-1421247708256\""
-        },
-        "1": {
-          "id": 1,
-          "color": "#EAB839",
-          "alias": "",
-          "pin": false,
-          "type": "lucene",
-          "enable": true,
-          "query": "sessionID:\"my-1421244516740\""
+          "query": "*"
         }
       },
       "ids": [
-        0,
-        1
+        0
       ]
     },
     "filter": {
@@ -72,8 +62,7 @@
           "queries": {
             "mode": "selected",
             "ids": [
-              0,
-              1
+              0
             ]
           },
           "annotate": {
@@ -148,8 +137,7 @@
           "queries": {
             "mode": "all",
             "ids": [
-              0,
-              1
+              0
             ]
           },
           "field": "_type",
@@ -167,7 +155,7 @@
           "arrangement": "horizontal",
           "chart": "bar",
           "counter_pos": "below",
-          "title": "Document types",
+          "title": "Activity Type",
           "spyable": true,
           "tmode": "terms",
           "tstat": "total",
@@ -184,8 +172,7 @@
           "queries": {
             "mode": "all",
             "ids": [
-              0,
-              1
+              0
             ]
           },
           "field": "parms.activity",
@@ -204,7 +191,7 @@
           "chart": "bar",
           "counter_pos": "none",
           "spyable": true,
-          "title": "Document Types",
+          "title": "Activity Codes",
           "tmode": "terms",
           "tstat": "total",
           "valuefield": ""
@@ -248,8 +235,7 @@
               "queries": {
                 "mode": "all",
                 "ids": [
-                  0,
-                  1
+                  0
                 ]
               },
               "tstat": "total",
@@ -286,7 +272,8 @@
             "timestamp",
             "type",
             "client",
-            "parms.activity"
+            "parms.activity",
+            "wf_state_longname"
           ],
           "highlight": [],
           "sortable": true,
@@ -296,8 +283,7 @@
           "queries": {
             "mode": "all",
             "ids": [
-              0,
-              1
+              0
             ]
           },
           "field_list": true,
@@ -345,9 +331,9 @@
       "query": "*",
       "pinned": true,
       "history": [
-        "sessionID:\"my-1421244516740\"",
-        "sessionID:\"my-1421247708256\"",
         "*",
+        "sessionID:\"my-1421247708256\"",
+        "sessionID:\"my-1421244516740\"",
         "sessionID:{dave}",
         "sessionID:dave",
         "sessionIDs:\"dave\"",
