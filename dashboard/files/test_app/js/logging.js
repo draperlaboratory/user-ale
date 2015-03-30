@@ -3,20 +3,56 @@
  */
 $(document).ready(function () {
     //var ale2 = new userale();
-    var userale = new userale({
+    var slice = [].slice;
+
+    extend = function() {
+        var i, key, len, object, objects, out, value;
+        objects = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+        out = {};
+        for (i = 0, len = objects.length; i < len; i++) {
+            object = objects[i];
+            for (key in object) {
+                value = object[key];
+                out[key] = value;
+            }
+        }
+        return out;
+    };
+
+    var defaultMsg = {
+        activity: null,
+        action: null,
+        component: {
+            id: null,
+            type: null,
+            group: null
+        },
+        source: null,
+        object: null,
+        tags: [],
+        meta: {}
+    };
+
+    var ale2 = new userale(
+        {
         loggingUrl: '',
         toolName: 'dave',
         toolVersion: '2.3',
         componentGroups: [
             'map_group',
-            'input_group'
+            'input_group',
+            'top',
+            'dropdown_group',
+            'button_group',
+            'query_group'
         ],
-        workerUrl: '../../../helper-libs/javascript/draper.activity_worker-2.1.1.js',
+        workerUrl: 'js/userale-worker.js',
         debug: true,
         sendLogs: false
     });
 
-    userale.register()
+    window.ale2 = ale2;
+    ale2.register()
 
     var template = _.template(
         "<tr>" +
@@ -25,14 +61,16 @@ $(document).ready(function () {
             "<td class='c'><%- component.id %></td>" +
             "<td class='d'><%- component.type %></td>" +
             "<td class='e'><%- component.group %></td>" +
+            "<td class='e'><%- object %></td>" +
             "<td class='f'><%- source %></td>" +
         "</tr>"
     );
     function log(msg) {
+        msg = extend(defaultMsg, msg);
         var elem = $(template(msg))
             .appendTo('.output tbody');
 
-        userale.log(msg);
+        ale2.log(msg);
 
         setTimeout(function () {
             elem.fadeOut(400, function () {
@@ -43,51 +81,53 @@ $(document).ready(function () {
 
     }
 
+    window.myLog = log;
+
 
 
     $('.buttons-grp .btn')
         .mouseover(function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'MOUSEOVER',
                 component: {
                     id: this.getAttribute('id') || 'UNK',
-                    type: ale.components.BUTTON,
+                    type: 'button',
                     group: 'button_group'
                 },
                 source: 'user',
                 object: null,
-                tags: ['a', 'b']
+                tags: ['submit']
             };
             log(msg);
         })
         .mouseout(function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'MOUSEOUT',
                 component: {
                     id: this.getAttribute('id') || 'UNK',
-                    type: ale.components.BUTTON,
+                    type: 'button',
                     group: 'button_group'
                 },
                 source: 'user',
                 object: null,
-                tags: ['a', 'b']
+                tags: ['submit']
             };
             log(msg);
         })
         .click(function () {
             var msg = {
-                activity: ale.activities.PERFORM,
+                activity: 'perform',
                 action: 'CLICK',
                 component: {
                     id: this.getAttribute('id') || 'UNK',
-                    type: ale.components.BUTTON,
+                    type: 'button',
                     group: 'button_group'
                 },
                 source: 'user',
                 object: null,
-                tags: ['a', 'b']
+                tags: ['submit']
             };
             log(msg);
         });
@@ -95,11 +135,11 @@ $(document).ready(function () {
     $('.rdbtn')
         .mouseover(function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'MOUSEOVER',
                 component: {
                     id: this.getAttribute('id') || 'UNK',
-                    type: ale.components.RADIOBUTTON,
+                    type: 'radiobutton',
                     group: 'button_group'
                 },
                 source: 'user',
@@ -110,11 +150,11 @@ $(document).ready(function () {
         })
         .mouseout(function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'MOUSEOUT',
                 component: {
                     id: this.getAttribute('id') || 'UNK',
-                    type: ale.components.RADIOBUTTON,
+                    type: 'radiobutton',
                     group: 'button_group'
                 },
                 source: 'user',
@@ -129,7 +169,7 @@ $(document).ready(function () {
                 action: 'CLICK',
                 component: {
                     id: this.getAttribute('id') || 'UNK',
-                    type: ale.components.RADIOBUTTON,
+                    type: 'radiobutton',
                     group: 'button_group'
                 },
                 source: 'user',
@@ -142,11 +182,11 @@ $(document).ready(function () {
     $('.dd-list')
         .mouseover(function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'MOUSEOVER',
                 component: {
                     id: this.getAttribute('id') || 'UNK',
-                    type: ale.components.DROPDOWNLIST,
+                    type: 'dropdownlist',
                     group: 'dropdown_group'
                 },
                 source: 'user',
@@ -157,11 +197,11 @@ $(document).ready(function () {
         })
         .mouseout(function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'MOUSEOUT',
                 component: {
                     id: this.getAttribute('id'),
-                    type: ale.components.DROPDOWNLIST,
+                    type: 'dropdownlist',
                     group: 'dropdown_group'
                 },
                 source: 'user',
@@ -177,7 +217,7 @@ $(document).ready(function () {
                 action: 'CLICK',
                 component: {
                     id: this.getAttribute('id'),
-                    type: ale.components.DROPDOWNLIST,
+                    type: 'dropdownlist',
                     group: 'dropdown_group'
                 },
                 source: 'user',
@@ -190,11 +230,11 @@ $(document).ready(function () {
     $('.dd-item')
         .mouseover(function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'MOUSEOVER',
                 component: {
                     id: this.getAttribute('id'),
-                    type: ale.components.LISTITEM,
+                    type: 'listitem',
                     group: 'dropdown_group'
                 },
                 source: 'user',
@@ -205,11 +245,11 @@ $(document).ready(function () {
         })
         .mouseout(function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'MOUSEOUT',
                 component: {
                     id: this.getAttribute('id'),
-                    type: ale.components.LISTITEM,
+                    type: 'listitem',
                     group: 'dropdown_group'
                 },
                 source: 'user',
@@ -220,11 +260,11 @@ $(document).ready(function () {
         })
         .click(function () {
             var msg = {
-                activity: ale.activities.PERFORM,
+                activity: 'perform',
                 action: 'CLICK',
                 component: {
                     id: this.getAttribute('id'),
-                    type: ale.components.LISTITEM,
+                    type: 'listitem',
                     group: 'dropdown_group'
                 },
                 source: 'user',
@@ -234,15 +274,15 @@ $(document).ready(function () {
             log(msg);
         });
 
-    $('.textbox')
+    $('.query-group .textbox')
         .mouseover(function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'MOUSEOVER',
                 component: {
                     id: this.getAttribute('id'),
-                    type: ale.components.TEXTBOX,
-                    group: 'input_group'
+                    type: 'textbox',
+                    group: 'query_group'
                 },
                 source: 'user',
                 object: null,
@@ -252,12 +292,12 @@ $(document).ready(function () {
         })
         .mouseout(function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'MOUSEOVER',
                 component: {
                     id: this.getAttribute('id'),
-                    type: ale.components.TEXTBOX,
-                    group: 'input_group'
+                    type: 'textbox',
+                    group: 'query_group'
                 },
                 source: 'user',
                 object: null,
@@ -267,12 +307,12 @@ $(document).ready(function () {
         })
         .click(function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'FOCUS',
                 component: {
                     id: this.getAttribute('id'),
-                    type: ale.components.TEXTBOX,
-                    group: 'input_group'
+                    type: 'textbox',
+                    group: 'query_group'
                 },
                 source: 'user',
                 object: null,
@@ -286,8 +326,8 @@ $(document).ready(function () {
                 action: 'ENTERTEXT',
                 component: {
                     id: this.getAttribute('id'),
-                    type: ale.components.TEXTBOX,
-                    group: 'input_group'
+                    type: 'textbox',
+                    group: 'query_group'
                 },
                 source: 'user',
                 object: null,
@@ -299,11 +339,11 @@ $(document).ready(function () {
     $('.map-group .btn')
         .mouseover(function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'MOUSEOVER',
                 component: {
                     id: this.getAttribute('id') || 'UNK',
-                    type: ale.components.BUTTON,
+                    type: 'button',
                     group: 'map_group'
                 },
                 source: 'user',
@@ -314,11 +354,11 @@ $(document).ready(function () {
         })
         .mouseout(function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'MOUSEOUT',
                 component: {
                     id: this.getAttribute('id') || 'UNK',
-                    type: ale.components.BUTTON,
+                    type: 'button',
                     group: 'map_group'
                 },
                 source: 'user',
@@ -329,11 +369,11 @@ $(document).ready(function () {
         })
         .click(function () {
             var msg = {
-                activity: ale.activities.PERFORM,
+                activity: 'perform',
                 action: 'CLICK',
                 component: {
                     id: this.getAttribute('id') || 'UNK',
-                    type: ale.components.BUTTON,
+                    type: 'button',
                     group: 'map_group'
                 },
                 source: 'user',
@@ -346,11 +386,11 @@ $(document).ready(function () {
     $('.query-group .btn')
         .mouseover(function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'MOUSEOVER',
                 component: {
                     id: this.getAttribute('id') || 'UNK',
-                    type: ale.components.BUTTON,
+                    type: 'button',
                     group: 'query_group'
                 },
                 source: 'user',
@@ -361,11 +401,11 @@ $(document).ready(function () {
         })
         .mouseout(function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'MOUSEOUT',
                 component: {
                     id: this.getAttribute('id') || 'UNK',
-                    type: ale.components.BUTTON,
+                    type: 'button',
                     group: 'query_group'
                 },
                 source: 'user',
@@ -376,11 +416,11 @@ $(document).ready(function () {
         })
         .click(function () {
             var msg = {
-                activity: ale.activities.PERFORM,
+                activity: 'perform',
                 action: 'CLICK',
                 component: {
                     id: this.getAttribute('id') || 'UNK',
-                    type: ale.components.BUTTON,
+                    type: 'button',
                     group: 'query_group'
                 },
                 source: 'user',
@@ -394,11 +434,11 @@ $(document).ready(function () {
     map
         .on('mouseover', function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'MOUSEOVER',
                 component: {
                     id: 'UNK',
-                    type: ale.components.MAP,
+                    type: 'map',
                     group: 'map_group'
                 },
                 source: 'user',
@@ -409,11 +449,11 @@ $(document).ready(function () {
         })
         .on('mouseout', function () {
             var msg = {
-                activity: ale.activities.INSPECT,
+                activity: 'inspect',
                 action: 'MOUSEOUT',
                 component: {
                     id: 'UNK',
-                    type: ale.components.MAP,
+                    type: 'map',
                     group: 'map_group'
                 },
                 source: 'user',
@@ -424,11 +464,11 @@ $(document).ready(function () {
         })
         .on('zoomstart', function () {
             var msg = {
-                activity: ale.activities.ALTER,
+                activity: 'alter',
                 action: 'ZOOM',
                 component: {
                     id: 'UNK',
-                    type: ale.components.MAP,
+                    type: 'map',
                     group: 'map_group'
                 },
                 source: 'unk',
@@ -439,11 +479,11 @@ $(document).ready(function () {
         })
         .on('dragstart', function () {
             var msg = {
-                activity: ale.activities.ALTER,
+                activity: 'alter',
                 action: 'DRAG',
                 component: {
                     id: 'UNK',
-                    type: ale.components.MAP,
+                    type: 'map',
                     group: 'map_group'
                 },
                 source: 'user',
@@ -454,11 +494,11 @@ $(document).ready(function () {
         })
         .on('dragend', function () {
             var msg = {
-                activity: ale.activities.ALTER,
+                activity: 'alter',
                 action: 'DRAG',
                 component: {
                     id: 'UNK',
-                    type: ale.components.MAP,
+                    type: 'map',
                     group: 'map_group'
                 },
                 source: 'user',
@@ -469,7 +509,7 @@ $(document).ready(function () {
         })
         .on('moveend', function () {
             var msg = {
-                activity: ale.activities.ALTER,
+                activity: 'alter',
                 action: 'MOVE',
                 component: {
                     id: 'UNK',
@@ -487,31 +527,56 @@ $(document).ready(function () {
     $('.slider')
         .on("slidestart", function (event, ui) {
             var msg = {
-                activity: ale.activities.ALTER,
+                activity: 'alter',
                 action: 'SLIDE',
                 component: {
                     id: this.getAttribute('id') || 'UNK',
-                    type: ale.components.SLIDER,
-                    group: 'input_group'
+                    type: 'slider',
+                    group: 'query_group'
                 },
                 source: 'user',
                 object: 'HANDLE',
                 tags: ['a', 'b']
             };
             log(msg);
+
+
+            var msg = {
+                activity: 'alter',
+                component: {
+                    type: 'slider',
+                    group: 'query_group'
+                },
+                source: 'system',
+                object: 'LABEL',
+                tags: []
+            };
+            log(msg);
         })
         .on("slidestop", function (event, ui) {
             var msg = {
-                activity: ale.activities.ALTER,
+                activity: 'alter',
                 action: 'SLIDE',
                 component: {
                     id: this.getAttribute('id') || 'UNK',
-                    type: ale.components.SLIDER,
-                    group: 'input_group'
+                    type: 'slider',
+                    group: 'query_group'
                 },
                 source: 'user',
                 object: 'HANDLE',
                 tags: ['a', 'b']
+            };
+            log(msg);
+
+            var msg = {
+                activity: 'alter',
+                component: {
+                    type: 'slider',
+                    group: 'query_group'
+                },
+                source: 'system',
+                object: 'LABEL',
+                tags: []
             };
             log(msg);
         });
@@ -519,11 +584,11 @@ $(document).ready(function () {
     $(window)
         .on("scroll", function() {
             var msg = {
-                activity: ale.activities.ALTER,
+                activity: 'alter',
                 action: 'SCROLL',
                 component: {
                     id: 'UNK',
-                    type: ale.components.WINDOW,
+                    type: 'window',
                     group: 'top'
                 },
                 source: 'unk',

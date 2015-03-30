@@ -12,12 +12,57 @@ $( document ).ready(function() {
 
     window.map = map;
 
+    var markers = [];
     $('#map-button0').click(function() {
         map.setView(L.latLng(48.8567, 2.3508), 10)
     });
 
     $('#map-button1').click(function() {
         map.setView(L.latLng(41.8369, -87.6847), 11)
+    });
+
+    $('#map-button2').click(function() {
+        var bounds = map.getBounds();
+
+        var west = bounds.getWest(),
+            north = bounds.getNorth(),
+            east = bounds.getEast(),
+            south = bounds.getSouth();
+
+        var lat = south + (north-south)*Math.random(),
+            lng = west + (east-west)*Math.random();
+
+        var marker = L.marker([lat, lng]).addTo(map);
+
+
+        markers.push(marker);
+        myLog({
+            activity: 'add',
+            component: {
+                type: 'map',
+                group: 'map_group'
+            },
+            source: 'system',
+            object: 'marker',
+            tags: []
+        })
+    });
+
+    $('#map-button3').click(function() {
+        var marker = markers.pop()
+
+        map.removeLayer(marker);
+
+        myLog({
+            activity: 'remove',
+            component: {
+                type: 'map',
+                group: 'map_group'
+            },
+            source: 'system',
+            object: 'marker',
+            tags: []
+        })
     });
 
     $(function() {

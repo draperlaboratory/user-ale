@@ -3,7 +3,7 @@ var loggingUrl = 'http://localhost:8080';
 var intervalTime = 5000; //send every 5 seconds
 var testing = false;
 var echo = true;
-var msg = 'DRAPER LOG: ';
+var msg = 'USERALE: ';
 
 // Register the interval timer to poll every intervalTime whether
 // is data that is needed to be send to the server or not.
@@ -91,9 +91,9 @@ self.addEventListener('message',
             // server.
             case 'setTesting':
                 if (data.msg) 
-                    msg = 'DRAPER LOG: (TESTING) ';
+                    msg = 'USERALE: (TESTING) ';
                 else 
-                    msg = 'DRAPER LOG: ';
+                    msg = 'USERALE: ';
                 
                 testing = data.msg;
                 break;
