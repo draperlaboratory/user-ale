@@ -52,7 +52,7 @@ $(document).ready(function () {
     });
 
     window.ale2 = ale2;
-    ale2.register()
+    ale2.register();
 
     var template = _.template(
         "<tr>" +
