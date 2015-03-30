@@ -1,0 +1,87 @@
+#map-container {
+    height: 300px;
+}
+
+.grp {
+    margin-bottom: 30px;
+}
+
+.output {
+    position: fixed;
+    height: 80%;
+    width: 600px;
+    /* padding: 20px; */
+    font-size: 10px;
+    overflow: hidden;
+    /* right: 20px; */
+    /* left: 0px; */
+    background-color: #e5e5e5;
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+
+/*td, th{*/
+    /*width: 30%;*/
+/*}*/
+thead {
+    background-color: #5A5A5A;
+    color: white;
+    border-bottom: 1px solid rgb(39, 39, 39);
+}
+
+tbody:before {
+    line-height:0.5em;
+    content:"-";
+    color:white; /* to hide text */
+    display:block;
+}
+
+
+th {
+    text-align: left;
+    padding: 4px 2px 1px 5px;
+
+}
+
+td {
+    padding: 0 5px;
+    overflow: hidden;
+}
+
+
+table {
+    width: 100%;
+    table-layout:fixed;
+}
+
+
+.ui-widget-header {
+    /*border: 1px solid #e78f08;*/
+    background: #448CB5;
+    /*color: #fff;*/
+    /*font-weight: bold;*/
+}
+
+
+/*.a {*/
+    /*width: 15%;*/
+/*}*/
+
+/*.b {*/
+    /*width: 20%;*/
+/*}*/
+
+/*.c {*/
+    /*width: 20%;*/
+/*}*/
+
+/*.d {*/
+    /*width: 20%;*/
+/*}*/
+
+/*.e {*/
+    /*width: 20%;*/
+/*}*/
+
+/*.f {*/
+    /*width: 5%;*/
+/*}*/

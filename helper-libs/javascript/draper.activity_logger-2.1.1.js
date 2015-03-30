@@ -13,7 +13,7 @@
 /*jshint unused:false*/
 function activityLogger(webWorkerURL) {
     'use strict';
-    var draperLog = {version: "2.1.1"}; // semver
+    var draperLog = {version: "3.0.0"}; // semver
     draperLog.worker = new Worker(webWorkerURL);
 
     var muteUserActivityLogging = false,
