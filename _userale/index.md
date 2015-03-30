@@ -16,3 +16,6 @@ To accurately measure the cognitive state of the user, tool developers associate
 
 #Who is the package for?
 This package is for developers creating **User** facing tools, and who would like to log the users interaction with this tool, in order to gain an insight into the behavioural and cognitive state of the user.
+
+#Demo
+<a href="test_app/index.html">Demo</a>
