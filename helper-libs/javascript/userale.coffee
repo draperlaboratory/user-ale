@@ -53,8 +53,8 @@ ELEMENTS = [
   'WINDOW'
   'WORKSPACE'
 # Other is used in conjunction with softwareMetadata in order
-# to provide a component in which is not currently listed within
-# the COMPONENT list.
+# to provide a element in which is not currently listed within
+# the element list.
   'OTHER'
 ]
 
@@ -82,19 +82,17 @@ defaults = {
   workerUrl: 'userale-worker.js'
   debug: true
   sendLogs: true
-  componentGroups: []
+  elementGroups: []
 }
 
 default_msg = {
-  activity: null,
-  action: null,
-  component: {
-    id: null,
-    type: null,
-    group: null
-  },
-  source: null,
-  object: null,
+  activity: '',
+  action: '',
+  elementId: '',
+  elementType: '',
+  elementGroup: '',
+  elementSub: '',
+  source: '',
   tags: []
   meta: {}
 }
@@ -103,8 +101,8 @@ class userale
   constructor: (options)->
     @options = extend(defaults, options)
 
-    if @options.componentGroups.constructor is not Array
-      @options.componentGroups = [@options.componentGroups]
+    if @options.elementGroups.constructor is not Array
+      @options.elementGroups = [@options.elementGroups]
 
     @options.version = '3.0.0'
 
@@ -135,19 +133,19 @@ class userale
     @worker.postMessage({cmd: 'sendBuffer', msg: ''})
 
   log: (msg) ->
+    msg = extend(default_msg, msg)
     for key, value of msg
-      msg = extend(default_msg, msg)
-      if key is 'component'
-        if value.group not in @options.componentGroups
-          console.warn("#{ value.group } is NOT in component groups")
-
-        elementType = value.type.toUpperCase()
-        if elementType not in ELEMENTS
-          console.warn("USERALE: Unrecognized element - #{ elementType }")
-        else if (elementType is 'OTHER') and !msg.meta.element?
+      if key is 'elementType'
+        value = value.toUpperCase()
+        if value not in ELEMENTS
+          console.warn("USERALE: Unrecognized element - #{ value }")
+        else if (value is 'OTHER') and !msg.meta.element?
           console.warn("USERALE: Element type set to 'other', but 'element' not set in meta object ")
+        msg.elementType = msg.elementType.toUpperCase()
 
-        msg.component.type = elementType
+      if key is 'elementGroup'
+        if value not in @options.elementGroups
+          console.warn("#{ value } is NOT in element groups")
 
       if key is 'activity'
         activities = (x.toUpperCase() for x in value.split('_'))

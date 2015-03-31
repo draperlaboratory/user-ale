@@ -39,19 +39,17 @@
     workerUrl: 'userale-worker.js',
     debug: true,
     sendLogs: true,
-    componentGroups: []
+    elementGroups: []
   };
 
   default_msg = {
-    activity: null,
-    action: null,
-    component: {
-      id: null,
-      type: null,
-      group: null
-    },
-    source: null,
-    object: null,
+    activity: '',
+    action: '',
+    elementId: '',
+    elementType: '',
+    elementGroup: '',
+    elementSub: '',
+    source: '',
     tags: [],
     meta: {}
   };
@@ -59,8 +57,8 @@
   userale = (function() {
     function userale(options) {
       this.options = extend(defaults, options);
-      if (this.options.componentGroups.constructor === !Array) {
-        this.options.componentGroups = [this.options.componentGroups];
+      if (this.options.elementGroups.constructor === !Array) {
+        this.options.elementGroups = [this.options.elementGroups];
       }
       this.options.version = '3.0.0';
       this.worker = new Worker(this.options.workerUrl);
@@ -91,29 +89,31 @@
     };
 
     userale.prototype.log = function(msg) {
-      var activities, activity, elementType, i, key, len, ref, value, x;
+      var activities, activity, i, key, len, value, x;
+      msg = extend(default_msg, msg);
       for (key in msg) {
         value = msg[key];
-        msg = extend(default_msg, msg);
-        if (key === 'component') {
-          if (ref = value.group, indexOf.call(this.options.componentGroups, ref) < 0) {
-            console.warn(value.group + " is NOT in component groups");
-          }
-          elementType = value.type.toUpperCase();
-          if (indexOf.call(ELEMENTS, elementType) < 0) {
-            console.warn("USERALE: Unrecognized element - " + elementType);
-          } else if ((elementType === 'OTHER') && (msg.meta.element == null)) {
+        if (key === 'elementType') {
+          value = value.toUpperCase();
+          if (indexOf.call(ELEMENTS, value) < 0) {
+            console.warn("USERALE: Unrecognized element - " + value);
+          } else if ((value === 'OTHER') && (msg.meta.element == null)) {
             console.warn("USERALE: Element type set to 'other', but 'element' not set in meta object ");
           }
-          msg.component.type = elementType;
+          msg.elementType = msg.elementType.toUpperCase();
+        }
+        if (key === 'elementGroup') {
+          if (indexOf.call(this.options.elementGroups, value) < 0) {
+            console.warn(value + " is NOT in element groups");
+          }
         }
         if (key === 'activity') {
           activities = (function() {
-            var i, len, ref1, results1;
-            ref1 = value.split('_');
+            var i, len, ref, results1;
+            ref = value.split('_');
             results1 = [];
-            for (i = 0, len = ref1.length; i < len; i++) {
-              x = ref1[i];
+            for (i = 0, len = ref.length; i < len; i++) {
+              x = ref[i];
               results1.push(x.toUpperCase());
             }
             return results1;
