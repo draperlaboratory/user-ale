@@ -39,17 +39,19 @@
     workerUrl: 'userale-worker.js',
     debug: true,
     sendLogs: true,
-    elementGroups: []
+    componentGroups: []
   };
 
   default_msg = {
-    activity: '',
-    action: '',
-    elementId: '',
-    elementType: '',
-    elementGroup: '',
-    elementSub: '',
-    source: '',
+    activity: null,
+    action: null,
+    component: {
+      id: null,
+      type: null,
+      group: null
+    },
+    source: null,
+    object: null,
     tags: [],
     meta: {}
   };
@@ -57,8 +59,8 @@
   userale = (function() {
     function userale(options) {
       this.options = extend(defaults, options);
-      if (this.options.elementGroups.constructor === !Array) {
-        this.options.elementGroups = [this.options.elementGroups];
+      if (this.options.componentGroups.constructor === !Array) {
+        this.options.componentGroups = [this.options.componentGroups];
       }
       this.options.version = '3.0.0';
       this.worker = new Worker(this.options.workerUrl);
@@ -82,38 +84,100 @@
         this.options.client = 'UNK';
         console.warn('USERALE: NO CLIENT, MAKING ONE UP.   You can pass one in as url parameter (127.0.0.1?client=roger)');
       }
-      return this.worker.postMessage({
+      this.worker.postMessage({
         cmd: 'sendBuffer',
         msg: ''
       });
+      window.onload = (function(_this) {
+        return function() {
+          var msg;
+          msg = {
+            activity: 'show',
+            action: 'onload',
+            component: {
+              id: 'window',
+              type: 'window',
+              group: 'top'
+            },
+            source: 'user'
+          };
+          return _this.log(msg);
+        };
+      })(this);
+      window.onbeforeunload = (function(_this) {
+        return function() {
+          var msg;
+          msg = {
+            activity: 'hide',
+            action: 'onbeforeunload',
+            component: {
+              id: 'window',
+              type: 'window',
+              group: 'top'
+            },
+            source: 'user'
+          };
+          return _this.log(msg);
+        };
+      })(this);
+      window.onfocus = (function(_this) {
+        return function() {
+          var msg;
+          msg = {
+            activity: 'show',
+            action: 'onfocus',
+            component: {
+              id: 'window',
+              type: 'window',
+              group: 'top'
+            },
+            source: 'user'
+          };
+          return _this.log(msg);
+        };
+      })(this);
+      return window.onblur = (function(_this) {
+        return function() {
+          var msg;
+          msg = {
+            activity: 'hide',
+            action: 'onblur',
+            component: {
+              id: 'window',
+              type: 'window',
+              group: 'top'
+            },
+            source: 'user'
+          };
+          return _this.log(msg);
+        };
+      })(this);
     };
 
     userale.prototype.log = function(msg) {
-      var activities, activity, i, key, len, value, x;
-      msg = extend(default_msg, msg);
+      var activities, activity, elementType, i, key, len, ref, value, x;
       for (key in msg) {
         value = msg[key];
-        if (key === 'elementType') {
-          value = value.toUpperCase();
-          if (indexOf.call(ELEMENTS, value) < 0) {
-            console.warn("USERALE: Unrecognized element - " + value);
-          } else if ((value === 'OTHER') && (msg.meta.element == null)) {
+        msg = extend(default_msg, msg);
+        if (key === 'component') {
+          if (ref = value.group, indexOf.call(this.options.componentGroups, ref) < 0) {
+            console.warn(value.group + " is NOT in component groups");
+          }
+          elementType = value.type.toUpperCase();
+          if (indexOf.call(ELEMENTS, elementType) < 0) {
+            console.warn("USERALE: Unrecognized element - " + elementType);
+          } else if ((elementType === 'OTHER') && (msg.meta.element == null)) {
             console.warn("USERALE: Element type set to 'other', but 'element' not set in meta object ");
           }
-          msg.elementType = msg.elementType.toUpperCase();
-        }
-        if (key === 'elementGroup') {
-          if (indexOf.call(this.options.elementGroups, value) < 0) {
-            console.warn(value + " is NOT in element groups");
-          }
+          msg.component.type = elementType;
         }
         if (key === 'activity') {
           activities = (function() {
-            var i, len, ref, results1;
-            ref = value.split('_');
+            var i, len, ref1, results1;
+            ref1 = value.split('_');
             results1 = [];
-            for (i = 0, len = ref.length; i < len; i++) {
-              x = ref[i];
+            for (i = 0, len = ref1.length; i < len; i++) {
+              x = ref1[i];
               results1.push(x.toUpperCase());
             }
             return results1;
@@ -169,8 +233,6 @@
 
   })();
 
-  window.userale = userale;
+  this.userale = userale;
 
 }).call(this);
-
-//# sourceMappingURL=userale.js.map
