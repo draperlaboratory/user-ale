@@ -84,10 +84,74 @@
         this.options.client = 'UNK';
         console.warn('USERALE: NO CLIENT, MAKING ONE UP.   You can pass one in as url parameter (127.0.0.1?client=roger)');
       }
-      return this.worker.postMessage({
+      this.worker.postMessage({
         cmd: 'sendBuffer',
         msg: ''
       });
+      window.onload = (function(_this) {
+        return function() {
+          var msg;
+          msg = {
+            activity: 'show',
+            action: 'onload',
+            component: {
+              id: 'window',
+              type: 'window',
+              group: 'top'
+            },
+            source: 'user'
+          };
+          return _this.log(msg);
+        };
+      })(this);
+      window.onbeforeunload = (function(_this) {
+        return function() {
+          var msg;
+          msg = {
+            activity: 'hide',
+            action: 'onbeforeunload',
+            component: {
+              id: 'window',
+              type: 'window',
+              group: 'top'
+            },
+            source: 'user'
+          };
+          return _this.log(msg);
+        };
+      })(this);
+      window.onfocus = (function(_this) {
+        return function() {
+          var msg;
+          msg = {
+            activity: 'show',
+            action: 'onfocus',
+            component: {
+              id: 'window',
+              type: 'window',
+              group: 'top'
+            },
+            source: 'user'
+          };
+          return _this.log(msg);
+        };
+      })(this);
+      return window.onblur = (function(_this) {
+        return function() {
+          var msg;
+          msg = {
+            activity: 'hide',
+            action: 'onblur',
+            component: {
+              id: 'window',
+              type: 'window',
+              group: 'top'
+            },
+            source: 'user'
+          };
+          return _this.log(msg);
+        };
+      })(this);
     };
 
     userale.prototype.log = function(msg) {
@@ -172,5 +236,3 @@
   this.userale = userale;
 
 }).call(this);
-
-//# sourceMappingURL=userale.js.map
