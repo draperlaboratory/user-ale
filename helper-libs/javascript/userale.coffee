@@ -191,7 +191,5 @@ class userale
       cmd: 'setTesting',
       msg: !onOff
     });
-#    console.log(msg)
 
-
-window.userale = userale
+this.userale = userale

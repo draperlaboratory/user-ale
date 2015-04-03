@@ -169,7 +169,7 @@
 
   })();
 
-  window.userale = userale;
+  this.userale = userale;
 
 }).call(this);
 

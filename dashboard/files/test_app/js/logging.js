@@ -72,14 +72,18 @@ $(document).ready(function () {
 
         ale2.log(msg);
 
-        setTimeout(function () {
-            elem.fadeOut(400, function () {
-                $(this).remove();
-            });
-        }, 2000)
+        //setTimeout(function () {
+        //    elem.fadeOut(400, function () {
+        //        $(this).remove();
+        //    });
+        //}, 2000)
 
 
     }
+
+    $('#clear-button').click(function() {
+        $('.output tbody tr').remove();
+    });
 
     window.myLog = log;
 
