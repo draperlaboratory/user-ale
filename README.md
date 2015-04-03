@@ -1,3 +1,4 @@
+<img src="https://raw.githubusercontent.com/draperlaboratory/user-ale/gh-pages/img/user-ale-small.png"/>
 #User-ALE
 
 ##Background
