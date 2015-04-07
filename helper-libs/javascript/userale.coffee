@@ -132,6 +132,59 @@ class userale
 
     @worker.postMessage({cmd: 'sendBuffer', msg: ''})
 
+    window.onload = =>
+      msg = {
+        activity: 'show'
+        action: 'onload'
+        component: {
+          id: 'window',
+          type: 'window',
+          group: 'top'
+        },
+        source: 'user',
+      }
+      @log(msg)
+
+    window.onbeforeunload = =>
+      msg = {
+        activity: 'hide'
+        action: 'onbeforeunload'
+        component: {
+          id: 'window',
+          type: 'window',
+          group: 'top'
+        },
+        source: 'user',
+      }
+      @log(msg)
+
+    window.onfocus = =>
+      msg = {
+        activity: 'show'
+        action: 'onfocus'
+        component: {
+          id: 'window',
+          type: 'window',
+          group: 'top'
+        },
+        source: 'user',
+      }
+      @log(msg)
+
+    window.onblur = =>
+      msg = {
+        activity: 'hide'
+        action: 'onblur'
+        component: {
+          id: 'window',
+          type: 'window',
+          group: 'top'
+        },
+        source: 'user',
+      }
+      @log(msg)
+
+
   log: (msg) ->
     msg = extend(default_msg, msg)
     for key, value of msg
@@ -189,7 +242,26 @@ class userale
       cmd: 'setTesting',
       msg: !onOff
     });
-#    console.log(msg)
 
-
-window.userale = userale
+#  // Log the activity when the user gains focus on the web browser
+#  // window. In order to do this, we register an onFocus callback function
+#  // which will log the gained focus of the element.
+#window.onfocus = function() {
+#draperLog.logUserActivity(
+#  'window gained focus',
+#  'window_focus',
+#  draperLog.WF_OTHER
+#);
+#  };
+#
+#  // Log the activity when the user leaves focus on the web browser
+#  // window. In order to do this, we register an onBlur callback function
+#  // which will log the lost focus
+#  window.onblur = function() {
+#  draperLog.logUserActivity(
+#    'window lost focus',
+#    'window_blur',
+#    draperLog.WF_OTHER
+#  );
+#  };
+this.userale = userale
