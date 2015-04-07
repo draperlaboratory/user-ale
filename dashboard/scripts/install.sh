@@ -33,3 +33,4 @@ sudo cp /vagrant/files/xdata.conf /etc/logstash/conf.d/       || exit $?
 sudo mkdir /var/log/xdata                          || exit $?
 sudo touch  /var/log/xdata/xdata.log               || exit $?
 
+cp /vagrant/files/XDATA-Dashboard-v3 $HOME/kibana-3.1.2/app/dashboards/default.json  || exit $?

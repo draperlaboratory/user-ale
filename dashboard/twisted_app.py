@@ -23,6 +23,15 @@ LOG_SETTINGS = {
             'maxBytes': 100e6,
             'backupCount': 10,
         },
+        'xdata-v3': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'level': 'INFO',
+            'formatter': 'xdata',
+            'filename': '/var/log/xdata/xdata-v3.log',
+            'mode': 'a',
+            'maxBytes': 100e6,
+            'backupCount': 10,
+        },
         'file2': {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
@@ -51,6 +60,10 @@ LOG_SETTINGS = {
             'level':'DEBUG',
             'handlers': ['file1',]
         },
+        'xdata-v3': {
+            'level':'DEBUG',
+            'handlers': ['xdata-v3',]
+        },
         'error': {
             'level':'DEBUG',
             'handlers': ['file2',]
@@ -61,6 +74,7 @@ LOG_SETTINGS = {
 config.dictConfig(LOG_SETTINGS)
 
 logger = logging.getLogger('xdata')
+loggerv3 = logging.getLogger('xdata-v3')
 logger_err = logging.getLogger('error')
 
 kibana = File('/home/vagrant/kibana-3.1.2')
@@ -87,7 +101,7 @@ class Counter(Resource):
 
 class Logger(Resource):
     def render_OPTIONS(self, request):
-        request.setHeader('Access-Control-Allow-Origin', 'http://192.168.86.10')
+        request.setHeader('Access-Control-Allow-Origin', 'http://192.168.1.10')
         request.setHeader('Access-Control-Allow-Methods', 'POST')
         request.setHeader('Access-Control-Allow-Headers', 'x-prototype-version,x-requested-with,Content-Type')
         request.setHeader('Access-Control-Max-Age', 2520) # 42 hours
@@ -96,19 +110,23 @@ class Logger(Resource):
     def render_POST(self, request):
         newdata = request.content.getvalue()
         newdata = simplejson.loads(newdata)
-        request.setHeader('Access-Control-Allow-Origin', 'http://192.168.86.10')
+        request.setHeader('Access-Control-Allow-Origin', 'http://192.168.1.10')
         request.setHeader('Access-Control-Allow-Methods', 'POST')
         request.setHeader('Access-Control-Allow-Headers', 'x-prototype-version,x-requested-with,Content-Type')
         request.setHeader('Access-Control-Max-Age', 2520) # 42 hours
-        
+
         try:
             for a in newdata:
-                if 'wf_state' in a['parms']:
+                if 'useraleVersion' in a:
+                    if a['useraleVersion'].split('.')[0] == '3':
+                        loggerv3.info(simplejson.dumps(a))
+
+                elif ('parms' in a) and ('wf_state' in a['parms']):
                     a['wf_state_longname'] = wf_dict[a['parms']['wf_state']]
-                
-                logger.info(simplejson.dumps(a))
-        except:
-            logger_err.error('logging error')
+
+                    logger.info(simplejson.dumps(a))
+        except e:
+            logger_err.error(e)
 
         return ''
 

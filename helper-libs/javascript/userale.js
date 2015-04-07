@@ -92,11 +92,9 @@
           msg = {
             activity: 'show',
             action: 'onload',
-            component: {
-              id: 'window',
-              type: 'window',
-              group: 'top'
-            },
+            elementId: 'window',
+            elementType: 'window',
+            elementGroup: 'top',
             source: 'user'
           };
           return _this.log(msg);
@@ -108,11 +106,9 @@
           msg = {
             activity: 'hide',
             action: 'onbeforeunload',
-            component: {
-              id: 'window',
-              type: 'window',
-              group: 'top'
-            },
+            elementId: 'window',
+            elementType: 'window',
+            elementGroup: 'top',
             source: 'user'
           };
           return _this.log(msg);
@@ -124,11 +120,9 @@
           msg = {
             activity: 'show',
             action: 'onfocus',
-            component: {
-              id: 'window',
-              type: 'window',
-              group: 'top'
-            },
+            elementId: 'window',
+            elementType: 'window',
+            elementGroup: 'top',
             source: 'user'
           };
           return _this.log(msg);
@@ -140,11 +134,9 @@
           msg = {
             activity: 'hide',
             action: 'onblur',
-            component: {
-              id: 'window',
-              type: 'window',
-              group: 'top'
-            },
+            elementId: 'window',
+            elementType: 'window',
+            elementGroup: 'top',
             source: 'user'
           };
           return _this.log(msg);
@@ -167,7 +159,7 @@
           msg.elementType = msg.elementType.toUpperCase();
         }
         if (key === 'elementGroup') {
-          if (indexOf.call(this.options.elementGroups, value) < 0) {
+          if ((value === !'top') && (indexOf.call(this.options.elementGroups, value) < 0)) {
             console.warn(value + " is NOT in element groups");
           }
         }
@@ -206,7 +198,7 @@
       msg.toolVersion = this.options.toolVersion;
       msg.sessionID = this.options.sessionID;
       msg.language = 'JavaScript';
-      msg.useraleVersion = this.version;
+      msg.useraleVersion = this.options.version;
       return this.worker.postMessage({
         cmd: 'sendMsg',
         msg: msg

@@ -33,9 +33,9 @@ $(document).ready(function () {
 
     var ale2 = new userale(
         {
-        loggingUrl: '',
-        toolName: 'dave',
-        toolVersion: '2.3',
+        loggingUrl: 'http://192.168.1.100',
+        toolName: 'userale-test',
+        toolVersion: '3.0.0',
         elementGroups: [
             'map_group',
             'input_group',
@@ -46,7 +46,7 @@ $(document).ready(function () {
         ],
         workerUrl: 'js/userale-worker.js',
         debug: true,
-        sendLogs: false
+        sendLogs: true
     });
 
     window.ale2 = ale2;

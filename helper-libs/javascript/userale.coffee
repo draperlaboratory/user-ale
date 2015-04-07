@@ -136,11 +136,9 @@ class userale
       msg = {
         activity: 'show'
         action: 'onload'
-        component: {
-          id: 'window',
-          type: 'window',
-          group: 'top'
-        },
+        elementId: 'window'
+        elementType: 'window'
+        elementGroup: 'top'
         source: 'user',
       }
       @log(msg)
@@ -149,11 +147,9 @@ class userale
       msg = {
         activity: 'hide'
         action: 'onbeforeunload'
-        component: {
-          id: 'window',
-          type: 'window',
-          group: 'top'
-        },
+        elementId: 'window'
+        elementType: 'window'
+        elementGroup: 'top'
         source: 'user',
       }
       @log(msg)
@@ -162,11 +158,9 @@ class userale
       msg = {
         activity: 'show'
         action: 'onfocus'
-        component: {
-          id: 'window',
-          type: 'window',
-          group: 'top'
-        },
+        elementId: 'window'
+        elementType: 'window'
+        elementGroup: 'top'
         source: 'user',
       }
       @log(msg)
@@ -175,11 +169,9 @@ class userale
       msg = {
         activity: 'hide'
         action: 'onblur'
-        component: {
-          id: 'window',
-          type: 'window',
-          group: 'top'
-        },
+        elementId: 'window'
+        elementType: 'window'
+        elementGroup: 'top'
         source: 'user',
       }
       @log(msg)
@@ -197,7 +189,7 @@ class userale
         msg.elementType = msg.elementType.toUpperCase()
 
       if key is 'elementGroup'
-        if value not in @options.elementGroups
+        if (value is not 'top') and (value not in @options.elementGroups)
           console.warn("#{ value } is NOT in element groups")
 
       if key is 'activity'
@@ -222,7 +214,7 @@ class userale
     msg.toolVersion = @options.toolVersion
     msg.sessionID = @options.sessionID
     msg.language = 'JavaScript'
-    msg.useraleVersion = @version
+    msg.useraleVersion = @options.version
 
     @.worker.postMessage({
       cmd: 'sendMsg',

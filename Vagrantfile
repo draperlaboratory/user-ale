@@ -2,11 +2,11 @@ Vagrant.configure(2) do |config|
 
     # Setting proxy configurations for the host box. This also sets common proxy settings
     # and files for other applications, such as apt-get/yum
-    # if Vagrant.has_plugin?("vagrant-proxyconf")
-    #     config.proxy.http = "http://127.0.0.1:3128"
-    #     config.proxy.https = "http://127.0.0.1:3128"
-    #     config.proxy.no_proxy = "localhost,127.0.0.1"
-    # end
+    if Vagrant.has_plugin?("vagrant-proxyconf")
+         config.proxy.http = "http://192.168.1.1:3128"
+         config.proxy.https = "http://192.168.1.1:3128"
+         config.proxy.no_proxy = "localhost, 127.0.0.1"
+     end
 
     config.vm.define "elk" do |elk|
         elk.vm.box = "ubuntu/trusty64"
@@ -22,7 +22,7 @@ Vagrant.configure(2) do |config|
         # boxes.
         # - Expose the following ports to be used within this box to
         # host data being sent between the web server and the ELK server.
-        elk.vm.network "private_network", ip: "192.168.86.100"
+        elk.vm.network "private_network", ip: "192.168.1.100"
      
         # Provisioner: Runs the provisioning script that will provision
         # the vagrant box for the first time, or forced. 
@@ -50,7 +50,7 @@ Vagrant.configure(2) do |config|
         # Setup a static IP to allow both vagrant boxes to know where 
         # to contact each other. This will allow communication between the
         # web developer and the logging server.
-        dev.vm.network "private_network", ip: "192.168.86.10"
+        dev.vm.network "private_network", ip: "192.168.1.10"
 
         # Specify the provisioning script that will be used in order to 
         # install the necessary files needed for this vagrant box
