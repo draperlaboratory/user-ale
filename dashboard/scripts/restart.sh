@@ -97,4 +97,5 @@ curl -XPUT 'http://127.0.0.1:9200/xdata/_mapping/USERACTION' -d '
 
 # Start the webservice that allows us to ping ELK and
 # dump data to the ELK service
+sudo kill $(ps aux | grep '[t]wistd' | awk '{print $2}')
 sudo -E twistd -y /vagrant/twisted_app.py &
