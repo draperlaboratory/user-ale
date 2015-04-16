@@ -2,23 +2,31 @@ from twisted.web.server import Site
 from twisted.web.static import File
 from twisted.internet import reactor
 from twisted.web.resource import Resource
+from twisted.application import service, internet
 
 import logging
+import os
 from logging import config
 import logging.handlers
 
 import simplejson
 
-# logging configuration
 
+KIBANA = '/home/vagrant/kibana-3.1.2'
+ALLOW_ORIGIN = 'http://192.168.1.10'
+
+if not os.path.exists('/var/log/xdata'):
+    os.makedirs('/var/log/xdata')
+
+# logging configuration
 LOG_SETTINGS = {
     'version': 1,
     'handlers': {    
-        'file1': {
+        'xdata-v2': {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
             'formatter': 'xdata',
-            'filename': '/var/log/xdata/xdata.log',
+            'filename': '/var/log/xdata/xdata-v2.log',
             'mode': 'a',
             'maxBytes': 100e6,
             'backupCount': 10,
@@ -56,9 +64,9 @@ LOG_SETTINGS = {
         },
     },
     'loggers': {
-        'xdata': {
+        'xdata-v2': {
             'level':'DEBUG',
-            'handlers': ['file1',]
+            'handlers': ['xdata-v2',]
         },
         'xdata-v3': {
             'level':'DEBUG',
@@ -73,12 +81,11 @@ LOG_SETTINGS = {
 
 config.dictConfig(LOG_SETTINGS)
 
-logger = logging.getLogger('xdata')
+logger = logging.getLogger('xdata-v2')
 loggerv3 = logging.getLogger('xdata-v3')
 logger_err = logging.getLogger('error')
 
-kibana = File('/home/vagrant/kibana-3.1.2')
-#test = File('/vagrant/test')
+kibana = File(KIBANA)
 
 wf_dict = {
     0: "WF_OTHER",
@@ -90,18 +97,9 @@ wf_dict = {
     6: "WF_TRANSFORM"
 }
 
-class Counter(Resource):
-    isLeaf = True
-    numberRequests = 0
-
-    def render_GET(self, request):
-        self.numberRequests += 1
-        request.setHeader("content-type", "text/plain")
-        return "I am request #" + str(self.numberRequests) + "\n"
-
 class Logger(Resource):
     def render_OPTIONS(self, request):
-        request.setHeader('Access-Control-Allow-Origin', 'http://192.168.1.10')
+        request.setHeader('Access-Control-Allow-Origin', ALLOW_ORIGIN)
         request.setHeader('Access-Control-Allow-Methods', 'POST')
         request.setHeader('Access-Control-Allow-Headers', 'x-prototype-version,x-requested-with,Content-Type')
         request.setHeader('Access-Control-Max-Age', 2520) # 42 hours
@@ -110,7 +108,7 @@ class Logger(Resource):
     def render_POST(self, request):
         newdata = request.content.getvalue()
         newdata = simplejson.loads(newdata)
-        request.setHeader('Access-Control-Allow-Origin', 'http://192.168.1.10')
+        request.setHeader('Access-Control-Allow-Origin', ALLOW_ORIGIN)
         request.setHeader('Access-Control-Allow-Methods', 'POST')
         request.setHeader('Access-Control-Allow-Headers', 'x-prototype-version,x-requested-with,Content-Type')
         request.setHeader('Access-Control-Max-Age', 2520) # 42 hours
@@ -132,8 +130,11 @@ class Logger(Resource):
 
 root = Resource()
 root.putChild("kibana", kibana)
-root.putChild("counter", Counter())
 root.putChild("send_log", Logger())
 
-reactor.listenTCP(80, Site(root))
-reactor.run()
+# create a resource to serve static files
+tmp_service = internet.TCPServer(80, Site(root))
+application = service.Application("User-ALE")
+
+# attach the service to its parent application
+tmp_service.setServiceParent(application)

@@ -3,8 +3,8 @@ Vagrant.configure(2) do |config|
     # Setting proxy configurations for the host box. This also sets common proxy settings
     # and files for other applications, such as apt-get/yum
     if Vagrant.has_plugin?("vagrant-proxyconf")
-         config.proxy.http = "http://192.168.1.1:3128"
-         config.proxy.https = "http://192.168.1.1:3128"
+         config.proxy.http = "http://plcyber06.draper.com:3128"
+         config.proxy.https = "http://plcyber06.draper.com:3128"
          config.proxy.no_proxy = "localhost, 127.0.0.1"
      end
 
@@ -35,7 +35,7 @@ Vagrant.configure(2) do |config|
         # the elk server and web service all the times. This could be done
         # in an initrc file, but this will do.
         elk.vm.provision "shell", path: "dashboard/scripts/restart.sh", run: "always"
-
+        elk.ssh.forward_x11 = true
         # Host configuration: Set specific requirements for the host to
         # provide the Guest Box to use.
         elk.vm.provider :virtualbox do |vb|
