@@ -38,10 +38,12 @@ $( document ).ready(function() {
         markers.push(marker);
         myLog({
             activity: 'add',
-            elementType: 'map',
-            elementGroup: 'map_group',
-            elementSub: 'marker',
+            component: {
+                type: 'map',
+                group: 'map_group'
+            },
             source: 'system',
+            object: 'marker',
             tags: []
         })
     });
@@ -53,10 +55,12 @@ $( document ).ready(function() {
 
         myLog({
             activity: 'remove',
-            elementType: 'map',
-            elementGroup: 'map_group',
-            elementSub: 'marker',
+            component: {
+                type: 'map',
+                group: 'map_group'
+            },
             source: 'system',
+            object: 'marker',
             tags: []
         })
     });

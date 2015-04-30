@@ -22,11 +22,13 @@ $(document).ready(function () {
     var defaultMsg = {
         activity: null,
         action: null,
-        elementId: '',
-        elementType: '',
-        elementGroup: '',
-        elementSub: '',
+        component: {
+            id: null,
+            type: null,
+            group: null
+        },
         source: null,
+        object: null,
         tags: [],
         meta: {}
     };
@@ -36,7 +38,7 @@ $(document).ready(function () {
         loggingUrl: '',
         toolName: 'dave',
         toolVersion: '2.3',
-        elementGroups: [
+        componentGroups: [
             'map_group',
             'input_group',
             'top',
@@ -56,10 +58,10 @@ $(document).ready(function () {
         "<tr>" +
             "<td class='a'><%- activity %></td>" +
             "<td class='b'><%- action %></td>" +
-            "<td class='c'><%- elementId %></td>" +
-            "<td class='d'><%- elementType %></td>" +
-            "<td class='e'><%- elementGroup %></td>" +
-            "<td class='e'><%- elementSub %></td>" +
+            "<td class='c'><%- component.id %></td>" +
+            "<td class='d'><%- component.type %></td>" +
+            "<td class='e'><%- component.group %></td>" +
+            "<td class='e'><%- object %></td>" +
             "<td class='f'><%- source %></td>" +
         "</tr>"
     );
@@ -70,14 +72,18 @@ $(document).ready(function () {
 
         ale2.log(msg);
 
-        setTimeout(function () {
-            elem.fadeOut(400, function () {
-                $(this).remove();
-            });
-        }, 2000)
+        //setTimeout(function () {
+        //    elem.fadeOut(400, function () {
+        //        $(this).remove();
+        //    });
+        //}, 2000)
 
 
     }
+
+    $('#clear-button').click(function() {
+        $('.output tbody tr').remove();
+    });
 
     window.myLog = log;
 
@@ -88,10 +94,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'MOUSEOVER',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'button',
-                elementGroup: 'button_group',
+                component: {
+                    id: this.getAttribute('id') || 'UNK',
+                    type: 'button',
+                    group: 'button_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['submit']
             };
             log(msg);
@@ -100,10 +109,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'MOUSEOUT',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'button',
-                elementGroup: 'button_group',
+                component: {
+                    id: this.getAttribute('id') || 'UNK',
+                    type: 'button',
+                    group: 'button_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['submit']
             };
             log(msg);
@@ -112,10 +124,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'perform',
                 action: 'CLICK',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'button',
-                elementGroup: 'button_group',
+                component: {
+                    id: this.getAttribute('id') || 'UNK',
+                    type: 'button',
+                    group: 'button_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['submit']
             };
             log(msg);
@@ -126,10 +141,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'MOUSEOVER',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'radiobutton',
-                elementGroup: 'button_group',
+                component: {
+                    id: this.getAttribute('id') || 'UNK',
+                    type: 'radiobutton',
+                    group: 'button_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -138,10 +156,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'MOUSEOUT',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'radiobutton',
-                elementGroup: 'button_group',
+                component: {
+                    id: this.getAttribute('id') || 'UNK',
+                    type: 'radiobutton',
+                    group: 'button_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -150,10 +171,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'SELECT_DESELECT',
                 action: 'CLICK',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'radiobutton',
-                elementGroup: 'button_group',
+                component: {
+                    id: this.getAttribute('id') || 'UNK',
+                    type: 'radiobutton',
+                    group: 'button_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -164,10 +188,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'MOUSEOVER',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'dropdownlist',
-                elementGroup: 'dropdown_group',
+                component: {
+                    id: this.getAttribute('id') || 'UNK',
+                    type: 'dropdownlist',
+                    group: 'dropdown_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -176,11 +203,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'MOUSEOUT',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'dropdownlist',
-                elementGroup: 'dropdown_group',
-
+                component: {
+                    id: this.getAttribute('id'),
+                    type: 'dropdownlist',
+                    group: 'dropdown_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -190,10 +219,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'OPEN_CLOSE',
                 action: 'CLICK',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'dropdownlist',
-                elementGroup: 'dropdown_group',
+                component: {
+                    id: this.getAttribute('id'),
+                    type: 'dropdownlist',
+                    group: 'dropdown_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -204,11 +236,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'MOUSEOVER',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'dropdownlist',
-                elementGroup: 'dropdown_group',
-                elementSub: 'listitem',
+                component: {
+                    id: this.getAttribute('id'),
+                    type: 'listitem',
+                    group: 'dropdown_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -217,11 +251,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'MOUSEOUT',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'dropdownlist',
-                elementGroup: 'dropdown_group',
-                elementSub: 'listitem',
+                component: {
+                    id: this.getAttribute('id'),
+                    type: 'listitem',
+                    group: 'dropdown_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -230,11 +266,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'perform',
                 action: 'CLICK',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'dropdownlist',
-                elementGroup: 'dropdown_group',
-                elementSub: 'listitem',
+                component: {
+                    id: this.getAttribute('id'),
+                    type: 'listitem',
+                    group: 'dropdown_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -245,10 +283,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'MOUSEOVER',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'textbox',
-                elementGroup: 'query_group',
+                component: {
+                    id: this.getAttribute('id'),
+                    type: 'textbox',
+                    group: 'query_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -257,10 +298,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'MOUSEOVER',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'textbox',
-                elementGroup: 'query_group',
+                component: {
+                    id: this.getAttribute('id'),
+                    type: 'textbox',
+                    group: 'query_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -269,22 +313,28 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'FOCUS',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'textbox',
-                elementGroup: 'query_group',
+                component: {
+                    id: this.getAttribute('id'),
+                    type: 'textbox',
+                    group: 'query_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
         })
         .keypress(function () {
             var msg = {
-                activity: 'alter',
+                activity: ale.activities.ALTER,
                 action: 'ENTERTEXT',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'textbox',
-                elementGroup: 'query_group',
+                component: {
+                    id: this.getAttribute('id'),
+                    type: 'textbox',
+                    group: 'query_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -295,10 +345,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'MOUSEOVER',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'button',
-                elementGroup: 'map_group',
+                component: {
+                    id: this.getAttribute('id') || 'UNK',
+                    type: 'button',
+                    group: 'map_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -307,10 +360,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'MOUSEOUT',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'button',
-                elementGroup: 'map_group',
+                component: {
+                    id: this.getAttribute('id') || 'UNK',
+                    type: 'button',
+                    group: 'map_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -319,10 +375,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'perform',
                 action: 'CLICK',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'button',
-                elementGroup: 'map_group',
+                component: {
+                    id: this.getAttribute('id') || 'UNK',
+                    type: 'button',
+                    group: 'map_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -333,10 +392,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'MOUSEOVER',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'button',
-                elementGroup: 'query_group',
+                component: {
+                    id: this.getAttribute('id') || 'UNK',
+                    type: 'button',
+                    group: 'query_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -345,10 +407,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'MOUSEOUT',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'button',
-                elementGroup: 'query_group',
+                component: {
+                    id: this.getAttribute('id') || 'UNK',
+                    type: 'button',
+                    group: 'query_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -357,10 +422,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'perform',
                 action: 'CLICK',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'button',
-                elementGroup: 'query_group',
+                component: {
+                    id: this.getAttribute('id') || 'UNK',
+                    type: 'button',
+                    group: 'query_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['query']
             };
             log(msg);
@@ -372,10 +440,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'MOUSEOVER',
-                elementId: 'UNK',
-                elementType: 'map',
-                elementGroup: 'map_group',
+                component: {
+                    id: 'UNK',
+                    type: 'map',
+                    group: 'map_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -384,10 +455,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'inspect',
                 action: 'MOUSEOUT',
-                elementId: 'UNK',
-                elementType: 'map',
-                elementGroup: 'map_group',
+                component: {
+                    id: 'UNK',
+                    type: 'map',
+                    group: 'map_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -396,10 +470,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'alter',
                 action: 'ZOOM',
-                elementId: 'UNK',
-                elementType: 'map',
-                elementGroup: 'map_group',
+                component: {
+                    id: 'UNK',
+                    type: 'map',
+                    group: 'map_group'
+                },
                 source: 'unk',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -408,10 +485,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'alter',
                 action: 'DRAG',
-                elementId: 'UNK',
-                elementType: 'map',
-                elementGroup: 'map_group',
+                component: {
+                    id: 'UNK',
+                    type: 'map',
+                    group: 'map_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -420,10 +500,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'alter',
                 action: 'DRAG',
-                elementId: 'UNK',
-                elementType: 'map',
-                elementGroup: 'map_group',
+                component: {
+                    id: 'UNK',
+                    type: 'map',
+                    group: 'map_group'
+                },
                 source: 'user',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -432,10 +515,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'alter',
                 action: 'MOVE',
-                elementId: 'UNK',
-                elementType: 'map',
-                elementGroup: 'map_group',
+                component: {
+                    id: 'UNK',
+                    type: 'map',
+                    group: 'map_group'
+                },
                 source: 'system',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
@@ -447,11 +533,13 @@ $(document).ready(function () {
             var msg = {
                 activity: 'alter',
                 action: 'SLIDE',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'slider',
-                elementGroup: 'query_group',
-                elementSub: 'label',
+                component: {
+                    id: this.getAttribute('id') || 'UNK',
+                    type: 'slider',
+                    group: 'query_group'
+                },
                 source: 'user',
+                object: 'HANDLE',
                 tags: ['a', 'b']
             };
             log(msg);
@@ -459,10 +547,12 @@ $(document).ready(function () {
 
             var msg = {
                 activity: 'alter',
-                elementType: 'slider',
-                elementGroup: 'query_group',
-                elementSub: 'label',
+                component: {
+                    type: 'slider',
+                    group: 'query_group'
+                },
                 source: 'system',
+                object: 'LABEL',
                 tags: []
             };
             log(msg);
@@ -471,22 +561,25 @@ $(document).ready(function () {
             var msg = {
                 activity: 'alter',
                 action: 'SLIDE',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'slider',
-                elementGroup: 'query_group',
-                elementSub: 'handle',
+                component: {
+                    id: this.getAttribute('id') || 'UNK',
+                    type: 'slider',
+                    group: 'query_group'
+                },
                 source: 'user',
+                object: 'HANDLE',
                 tags: ['a', 'b']
             };
             log(msg);
 
             var msg = {
                 activity: 'alter',
-                elementId: this.getAttribute('id') || 'UNK',
-                elementType: 'slider',
-                elementGroup: 'query_group',
-                elementSub: 'label',
+                component: {
+                    type: 'slider',
+                    group: 'query_group'
+                },
                 source: 'system',
+                object: 'LABEL',
                 tags: []
             };
             log(msg);
@@ -497,12 +590,104 @@ $(document).ready(function () {
             var msg = {
                 activity: 'alter',
                 action: 'SCROLL',
-                elementId: 'UNK',
-                elementType: 'window',
-                elementGroup: 'top',
+                component: {
+                    id: 'UNK',
+                    type: 'window',
+                    group: 'top'
+                },
                 source: 'unk',
+                object: null,
                 tags: ['a', 'b']
             };
             log(msg);
         });
+
+    ale = {};
+    ale.components =
+    {
+        BUTTON : "button",
+        CANVAS : "canvas",
+        CHECKBOX : "checkbox",
+        COMBOBOX : "combobox",
+        DATAGRID : "datagrid",
+        DIALOGBOX : "dialog_box",
+        DROPDOWNLIST : "dropdownlist",
+        FRAME : "frame",
+        ICON : "icon",
+        INFOBAR : "infobar",
+        LABEL : "label",
+        LINK : "link",
+        LISTBOX : "listbox",
+        LISTITEM: "listitem",
+        MAP : "map",
+        MENU : "menu",
+        MODALWINDOW : "modalwindow",
+        PALETTEWINDOW : "palettewindow",
+        PANEL : "panel",
+        PROGRESSBAR : "progressbar",
+        RADIOBUTTON : "radiobutton",
+        SLIDER : "slider",
+        SPINNER : "spinner",
+        STATUSBAR : "statusbar",
+        TAB : "tab",
+        TABLE : "table",
+        TAG : "tag",
+        TEXTBOX : "textbox",
+        THROBBER : "throbber",
+        TOAST : "toast",
+        TOOLBAR : "toolbar",
+        TOOLTIP : "tooltip",
+        TREEVIEW : "treeview",
+        WINDOW : "window",
+        WORKSPACE : "workspace",
+        // Other is used in conjunction with softwareMetadata in order
+        // to provide a component in which is not currently listed within
+        // the COMPONENT list.
+        OTHER : "other"
+    };
+
+    ale.activities =
+    {
+        ADD : "add",
+        REMOVE : "remove",
+        CREATE : "create",
+        DELETE : "delete",
+        SELECT : "select",
+        DESELECT : "deselect",
+        ENTER : "enter",
+        LEAVE : "leave",
+        INSPECT : "inspect",
+        ALTER : "alter",
+        HIDE : "hide",
+        SHOW : "show",
+        PERFORM: "perform"
+    };
+    //$('#slider1')
+    //    .on("slidestart", function (event, ui) {
+    //        log(this.getAttribute('id') + ' slider start')
+    //    })
+    //    .on("slidestop", function (event, ui) {
+    //        log(this.getAttribute('id') + ' slider stop')
+    //    });
+
+    //document.querySelector('body').addEventListener('click', function(event) {
+    //    //if (event.target.tagName.toLowerCase() === 'li') {
+    //    //    // do your action on your 'li' or whatever it is you're listening for
+    //    //}
+    //
+    //    window.A = event.target;
+    //
+    //    console.log('click', event.target.tagName, event.target)
+    //});
+
+    //$(document).ready(function(){
+    //    $(document).bind('mousewheel', function(e){
+    //        if(e.originalEvent.wheelDelta /120 > 0) {
+    //            log('scrolling up !');
+    //        }
+    //        else{
+    //            log('scrolling down !');
+    //        }
+    //    });
+    //});
 });
