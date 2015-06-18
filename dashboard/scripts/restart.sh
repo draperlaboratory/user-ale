@@ -174,6 +174,7 @@ curl -XPUT 'http://localhost:9200/xdata_v3/testing/_mapping' -d '
             "type" : "string"
           },
           "sessionID" : {
+            "index" : "not_analyzed",
             "type" : "string"
           },
           "source" : {
