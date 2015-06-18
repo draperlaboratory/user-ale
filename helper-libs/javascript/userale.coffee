@@ -58,9 +58,6 @@ ELEMENTS = [
   'OTHER'
 ]
 
-
-console.log('in userale')
-
 extend = (objects...) ->
   out = {}
   for object in objects
@@ -97,6 +94,23 @@ default_msg = {
   meta: {}
 }
 
+setCookie = (cname, cvalue, exdays) ->
+  d = new Date()
+  d.setTime(d.getTime() + (exdays*24*60*60*1000))
+  expires = "expires="+d.toUTCString()
+  document.cookie = cname + "=" + cvalue + "; " + expires
+
+getCookie = (name) ->
+  nameEQ = name + "="
+  ca = document.cookie.split(";")
+  i = 0
+  while i < ca.length
+    c = ca[i]
+    c = c.substring(1, c.length)  while c.charAt(0) is " "
+    return c.substring(nameEQ.length, c.length).replace(/"/g, '')  if c.indexOf(nameEQ) is 0
+    i++
+  ""
+
 class userale
   constructor: (options)->
     @options = extend(defaults, options)
@@ -104,7 +118,7 @@ class userale
     if @options.elementGroups.constructor is not Array
       @options.elementGroups = [@options.elementGroups]
 
-    @options.version = '3.0.0'
+    @options.version = '3.0.1'
 
     @worker = new Worker(@options.workerUrl)
 
@@ -117,18 +131,30 @@ class userale
     @sendLogs(@options.sendLogs)
 
   register: () ->
-    @options.sessionID = getParameterByName('USID')
-    @options.client = getParameterByName('client')
-
-    console.log(@options.sessionID)
-
-    if !@options.sessionID
+    if getParameterByName('USID')
+      @options.sessionID = getParameterByName('USID')
+      setCookie('USID', @options.sessionID, 2)
+      console.info('USERALE: SESSION ID FOUND IN URL - ' + @options.sessionID)
+    else if getCookie('USID')
+      @options.sessionID = getCookie('USID')
+      console.info('USERALE: SESSION ID FOUND IN COOKIE - ' + @options.sessionID)
+    else
       @options.sessionID = @options.toolName[0..2].toUpperCase() + new Date().getTime()
+      setCookie('USID', @options.sessionID, 2)
       console.warn('USERALE: NO SESSION ID, MAKING ONE UP.  You can pass one in as url parameter (127.0.0.1?USID=12345)')
 
-    if !@options.client
+    if getParameterByName('client')
+      @options.client = getParameterByName('client')
+      setCookie('USERALECLIENT', @options.client, 2)
+      console.info('USERALE: CLIENT FOUND IN URL - ' + @options.client)
+    else if getCookie('USERALECLIENT')
+      @options.client = getCookie('USERALECLIENT')
+      console.info('USERALE: CLIENT FOUND IN COOKIE - ' + @options.client)
+    else
       @options.client = 'UNK'
+      setCookie('USERALECLIENT', @options.client, 2)
       console.warn('USERALE: NO CLIENT, MAKING ONE UP.   You can pass one in as url parameter (127.0.0.1?client=roger)')
+
 
     @worker.postMessage({cmd: 'sendBuffer', msg: ''})
 

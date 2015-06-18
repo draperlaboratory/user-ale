@@ -3,13 +3,13 @@ Vagrant.configure(2) do |config|
     # Setting proxy configurations for the host box. This also sets common proxy settings
     # and files for other applications, such as apt-get/yum
     if Vagrant.has_plugin?("vagrant-proxyconf")
-         config.proxy.http = "http://plcyber06.draper.com:3128"
-         config.proxy.https = "http://plcyber06.draper.com:3128"
-         config.proxy.no_proxy = "localhost, 127.0.0.1"
-     end
+       config.proxy.http = "http://plcyber06.draper.com:3128"
+       config.proxy.https = "http://plcyber06.draper.com:3128"
+       config.proxy.no_proxy = "localhost, 127.0.0.1"
+   end
 
-    config.vm.define "elk" do |elk|
-        elk.vm.box = "ubuntu/trusty64"
+   config.vm.define "elk" do |elk|
+    elk.vm.box = "ubuntu/trusty64"
 
         # Change the default elk vagrant box folder to point to the 
         # elk directory within the project. This will allow separation between
@@ -22,8 +22,8 @@ Vagrant.configure(2) do |config|
         # boxes.
         # - Expose the following ports to be used within this box to
         # host data being sent between the web server and the ELK server.
-        elk.vm.network "private_network", ip: "192.168.1.100"
-     
+        elk.vm.network "private_network", ip: "172.16.1.100"
+
         # Provisioner: Runs the provisioning script that will provision
         # the vagrant box for the first time, or forced. 
         elk.vm.provision "shell" do |s| 
@@ -50,12 +50,12 @@ Vagrant.configure(2) do |config|
         # Setup a static IP to allow both vagrant boxes to know where 
         # to contact each other. This will allow communication between the
         # web developer and the logging server.
-        dev.vm.network "private_network", ip: "192.168.1.10"
+        dev.vm.network "private_network", ip: "172.16.1.10"
 
         # Specify the provisioning script that will be used in order to 
         # install the necessary files needed for this vagrant box
         dev.vm.provision "shell", inline: "twistd -y /vagrant/twisted_client.py &", 
-            run: "always"
+        run: "always"
 
         # Change the default client vagrant box folder to point to the 
         # client directory within the project. This will allow separation between
