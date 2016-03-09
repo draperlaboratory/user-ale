@@ -37,9 +37,9 @@ curl -XDELETE 'http://localhost:9200/xdata_v2/'
 curl -XDELETE 'http://localhost:9200/xdata_old/'
 
 # Create XData indexes (even though logstash will create them automatically)
-curl -XPUT 'http://127.0.0.1:9200/xdata_v3/'
-curl -XPUT 'http://127.0.0.1:9200/xdata_v2/'
-curl -XPUT 'http://127.0.0.1:9200/xdata_old/'
+curl -XPUT 'http://localhost:9200/xdata_v3/'
+curl -XPUT 'http://localhost:9200/xdata_v2/'
+curl -XPUT 'http://localhost:9200/xdata_old/'
 
 # Remove .sincedb file to trigger logstash to reindex all xdata_* data
 rm /var/lib/logstash/.sincedb_*
@@ -47,9 +47,9 @@ service logstash start
 
 PIDFILE=$HOME/twistd.pid
 
-#if [ -f $PIDFILE ]; then
-#	echo 'Twisted Running, Killing it!'
-#    sudo -E kill `cat $PIDFILE`
-#fi
+if [ -f $PIDFILE ]; then
+	echo 'Twisted Running, Killing it!'
+    sudo -E kill `cat $PIDFILE`
+fi
 
-# sudo -E twistd --pidfile=$PIDFILE -y twisted_app.py
+sudo -E twistd --pidfile=$PIDFILE -y twisted_app.py

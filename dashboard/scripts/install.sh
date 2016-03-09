@@ -47,15 +47,17 @@ sudo dpkg -i $ELASTIC.deb             		   	   || exit $?
 sudo dpkg -i $LOGSTASH-1_all.deb    		 	   || exit $?
 
 # Install Elastic HQ Plugin
-$ES_BIN/plugin -install royrusso/elasticsearch-HQ	|| exit $?
+sudo $ES_BIN/plugin install royrusso/elasticsearch-HQ	|| exit $?
 
 # Download and install Kibana to the vagrant box. 
 wget -q $KIBANA_SRC                                           			|| exit $?
-tar -xvf $KIBANA.tar.gz                        	  						|| exit $?
-sudo cp /vagrant/files/config/elasticsearch.yml $ES_CONFIG/		  		|| exit $?
+tar -xvf $HOME/$KIBANA.tar.gz 			              	  				|| exit $?
+sudo cp /vagrant/files/config/elasticsearch.yml /etc/elasticsearch/		|| exit $?
 sudo cp /vagrant/files/config/xdata.conf /etc/logstash/conf.d/      	|| exit $?
 sudo cp /vagrant/files/twisted_app.py $HOME/       			  			|| exit $?
 sudo cp /vagrant/files/config/kibana.yml $HOME/$KIBANA/config/ 			|| exit $?
+# Startup Kibana
+sudo $HOME/$KIBANA/bin/kibana 											|| exit $?
 
 # Restart all the services to ensure the configurations are being used properly
 # and Run the kibana twisted web server so the developer has access to the

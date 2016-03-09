@@ -25,7 +25,7 @@ Vagrant.configure(2) do |config|
    end
 
    config.vm.define "elk" do |elk|
-    elk.vm.box = "ubuntu/trusty64"
+        elk.vm.box = "ubuntu/trusty64"
 
         # Change the default elk vagrant box folder to point to the 
         # elk directory within the project. This will allow separation between
@@ -63,6 +63,11 @@ Vagrant.configure(2) do |config|
         # Specify a base virtual machine that is based on Ubuntu Trusty Tahr
         dev.vm.box = "ubuntu/trusty64"
 
+        # Change the default client vagrant box folder to point to the 
+        # client directory within the project. This will allow separation between
+        # client and server folders.
+        dev.vm.synced_folder "client/", "/vagrant"
+
         # Setup a static IP to allow both vagrant boxes to know where 
         # to contact each other. This will allow communication between the
         # web developer and the logging server.
@@ -70,12 +75,6 @@ Vagrant.configure(2) do |config|
 
         # Specify the provisioning script that will be used in order to 
         # install the necessary files needed for this vagrant box
-        dev.vm.provision "shell", inline: "twistd -y /vagrant/twisted_client.py &", 
-        run: "always"
-
-        # Change the default client vagrant box folder to point to the 
-        # client directory within the project. This will allow separation between
-        # client and server folders.
-        dev.vm.synced_folder "client/", "/vagrant"
+        dev.vm.provision "shell", inline: "twistd -y /vagrant/twisted_client.py &", run: "always"
     end
 end
