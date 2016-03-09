@@ -1,5 +1,5 @@
 #
-#   Copyright 2014 The Charles Stark Draper Laboratory
+#   Copyright 2016 The Charles Stark Draper Laboratory
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -15,38 +15,54 @@
 #
 
 #!/bin/bash
-MINICONDA_SCRIPT="http://repo.continuum.io/miniconda/Miniconda-3.7.0-Linux-x86_64.sh"
-ELASTIC_DPKG_SRC="https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.2.deb"
-LOGSTASH_DPKG_SRC="https://download.elasticsearch.org/logstash/logstash/packages/debian/logstash_1.4.2-1-2c0f5a1_all.deb"
-KIBANA_SRC="https://download.elasticsearch.org/kibana/kibana/kibana-3.1.2.tar.gz"
 
+ELASTIC="elasticsearch-2.2.0"
+LOGSTASH="logstash_2.2.2"
+KIBANA="kibana-4.4.1-linux-x64"
+ES_LOG="/var/log/elasticsearch"
+ES_DATA="/var/lib/elasticsearch"
+ES_CONFIG="/etc/elasticsearch"
+ES_BIN="/usr/share/elasticsearch/bin"
+
+# Latest and greatest source packages
+MINICONDA_SCRIPT="https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh"
+ELASTIC_DPKG_SRC="https://download.elasticsearch.org/elasticsearch/elasticsearch/$ELASTIC.deb"
+LOGSTASH_DPKG_SRC="https://download.elastic.co/logstash/logstash/packages/debian/$LOGSTASH-1_all.deb"
+KIBANA_SRC="https://download.elastic.co/kibana/kibana/$KIBANA.tar.gz"
+
+# Update box & install openjdk & miniconda
 sudo -E apt-get update                             || exit $?
 sudo -E apt-get -y install openjdk-7-jdk           || exit $?
-wget -q $MINICONDA_SCRIPT                          || exit $?
-chmod +x ./Miniconda-3.7.0-Linux-x86_64.sh         || exit $?
-./Miniconda-3.7.0-Linux-x86_64.sh -b               || exit $?
+wget -q $MINICONDA_SCRIPT						   || exit $?                          
+chmod +x ./Miniconda-*.sh         				   || exit $?
+./Miniconda-*.sh -b               				   || exit $?
 
-echo export PATH="$HOME/miniconda/bin:$PATH" >> $HOME/.bashrc
+echo export PATH="$HOME/miniconda2/bin:$PATH" >> $HOME/.bashrc
 source $HOME/.bashrc
-$HOME/miniconda/bin/conda update --yes conda     || exit $?
+$HOME/miniconda2/bin/conda update --yes conda      || exit $?
 
-wget -q $ELASTIC_DPKG_SRC $LOGSTASH_DPKG_SRC     || exit $?
-sudo dpkg -i elasticsearch-1.4.2.deb             || exit $?
-sudo dpkg -i logstash_1.4.2-1-2c0f5a1_all.deb    || exit $?
+# Install Elastic
+wget -q $ELASTIC_DPKG_SRC $LOGSTASH_DPKG_SRC       || exit $?
+sudo dpkg -i $ELASTIC.deb             		   	   || exit $?
+sudo dpkg -i $LOGSTASH-1_all.deb    		 	   || exit $?
 
-# Download and install Kibana to the vagrant box. This involves downloading
-# Kibana 3.1.2, extracting the contents of the tar ball, and copying the
-# kibanan files to /etc/elasticsearch and /etc/logstash
-wget -q $KIBANA_SRC                                           || exit $?
-tar -xvf kibana-3.1.2.tar.gz                                  || exit $?
-sudo cp /vagrant/files/elasticsearch.yml /etc/elasticsearch/  || exit $?
-sudo cp /vagrant/files/xdata.conf /etc/logstash/conf.d/       || exit $?
-sudo cp /vagrant/files/twisted_app.py $HOME/       || exit $?
+# Install Elastic HQ Plugin
+$ES_BIN/plugin -install royrusso/elasticsearch-HQ	|| exit $?
+
+# Download and install Kibana to the vagrant box. 
+wget -q $KIBANA_SRC                                           			|| exit $?
+tar -xvf $KIBANA.tar.gz                        	  						|| exit $?
+sudo cp /vagrant/files/config/elasticsearch.yml $ES_CONFIG/		  		|| exit $?
+sudo cp /vagrant/files/config/xdata.conf /etc/logstash/conf.d/      	|| exit $?
+sudo cp /vagrant/files/twisted_app.py $HOME/       			  			|| exit $?
+sudo cp /vagrant/files/config/kibana.yml $HOME/$KIBANA/config/ 			|| exit $?
 
 # Restart all the services to ensure the configurations are being used properly
 # and Run the kibana twisted web server so the developer has access to the
 # dashboad provided by Kibana.
-sudo mkdir /var/log/xdata                          || exit $?
-sudo touch  /var/log/xdata/xdata.log               || exit $?
+sudo mkdir /var/log/xdata                         	|| exit $?
+sudo touch /var/log/xdata/xdata.log               	|| exit $?
 
-cp /vagrant/files/XDATA-Dashboard-v3.json $HOME/kibana-3.1.2/app/dashboards/default.json  || exit $?
+# This may need to be rewritten
+# Simply create .kibana index and add dashboard there?
+#cp /vagrant/files/data/XDATA-Dashboard-v3.json $HOM#E/$KIBANA/app/dashboards/default.json  || exit $?

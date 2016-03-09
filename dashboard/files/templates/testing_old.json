@@ -1,0 +1,101 @@
+{
+  "template" : "testing",
+  "order" : 1,
+  "settings" : {
+    "number_of_shards" : 1,
+    "number_of_replicas" : 0,
+    "index.refresh_interval" : "60s"
+  },
+  "mappings" : {
+    "testing" : {
+      "properties" : {
+        "@timestamp" : {
+          "type" : "date",
+          "format" : "dateOptionalTime"
+        },
+        "@version" : {
+          "type" : "string"
+        },
+        "apiVersion" : {
+          "type" : "string"
+        },
+        "client" : {
+          "type" : "string"
+        },
+        "component" : {
+          "properties" : {
+            "name" : {
+              "index" : "not_analyzed",
+              "type" : "string"
+            },
+            "version" : {
+              "type" : "string"
+            }
+          }
+        },
+        "host" : {
+          "type" : "string"
+        },
+        "impLanguage" : {
+          "type" : "string"
+        },
+        "major_ver" : {
+          "type" : "long"
+        },
+        "meta" : {
+          "type" : "long"
+        },
+        "minor_ver" : {
+          "type" : "long"
+        },
+        "oid" : {
+          "properties" : {
+            "$oid" : {
+              "type" : "string"
+            }
+          }
+        },
+        "parms" : {
+          "properties" : {
+            "activity" : {
+              "index" : "not_analyzed",
+              "type" : "string"
+            },
+            "desc" : {
+              "type" : "string"
+            },
+            "wf_state" : {
+              "type" : "string"
+            },
+            "wf_version" : {
+              "type" : "string"
+            }
+          }
+        },
+        "patch_ver" : {
+          "type" : "long"
+        },
+        "path" : {
+          "type" : "string"
+        },
+        "sessionID" : {
+          "type" : "string"
+        },
+        "tags" : {
+          "type" : "string"
+        },
+        "timestamp" : {
+          "properties" : {
+            "$date" : {
+              "type" : "date",
+              "format" : "dateOptionalTime"
+            }
+          }
+        },
+        "type" : {
+          "type" : "string"
+        }
+      }
+    }
+  }
+}
