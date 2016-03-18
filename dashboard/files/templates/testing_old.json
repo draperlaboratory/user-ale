@@ -1,101 +1,166 @@
 {
-  "template" : "testing",
-  "order" : 1,
-  "settings" : {
-    "number_of_shards" : 1,
-    "number_of_replicas" : 0,
-    "index.refresh_interval" : "60s"
-  },
-  "mappings" : {
-    "testing" : {
-      "properties" : {
-        "@timestamp" : {
-          "type" : "date",
-          "format" : "dateOptionalTime"
-        },
-        "@version" : {
-          "type" : "string"
-        },
-        "apiVersion" : {
-          "type" : "string"
-        },
-        "client" : {
-          "type" : "string"
-        },
-        "component" : {
-          "properties" : {
-            "name" : {
-              "index" : "not_analyzed",
-              "type" : "string"
-            },
-            "version" : {
-              "type" : "string"
+   "template":"testing-old",
+   "order":1,
+   "settings":{
+      "number_of_shards":1,
+      "number_of_replicas":0,
+      "index.refresh_interval":"5s"
+   },
+   "testing":{
+      "properties":{
+         "@timestamp":{
+            "type":"date",
+            "format":"date_optional_time"
+         },
+         "@version":{
+            "type":"string"
+         },
+         "apiVersion":{
+            "type":"string"
+         },
+         "client":{
+            "type":"string"
+         },
+         "component":{
+            "properties":{
+               "name":{
+                  "type":"string",
+                  "index":"not_analyzed"
+               },
+               "version":{
+                  "type":"string"
+               }
             }
-          }
-        },
-        "host" : {
-          "type" : "string"
-        },
-        "impLanguage" : {
-          "type" : "string"
-        },
-        "major_ver" : {
-          "type" : "long"
-        },
-        "meta" : {
-          "type" : "long"
-        },
-        "minor_ver" : {
-          "type" : "long"
-        },
-        "oid" : {
-          "properties" : {
-            "$oid" : {
-              "type" : "string"
+         },
+         "host":{
+            "type":"string",
+            "index":"not_analyzed"
+         },
+         "impLanguage":{
+            "type":"string",
+            "index":"not_analyzed"
+         },
+         "major_ver":{
+            "type":"integer"
+         },
+         "meta":{
+            "properties":{
+               "expanded":{
+                  "type":"boolean"
+               },
+               "UIOjectId":{
+                  "type":"string"
+               },
+               "UIOjectIds":{
+                  "type":"string",
+                  "index":"not_analyzed"
+               },
+               "UIOjectType":{
+                  "type":"string",
+                  "index":"not_analyzed"
+               },
+               "UIContainerId":{
+                  "type":"string",
+                  "index":"not_analyzed"
+               },
+               "contextId":{
+                  "type":"string"
+               },
+               "duration":{
+                  "type":"string",
+                  "index":"not_analyzed"
+               },
+               "endDate":{
+                  "type":"string"
+               },
+               "entityCount":{
+                  "type":"integer"
+               },
+               "fileId":{
+                  "type":"string"
+               },
+               "fromDragDropEvent":{
+                  "type":"boolean"
+               },
+               "numBuckets":{
+                  "type":"integer"
+               },
+               "page":{
+                  "type":"integer"
+               },
+               "requestedFromColumn":{
+                  "type":"boolean"
+               },
+               "searchControlId":{
+                  "type":"string"
+               },
+               "sessionID":{
+                  "type":"string",
+                  "index":"not_analyzed"
+               },
+               "showDetails":{
+                  "type":"boolean"
+               },
+               "startDate":{
+                  "type":"string"
+               },
+               "totalColumns":{
+                  "type":"integer"
+               },
+               "xfld":{
+                  "type":"string"
+               }
             }
-          }
-        },
-        "parms" : {
-          "properties" : {
-            "activity" : {
-              "index" : "not_analyzed",
-              "type" : "string"
-            },
-            "desc" : {
-              "type" : "string"
-            },
-            "wf_state" : {
-              "type" : "string"
-            },
-            "wf_version" : {
-              "type" : "string"
+         },
+         "minor_ver":{
+            "type":"integer"
+         },
+         "oid":{
+            "properties":{
+               "$oid":{
+                  "type":"string"
+               }
             }
-          }
-        },
-        "patch_ver" : {
-          "type" : "long"
-        },
-        "path" : {
-          "type" : "string"
-        },
-        "sessionID" : {
-          "type" : "string"
-        },
-        "tags" : {
-          "type" : "string"
-        },
-        "timestamp" : {
-          "properties" : {
-            "$date" : {
-              "type" : "date",
-              "format" : "dateOptionalTime"
+         },
+         "parms":{
+            "properties":{
+               "activity":{
+                  "type":"string",
+                  "index":"not_analyzed"
+               },
+               "desc":{
+                  "type":"string"
+               },
+               "wf_state":{
+                  "type":"integer"
+               },
+               "wf_version":{
+                  "type":"float"
+               }
             }
-          }
-        },
-        "type" : {
-          "type" : "string"
-        }
+         },
+         "path":{
+            "type":"string"
+         },
+         "sessionID":{
+            "type":"string",
+            "index":"not_analyzed"
+         },
+         "tags":{
+            "type":"string"
+         },
+         "timestamp":{
+            "properties":{
+               "$date":{
+                  "type":"date",
+                  "format":"dateOptionalTime"
+               }
+            }
+         },
+         "type":{
+            "type":"string",
+            "index":"not_analyzed"
+         }
       }
-    }
-  }
+   }
 }

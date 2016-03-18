@@ -38,7 +38,7 @@ Vagrant.configure(2) do |config|
         # boxes.
         # - Expose the following ports to be used within this box to
         # host data being sent between the web server and the ELK server.
-        elk.vm.network "private_network", ip: "172.16.1.100"
+        elk.vm.network "private_network", ip: "192.16.1.100"
 
         # Provisioner: Runs the provisioning script that will provision
         # the vagrant box for the first time, or forced. 
@@ -71,7 +71,7 @@ Vagrant.configure(2) do |config|
         # Setup a static IP to allow both vagrant boxes to know where 
         # to contact each other. This will allow communication between the
         # web developer and the logging server.
-        dev.vm.network "private_network", ip: "172.16.1.10"
+        dev.vm.network "private_network", ip: "192.16.1.10"
 
         # Specify the provisioning script that will be used in order to 
         # install the necessary files needed for this vagrant box

@@ -28,8 +28,7 @@ import logging.handlers
 import simplejson
 
 
-#KIBANA = '/home/vagrant/kibana-3.1.2'
-ALLOW_ORIGIN = 'http://192.168.1.10'
+ALLOW_ORIGIN = 'http://192.16.1.10'
 
 if not os.path.exists('/var/log/xdata'):
     os.makedirs('/var/log/xdata')
@@ -101,8 +100,6 @@ logger = logging.getLogger('xdata-v2')
 loggerv3 = logging.getLogger('xdata-v3')
 logger_err = logging.getLogger('error')
 
-#kibana = File(KIBANA)
-
 wf_dict = {
     0: "WF_OTHER",
     1: "WF_DEFINE",
@@ -145,7 +142,6 @@ class Logger(Resource):
         return ''
 
 root = Resource()
-#root.putChild("kibana", kibana)
 root.putChild("send_log", Logger())
 
 # create a resource to serve static files

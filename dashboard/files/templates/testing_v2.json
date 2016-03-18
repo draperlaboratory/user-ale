@@ -1,5 +1,5 @@
 {
-  "template" : "testing",
+  "template" : "testing-v2",
   "order" : 1,
   "settings" : {
     "number_of_shards" : 1,
@@ -7,7 +7,7 @@
     "index.refresh_interval" : "60s"
   },
   "mappings" : {
-    "testing" : {
+    "xdata_v2" : {
       "properties" : {
         "@timestamp" : {
           "type" : "date",
