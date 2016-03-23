@@ -66,3 +66,15 @@ sudo touch /var/log/xdata/xdata.log               	|| exit $?
 # This may need to be rewritten
 # Simply create .kibana index and add dashboard there?
 #cp /vagrant/files/data/XDATA-Dashboard-v3.json $HOME/$KIBANA/app/dashboards/default.json  || exit $?
+
+# Register cron job to execute backup.sh every 6 hours
+# ┌───────────── min (0 - 59) 
+# │ ┌────────────── hour (0 - 23)
+# │ │ ┌─────────────── day of month (1 - 31)
+# │ │ │ ┌──────────────── month (1 - 12)
+# │ │ │ │ ┌───────────────── day of week (0 - 6) (0 to 6 are Sunday to Saturday, or use names; 7 is Sunday, the same as 0)
+# │ │ │ │ │
+# │ │ │ │ │
+# * * * * *  command to execute
+sudo chmod +x /vagrant/files/scripts/backup.sh 		|| exit $?
+sudo crontab -l | { cat; echo "0 */6 * * * /vagrant/files/scripts/backup.sh > /dev/null 2>&1"; } | crontab - || exit $?
