@@ -13,8 +13,11 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
+
 #!/bin/bash
+
 sudo service elasticsearch restart
+
 # For Logstash and ElasticSearch, it takes a while before the
 # network port is established by the process. Here we wait until
 # the port is open.
