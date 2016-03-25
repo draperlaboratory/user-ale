@@ -1,0 +1,90 @@
+{
+  "template" : "testing-v3",
+  "order" : 1,
+  "settings" : {
+    "number_of_shards" : 1,
+    "number_of_replicas" : 0,
+    "index.refresh_interval" : "60s"
+  },
+  "mappings" : {
+    "xdata_v3" : {
+      "properties" : {
+        "@timestamp" : {
+          "type" : "date",
+          "format" : "dateOptionalTime"
+        },
+        "@version" : {
+          "type" : "string"
+        },
+        "action" : {
+          "type" : "string"
+        },
+        "activity" : {
+          "type" : "string"
+        },
+        "client" : {
+          "type" : "string"
+        },
+        "elementGroup" : {
+        	"index" : "not_analyzed",
+          "type" : "string"
+        },
+        "elementId" : {
+        	"index" : "not_analyzed",
+          "type" : "string"
+        },
+        "elementSub" : {
+          "type" : "string"
+        },
+        "elementType" : {
+          "type" : "string"
+        },
+        "host" : {
+          "type" : "string"
+        },
+        "language" : {
+          "type" : "string"
+        },
+        "major_ver" : {
+          "type" : "long"
+        },
+        "meta" : {
+          "type" : "object"
+        },
+        "minor_ver" : {
+          "type" : "long"
+        },
+        "patch_ver" : {
+          "type" : "long"
+        },
+        "path" : {
+          "type" : "string"
+        },
+        "sessionID" : {
+          "index" : "not_analyzed",
+          "type" : "string"
+        },
+        "source" : {
+          "type" : "string"
+        },
+        "tags" : {
+          "type" : "string"
+        },
+        "timestamp" : {
+          "type" : "date",
+          "format" : "dateOptionalTime"
+        },
+        "toolName" : {
+        	"index" : "not_analyzed",
+          "type" : "string"
+        },
+        "toolVersion" : {
+          "type" : "string"
+        },
+        "useraleVersion" : {
+          "type" : "string"
+        }
+      }
+    }
+  }
+}   

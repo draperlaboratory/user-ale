@@ -15,38 +15,66 @@
 #
 
 #!/bin/bash
-MINICONDA_SCRIPT="http://repo.continuum.io/miniconda/Miniconda-3.7.0-Linux-x86_64.sh"
-ELASTIC_DPKG_SRC="https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.2.deb"
-LOGSTASH_DPKG_SRC="https://download.elasticsearch.org/logstash/logstash/packages/debian/logstash_1.4.2-1-2c0f5a1_all.deb"
-KIBANA_SRC="https://download.elasticsearch.org/kibana/kibana/kibana-3.1.2.tar.gz"
 
+# Latest and greatest source packages
+MINICONDA_SCRIPT="https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh"
+
+# Update box & install openjdk and mongodb
 sudo -E apt-get update                             || exit $?
 sudo -E apt-get -y install openjdk-7-jdk           || exit $?
-wget -q $MINICONDA_SCRIPT                          || exit $?
-chmod +x ./Miniconda-3.7.0-Linux-x86_64.sh         || exit $?
-./Miniconda-3.7.0-Linux-x86_64.sh -b               || exit $?
+sudo -E apt-get -y install mongodb				   || exit $?
 
-echo export PATH="$HOME/miniconda/bin:$PATH" >> $HOME/.bashrc
+# Install Miniconda
+wget -q $MINICONDA_SCRIPT						   || exit $?                          
+chmod +x ./Miniconda-*.sh         				   || exit $?
+./Miniconda-*.sh -b               				   || exit $?
+echo export PATH="$HOME/miniconda2/bin:$PATH" >> $HOME/.bashrc
 source $HOME/.bashrc
-$HOME/miniconda/bin/conda update --yes conda     || exit $?
+$HOME/miniconda2/bin/conda update --yes conda      || exit $?
 
-wget -q $ELASTIC_DPKG_SRC $LOGSTASH_DPKG_SRC     || exit $?
-sudo dpkg -i elasticsearch-1.4.2.deb             || exit $?
-sudo dpkg -i logstash_1.4.2-1-2c0f5a1_all.deb    || exit $?
+# Install Elasticsearch
+wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add - 
+echo "deb http://packages.elastic.co/elasticsearch/2.x/debian stable main" | sudo tee -a /etc/apt/sources.list.d/elasticsearch-2.x.list 
+sudo -E apt-get update 								|| exit $?
+sudo -E apt-get -y install elasticsearch 			|| exit $?
 
-# Download and install Kibana to the vagrant box. This involves downloading
-# Kibana 3.1.2, extracting the contents of the tar ball, and copying the
-# kibanan files to /etc/elasticsearch and /etc/logstash
-wget -q $KIBANA_SRC                                           || exit $?
-tar -xvf kibana-3.1.2.tar.gz                                  || exit $?
-sudo cp /vagrant/files/elasticsearch.yml /etc/elasticsearch/  || exit $?
-sudo cp /vagrant/files/xdata.conf /etc/logstash/conf.d/       || exit $?
-sudo cp /vagrant/files/twisted_app.py $HOME/       || exit $?
+# Install Elastic HQ Plugin
+sudo /usr/share/elasticsearch/bin/plugin install royrusso/elasticsearch-HQ	|| exit $?
+
+# Install Logstash
+echo "deb http://packages.elastic.co/logstash/2.2/debian stable main" | sudo tee -a /etc/apt/sources.list.d/logstash-2.2.x.list
+sudo -E apt-get update 								|| exit $?
+sudo -E apt-get -y install logstash 				|| exit $?
+
+# Install Kibana
+echo "deb http://packages.elastic.co/kibana/4.4/debian stable main" | sudo tee -a /etc/apt/sources.list.d/kibana-4.4.x.list
+sudo -E apt-get update 								|| exit $?
+sudo -E apt-get -y install kibana 					|| exit $?
+
+# Copy over configuration files
+sudo cp /vagrant/files/config/elasticsearch.yml /etc/elasticsearch/		|| exit $?
+sudo cp /vagrant/files/config/xdata.conf /etc/logstash/conf.d/      	|| exit $?
+sudo cp /vagrant/files/twisted_app.py $HOME/       			  			|| exit $?
+sudo cp /vagrant/files/config/kibana.yml /opt/kibana/config/ 			|| exit $?
 
 # Restart all the services to ensure the configurations are being used properly
 # and Run the kibana twisted web server so the developer has access to the
 # dashboad provided by Kibana.
-sudo mkdir /var/log/xdata                          || exit $?
-sudo touch  /var/log/xdata/xdata.log               || exit $?
+sudo mkdir /var/log/xdata                         	|| exit $?
+sudo touch /var/log/xdata/xdata.log               	|| exit $?
 
-cp /vagrant/files/XDATA-Dashboard-v3.json $HOME/kibana-3.1.2/app/dashboards/default.json  || exit $?
+# This may need to be rewritten
+# Simply create .kibana index and add dashboard there?
+#cp /vagrant/files/data/XDATA-Dashboard-v3.json $HOME/$KIBANA/app/dashboards/default.json  || exit $?
+
+# Register cron job to execute backup.sh every 6 hours
+# ┌───────────── min (0 - 59) 
+# │ ┌────────────── hour (0 - 23)
+# │ │ ┌─────────────── day of month (1 - 31)
+# │ │ │ ┌──────────────── month (1 - 12)
+# │ │ │ │ ┌───────────────── day of week (0 - 6) (0 to 6 are Sunday to Saturday, or use names; 7 is Sunday, the same as 0)
+# │ │ │ │ │
+# │ │ │ │ │
+# * * * * *  command to execute
+sudo chmod +x /vagrant/files/scripts/backup.sh 		|| exit $?
+sudo crontab -l | { cat; echo "0 */6 * * * /vagrant/files/scripts/backup.sh > /dev/null 2>&1"; } | crontab - || exit $?
