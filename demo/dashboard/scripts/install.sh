@@ -57,9 +57,7 @@ sudo cp /vagrant/files/config/xdata.conf /etc/logstash/conf.d/      	|| exit $?
 sudo cp /vagrant/files/twisted_app.py $HOME/       			  			|| exit $?
 sudo cp /vagrant/files/config/kibana.yml /opt/kibana/config/ 			|| exit $?
 
-# Restart all the services to ensure the configurations are being used properly
-# and Run the kibana twisted web server so the developer has access to the
-# dashboad provided by Kibana.
+# Create log directory to store send_logs to
 sudo mkdir /var/log/xdata                         	|| exit $?
 sudo touch /var/log/xdata/xdata.log               	|| exit $?
 
@@ -76,5 +74,5 @@ sudo touch /var/log/xdata/xdata.log               	|| exit $?
 # │ │ │ │ │
 # │ │ │ │ │
 # * * * * *  command to execute
-sudo chmod +x /vagrant/files/scripts/backup.sh 		|| exit $?
+sudo chmod +x /vagrant/scripts/backup.sh 		|| exit $?
 sudo crontab -l | { cat; echo "0 */6 * * * /vagrant/files/scripts/backup.sh > /dev/null 2>&1"; } | crontab - || exit $?
