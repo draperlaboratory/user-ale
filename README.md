@@ -12,5 +12,7 @@ This package is for developers creating User facing tools, and who would like to
 
 
 Want to learn more? See the [wiki](https://github.com/draperlaboratory/user-ale/wiki).
+
 Want to see how it works? See the [demo] (https://github.com/draperlaboratory/user-ale/wiki#quick-startup-demo).
+
 Want to see how an example client? Check out the [test-app](http://draperlaboratory.github.io/user-ale/test_app/index.html).
