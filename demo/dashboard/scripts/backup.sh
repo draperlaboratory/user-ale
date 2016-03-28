@@ -16,7 +16,7 @@
 
 #!/bin/bash
 
-INDEXNAME="xdata_v3, xdata_v2"
+INDEXNAME="xdata_v3"
 BACKUPDIR="/mnt/es-backups/"
 
 sudo mkdir -p $BACKUPDIR	|| exit $?
