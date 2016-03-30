@@ -15,4 +15,4 @@ Want to learn more? See the [wiki](https://github.com/draperlaboratory/user-ale/
 
 Want to see how it works? See the [demo] (https://github.com/draperlaboratory/user-ale/wiki#quick-startup-demo).
 
-Want to see how an example client? Check out the [test-app](http://draperlaboratory.github.io/user-ale/test_app/index.html).
+Want to see an example client? Check out the [test-app](http://draperlaboratory.github.io/user-ale/test_app/index.html).
