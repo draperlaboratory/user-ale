@@ -15,7 +15,7 @@ Want to learn more? See the [wiki](https://github.com/draperlaboratory/user-ale/
 
 Want to see an example client? Check out the [test-app](http://draperlaboratory.github.io/user-ale/test_app/index.html).
 
-## Quick Startup Demo
+## Quick Startup Guide
 We have provided the logging server and an example client as a Vagrant image so that you may play with logging locally. It is located under [demo](https://raw.githubusercontent.com/draperlaboratory/user-ale/master/demo).
 
 ### Install Dependencies
