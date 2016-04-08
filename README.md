@@ -13,6 +13,31 @@ This package is for developers creating User facing tools, and who would like to
 
 Want to learn more? See the [wiki](https://github.com/draperlaboratory/user-ale/wiki).
 
-Want to see how it works? See the [demo] (https://github.com/draperlaboratory/user-ale/wiki#quick-startup-demo).
-
 Want to see an example client? Check out the [test-app](http://draperlaboratory.github.io/user-ale/test_app/index.html).
+
+## Quick Startup Demo
+We have provided the logging server and an example client as a Vagrant image so that you may play with logging locally. It is located under [demo](https://raw.githubusercontent.com/draperlaboratory/user-ale/master/demo).
+
+### Install Dependencies
+
+- Install Vagrant
+  - https://www.vagrantup.com
+- Install VirtualBox
+  - https://www.virtualbox.org/wiki/Downloads
+
+### If behind a proxy, modify Vagrantfile
+- Modifiy the vagantfile to point to your proxy. 
+- Don't forget to add "http://" as leaving that off may break apt-get in the vagrant vm
+- Example: config.proxy.http="http://1.2.3.4:5678"
+- If your host system is also the proxy (e.g. CNTLM): setting the proxy as http://127.0.0.1:3128 or localhost may confuse the Vagrant VM and prevent net access
+
+### Startup Vagrant ELK and Developer
+
+This will provision the base box which is an Ubuntu 14.04 machine. The ELK server is running on http://192.16.1.100 while the developer box is running on http://192.16.1.10
+
+    vagrant up elk
+    vagrant up developer
+
+### Go to Kibana Dashboard here: http://192.16.1.100:5601
+
+### Send logs by going here: http://192.16.1.10/test
