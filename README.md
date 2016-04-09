@@ -13,7 +13,7 @@ This package is for developers creating User facing tools, and who would like to
 
 Want to learn more? See the [wiki](https://github.com/draperlaboratory/user-ale/wiki).
 
-Want to see an example client? Check out the [test-app](http://draperlaboratory.github.io/user-ale/test_app/index.html).
+Want to see an example client? Check out the [demo](http://draperlaboratory.github.io/user-ale/test_app/index.html).
 
 ## Quick Startup Guide
 We have provided the logging server and an example client as a Vagrant image so that you may play with logging locally. It is located under [demo](https://raw.githubusercontent.com/draperlaboratory/user-ale/master/demo).
