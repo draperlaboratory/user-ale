@@ -1,5 +1,5 @@
 #
-#   Copyright 2014 The Charles Stark Draper Laboratory
+#   Copyright 2016 The Charles Stark Draper Laboratory
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -22,14 +22,12 @@ BACKUPDIR="/mnt/es-backups/"
 sudo mkdir -p $BACKUPDIR	|| exit $?
 
 # Create the repository 
-curl -XPUT 'http://localhost:9200/_snapshot/xdata_backup' -d `{ "type" : "fs", 
-																"settings" : { 
-																	"location" : "$BACKUPDIR",
-																	"max_snapshot_bytes_per_sec" : "50mb",
-																	"max_restore_bytes_per_sec" : "50mb"
-																}
-															 }`
-
+curl -XPUT 'http://localhost:9200/_snapshot/xdata_backup' -d `{ 
+								"type" : "fs",
+								"settings" : { 																						"location" : "$BACKUPDIR",
+									"max_snapshot_bytes_per_sec" : "50mb",
+									"max_restore_bytes_per_sec" : "50mb"																		}
+							      }`
 
 # Backup only relevant indices. We speciy this as to prevent backing up the .kibana index and any other test indexes that were created
 curl -XPUT 'http://localhost:9200/_snapshot/xdata_backup/snapshot' -d `{ "indices" : "$INDEXNAME" }` 
