@@ -30,13 +30,13 @@ Want to see an example client? Check out the [demo](http://draperlaboratory.gith
 - Example: config.proxy.http="http://1.2.3.4:5678"
 - If your host system is also the proxy (e.g. CNTLM): setting the proxy as http://127.0.0.1:3128 or localhost may confuse the Vagrant VM and prevent net access
 
-### 2. Startup Vagrant ELK and Developer
+### 2. Startup Vagrant ELK Stack and Developer
 
 This will provision the base box which is an Ubuntu 14.04 machine. The ELK server is running on http://192.16.1.100 while the developer box is running on http://192.16.1.10
 
     vagrant up elk
     vagrant up developer
 
-### 3. Go to Kibana Dashboard here: http://192.16.1.100:5601
+### 3. Send logs by using our test-app: http://192.16.1.10/test
+####View the logs you send on the test-app Kibana Dashboard: http://192.16.1.100:5601
 
-### Send logs by going here: http://192.16.1.10/test
