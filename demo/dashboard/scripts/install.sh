@@ -1,5 +1,5 @@
 #
-#   Copyright 2016 The Charles Stark Draper Laboratory
+#   Copyright 2014 The Charles Stark Draper Laboratory
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ MINICONDA_SCRIPT="https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86
 # Update box & install openjdk and mongodb
 sudo -E apt-get update                             || exit $?
 sudo -E apt-get -y install openjdk-7-jdk           || exit $?
-sudo -E apt-get -y install mongodb				   || exit $?
 
 # Install Miniconda
 wget -q $MINICONDA_SCRIPT						   || exit $?                          
@@ -47,7 +46,7 @@ sudo -E apt-get update 								|| exit $?
 sudo -E apt-get -y install logstash 				|| exit $?
 
 # Install Kibana
-echo "deb http://packages.elastic.co/kibana/4.4/debian stable main" | sudo tee -a /etc/apt/sources.list.d/kibana-4.4.x.list
+echo "deb http://packages.elastic.co/kibana/4.5/debian stable main" | sudo tee -a /etc/apt/sources.list.d/kibana-4.5.x.list
 sudo -E apt-get update 								|| exit $?
 sudo -E apt-get -y install kibana 					|| exit $?
 
@@ -56,6 +55,15 @@ sudo cp /vagrant/files/config/elasticsearch.yml /etc/elasticsearch/		|| exit $?
 sudo cp /vagrant/files/config/xdata.conf /etc/logstash/conf.d/      	|| exit $?
 sudo cp /vagrant/files/twisted_app.py $HOME/       			  			|| exit $?
 sudo cp /vagrant/files/config/kibana.yml /opt/kibana/config/ 			|| exit $?
+sudo cp /vagrant/scripts/backup.sh $HOME/							|| exit $?
+sudo cp /vagrant/scripts/restore.sh $HOME/						|| exit $?
+
+# Make the backup directory and change its permissions
+BACKUPDIR="/mnt/es-backups/"
+sudo mkdir -p $BACKUPDIR	|| exit $?
+sudo cp -r /vagrant/files/indices/* $BACKUPDIR
+sudo chown -R elasticsearch:elasticsearch $BACKUPDIR
+
 
 # Create log directory to store send_logs to
 sudo mkdir /var/log/xdata                         	|| exit $?
