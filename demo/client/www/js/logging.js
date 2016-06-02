@@ -49,7 +49,7 @@ $(document).ready(function () {
 
     var ale2 = new userale(
         {
-        loggingUrl: 'http://192.16.1.100',
+        loggingUrl: 'https://'+location.hostname,
         toolName: 'userale-test',
         toolVersion: '3.0.0',
         elementGroups: [

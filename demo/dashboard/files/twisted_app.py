@@ -28,7 +28,7 @@ import logging.handlers
 import simplejson
 
 
-ALLOW_ORIGIN = 'http://192.16.1.10'
+ALLOW_ORIGIN = 'http://localhost:8080'
 
 if not os.path.exists('/var/log/xdata'):
     os.makedirs('/var/log/xdata')
@@ -145,7 +145,7 @@ root = Resource()
 root.putChild("send_log", Logger())
 
 # create a resource to serve static files
-tmp_service = internet.TCPServer(80, Site(root))
+tmp_service = internet.TCPServer(5050, Site(root))
 application = service.Application("User-ALE")
 
 # attach the service to its parent application

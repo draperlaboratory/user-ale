@@ -22,11 +22,11 @@ from twisted.web.static import File
 # stored within the client folder. This directory contains the example
 # webpage that the user will interact with.
 root = Resource()
-root.putChild("test", File("/vagrant/www"))
+root.putChild("test", File("/home/ubuntu/sites/testing/source/static/test-ale/client/www"))
 factory = Site(root)
 
 # Enable the webserver and listen on port 9000 
 # so we can distinguish this web server to regular 
 # port 80 web servers.
-reactor.listenTCP(80, factory)
+reactor.listenTCP(8080, factory)
 reactor.run()
