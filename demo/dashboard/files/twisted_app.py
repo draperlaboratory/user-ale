@@ -20,18 +20,48 @@ from twisted.internet import reactor
 from twisted.web.resource import Resource
 from twisted.application import service, internet
 
-import logging
 import os
+import sys
+import logging
 from logging import config
 import logging.handlers
 
+import argparse
 import simplejson
 
+parser = argparse.ArgumentParser(description='Export incoming JSON logs to a specified file.')
+parser.add_argument('-c', '--config', type=str, help='Configuration file path.')
+parser.add_argument('-p', '--port', type=int, default=80, help='Port for the TCP server to run on.')
+parser.add_argument('-l', '--log-directory', type=str, help='Directory in which to output log files.')
+parser.add_argument('--allow-origin', type=str,\
+  help='List of string URLs to allow Cross-Origin requests from.', nargs='*')
+arguments = parser.parse_args()
+valid_keys = set(['port', 'log_directory', 'allow_origin'])
 
-ALLOW_ORIGIN = 'http://192.16.1.10'
+if arguments.config is not None:
+  with open(arguments.config, 'r') as config_file:
+    config = simplejson.loads(config_file.read())
+else:
+  config = vars(arguments)
 
-if not os.path.exists('/var/log/xdata'):
-    os.makedirs('/var/log/xdata')
+config = { key: config[key] for key in config if key in valid_keys }
+
+if 'port' not in config:
+  config['port'] = 80
+if 'log_directory' not in config or config['log_directory'] is None:
+  print 'Missing required config parameter log_directory.'
+  sys.exit(1)
+
+if os.path.exists(config['log_directory']):
+    if not os.access(config['log_directory'], os.W_OK):
+        print 'Insufficient permissions to write to log directory %s' % config['log_directory']
+        sys.exit(1)
+else:
+    try:
+        os.makedirs(config['log_directory'])
+    except:
+        print 'Unable to create log directory %s' % config['log_directory']
+        sys.exit(1)
 
 # logging configuration
 LOG_SETTINGS = {
@@ -41,7 +71,7 @@ LOG_SETTINGS = {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
             'formatter': 'xdata',
-            'filename': '/var/log/xdata/xdata-v2.log',
+            'filename': os.path.join(config['log_directory'], 'xdata-v2.log'),
             'mode': 'a',
             'maxBytes': 100e6,
             'backupCount': 10,
@@ -50,7 +80,7 @@ LOG_SETTINGS = {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
             'formatter': 'xdata',
-            'filename': '/var/log/xdata/xdata-v3.log',
+            'filename': os.path.join(config['log_directory'], 'xdata-v3.log'),
             'mode': 'a',
             'maxBytes': 100e6,
             'backupCount': 10,
@@ -59,7 +89,7 @@ LOG_SETTINGS = {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
             'formatter': 'detailed',
-            'filename': '/var/log/xdata/xdata-error.log',
+            'filename': os.path.join(config['log_directory'], 'xdata-error.log'),
             'mode': 'a',
             'maxBytes': 100e6,
             'backupCount': 10,
@@ -110,6 +140,15 @@ wf_dict = {
     6: 'WF_TRANSFORM'
 }
 
+def get_allow_origin(request):
+    if 'allow_origin' not in config:
+        return '*'
+    elif isinstance(config['allow_origin']):
+        origin = request.getHeader('Origin')
+        return 'null' if origin not in config['allow_origin'] else origin
+    else:
+        return config['allow_origin']
+
 def log_json(data):
     for key in data:
         if ('useraleVersion' in key) and (key['useraleVersion'].split('.')[0] == '3'):
@@ -120,14 +159,14 @@ def log_json(data):
 
 class Logger(Resource):
     def render_OPTIONS(self, request):
-        request.setHeader('Access-Control-Allow-Origin', ALLOW_ORIGIN)
+        request.setHeader('Access-Control-Allow-Origin', get_allow_origin(request))
         request.setHeader('Access-Control-Allow-Methods', 'POST')
         request.setHeader('Access-Control-Allow-Headers', 'x-prototype-version,x-requested-with,Content-Type')
         request.setHeader('Access-Control-Max-Age', 2520) # 42 hours
         return ''
 
     def render_POST(self, request):
-        request.setHeader('Access-Control-Allow-Origin', ALLOW_ORIGIN)
+        request.setHeader('Access-Control-Allow-Origin', get_allow_origin(request))
         request.setHeader('Access-Control-Allow-Methods', 'POST')
         request.setHeader('Access-Control-Allow-Headers', 'x-prototype-version,x-requested-with,Content-Type')
         request.setHeader('Access-Control-Max-Age', 2520) # 42 hours
@@ -148,7 +187,7 @@ root = Resource()
 root.putChild('send_log', Logger())
 
 # create a resource to serve static files
-tmp_service = internet.TCPServer(80, Site(root))
+tmp_service = internet.TCPServer(config['port'], Site(root))
 application = service.Application('User-ALE')
 
 # attach the service to its parent application
