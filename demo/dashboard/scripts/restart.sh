@@ -140,5 +140,5 @@ if [ -f $PIDFILE ]; then
 fi
 
 # Run the twisted web server so the developer has access to the
-# dashboad provided by Kibana.
-sudo -E twistd --pidfile=$PIDFILE -y /home/vagrant/twisted_app.py 
+# dashboard provided by Kibana.
+sudo -E python /home/vagrant/twisted_app.py --log-directory /var/log/xdata
