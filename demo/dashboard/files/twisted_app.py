@@ -35,32 +35,32 @@ parser.add_argument('-p', '--port', type=int, default=80, help='Port for the TCP
 parser.add_argument('-l', '--log-directory', type=str, help='Directory in which to output log files.')
 parser.add_argument('--allow-origin', type=str,\
   help='List of string URLs to allow Cross-Origin requests from.', nargs='*')
-arguments = parser.parse_args()
+arguments = parser.parse_known_args()[0]
 valid_keys = set(['port', 'log_directory', 'allow_origin'])
 
 if arguments.config is not None:
   with open(arguments.config, 'r') as config_file:
-    config = simplejson.loads(config_file.read())
+    settings = simplejson.loads(config_file.read())
 else:
-  config = vars(arguments)
+  settings = vars(arguments)
 
-config = { key: config[key] for key in config if key in valid_keys }
+settings = { key: settings[key] for key in settings if key in valid_keys }
 
-if 'port' not in config:
-  config['port'] = 80
-if 'log_directory' not in config or config['log_directory'] is None:
+if 'port' not in settings:
+  settings['port'] = 80
+if 'log_directory' not in settings or settings['log_directory'] is None:
   print 'Missing required config parameter log_directory.'
   sys.exit(1)
 
-if os.path.exists(config['log_directory']):
-    if not os.access(config['log_directory'], os.W_OK):
-        print 'Insufficient permissions to write to log directory %s' % config['log_directory']
+if os.path.exists(settings['log_directory']):
+    if not os.access(settings['log_directory'], os.W_OK):
+        print 'Insufficient permissions to write to log directory %s' % settings['log_directory']
         sys.exit(1)
 else:
     try:
-        os.makedirs(config['log_directory'])
+        os.makedirs(settings['log_directory'])
     except:
-        print 'Unable to create log directory %s' % config['log_directory']
+        print 'Unable to create log directory %s' % settings['log_directory']
         sys.exit(1)
 
 # logging configuration
@@ -71,7 +71,7 @@ LOG_SETTINGS = {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
             'formatter': 'xdata',
-            'filename': os.path.join(config['log_directory'], 'xdata-v2.log'),
+            'filename': os.path.join(settings['log_directory'], 'xdata-v2.log'),
             'mode': 'a',
             'maxBytes': 100e6,
             'backupCount': 10,
@@ -80,7 +80,7 @@ LOG_SETTINGS = {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
             'formatter': 'xdata',
-            'filename': os.path.join(config['log_directory'], 'xdata-v3.log'),
+            'filename': os.path.join(settings['log_directory'], 'xdata-v3.log'),
             'mode': 'a',
             'maxBytes': 100e6,
             'backupCount': 10,
@@ -89,7 +89,7 @@ LOG_SETTINGS = {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
             'formatter': 'detailed',
-            'filename': os.path.join(config['log_directory'], 'xdata-error.log'),
+            'filename': os.path.join(settings['log_directory'], 'xdata-error.log'),
             'mode': 'a',
             'maxBytes': 100e6,
             'backupCount': 10,
@@ -141,13 +141,13 @@ wf_dict = {
 }
 
 def get_allow_origin(request):
-    if 'allow_origin' not in config:
+    if 'allow_origin' not in settings:
         return '*'
-    elif isinstance(config['allow_origin']):
+    elif isinstance(settings['allow_origin']):
         origin = request.getHeader('Origin')
-        return 'null' if origin not in config['allow_origin'] else origin
+        return 'null' if origin not in settings['allow_origin'] else origin
     else:
-        return config['allow_origin']
+        return settings['allow_origin']
 
 def log_json(data):
     for key in data:
@@ -187,7 +187,7 @@ root = Resource()
 root.putChild('send_log', Logger())
 
 # create a resource to serve static files
-tmp_service = internet.TCPServer(config['port'], Site(root))
+tmp_service = internet.TCPServer(settings['port'], Site(root))
 application = service.Application('User-ALE')
 
 # attach the service to its parent application
