@@ -101,14 +101,22 @@ loggerv3 = logging.getLogger('xdata-v3')
 logger_err = logging.getLogger('error')
 
 wf_dict = {
-    0: "WF_OTHER",
-    1: "WF_DEFINE",
-    2: "WF_GETDATA",
-    3: "WF_EXPLORE",
-    4: "WF_CREATE",
-    5: "WF_ENRICH",
-    6: "WF_TRANSFORM"
+    0: 'WF_OTHER',
+    1: 'WF_DEFINE',
+    2: 'WF_GETDATA',
+    3: 'WF_EXPLORE',
+    4: 'WF_CREATE',
+    5: 'WF_ENRICH',
+    6: 'WF_TRANSFORM'
 }
+
+def log_json(data):
+    for key in data:
+        if ('useraleVersion' in key) and (key['useraleVersion'].split('.')[0] == '3'):
+            loggerv3.info(simplejson.dumps(key))
+        elif ('parms' in key) and ('wf_state' in key['parms']):
+            key['wf_state_longname'] = wf_dict[key['parms']['wf_state']]
+            logger.info(simplejson.dumps(key))
 
 class Logger(Resource):
     def render_OPTIONS(self, request):
@@ -119,34 +127,29 @@ class Logger(Resource):
         return ''
 
     def render_POST(self, request):
-        newdata = request.content.getvalue()
-        newdata = simplejson.loads(newdata)
         request.setHeader('Access-Control-Allow-Origin', ALLOW_ORIGIN)
         request.setHeader('Access-Control-Allow-Methods', 'POST')
         request.setHeader('Access-Control-Allow-Headers', 'x-prototype-version,x-requested-with,Content-Type')
         request.setHeader('Access-Control-Max-Age', 2520) # 42 hours
+        data = simplejson.loads(request.content.getvalue())
 
         try:
-            for a in newdata:
-                if 'useraleVersion' in a:
-                    if a['useraleVersion'].split('.')[0] == '3':
-                        loggerv3.info(simplejson.dumps(a))
-
-                elif ('parms' in a) and ('wf_state' in a['parms']):
-                    a['wf_state_longname'] = wf_dict[a['parms']['wf_state']]
-
-                    logger.info(simplejson.dumps(a))
+            if isinstance(data, list):
+                for datum in data:
+                    log_json(datum)
+            else:
+                log_json(data)
         except e:
             logger_err.error(e)
 
         return ''
 
 root = Resource()
-root.putChild("send_log", Logger())
+root.putChild('send_log', Logger())
 
 # create a resource to serve static files
 tmp_service = internet.TCPServer(80, Site(root))
-application = service.Application("User-ALE")
+application = service.Application('User-ALE')
 
 # attach the service to its parent application
 tmp_service.setServiceParent(application)
