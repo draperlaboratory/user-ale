@@ -19,6 +19,7 @@ from twisted.web.static import File
 from twisted.internet import reactor
 from twisted.web.resource import Resource
 from twisted.application import service, internet
+from twisted.application.app import startApplication
 
 import os
 import sys
@@ -141,21 +142,20 @@ wf_dict = {
 }
 
 def get_allow_origin(request):
-    if 'allow_origin' not in settings:
+    if 'allow_origin' not in settings or settings['allow_origin'] is None:
         return '*'
-    elif isinstance(settings['allow_origin']):
+    elif isinstance(settings['allow_origin'], list):
         origin = request.getHeader('Origin')
         return 'null' if origin not in settings['allow_origin'] else origin
     else:
         return settings['allow_origin']
 
 def log_json(data):
-    for key in data:
-        if ('useraleVersion' in key) and (key['useraleVersion'].split('.')[0] == '3'):
-            loggerv3.info(simplejson.dumps(key))
-        elif ('parms' in key) and ('wf_state' in key['parms']):
-            key['wf_state_longname'] = wf_dict[key['parms']['wf_state']]
-            logger.info(simplejson.dumps(key))
+    if ('useraleVersion' in data) and (data['useraleVersion'].split('.')[0] == '3'):
+        loggerv3.info(simplejson.dumps(data))
+    elif ('parms' in data) and ('wf_state' in data['parms']):
+        data['wf_state_longname'] = wf_dict[data['parms']['wf_state']]
+        logger.info(simplejson.dumps(data))
 
 class Logger(Resource):
     def render_OPTIONS(self, request):
@@ -178,7 +178,7 @@ class Logger(Resource):
                     log_json(datum)
             else:
                 log_json(data)
-        except e:
+        except Exception as e:
             logger_err.error(e)
 
         return ''
