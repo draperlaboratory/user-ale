@@ -68,6 +68,15 @@ else:
 LOG_SETTINGS = {
     'version': 1,
     'handlers': {    
+        'xdata-js': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'level': 'INFO',
+            'formatter': 'xdata',
+            'filename': os.path.join(settings['log_directory'], 'xdata-js.log'),
+            'mode': 'a',
+            'maxBytes': 100e6,
+            'backupCount': 10,
+        },
         'xdata-v2': {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
@@ -110,6 +119,10 @@ LOG_SETTINGS = {
         },
     },
     'loggers': {
+        'xdata-js': {
+            'level':'DEBUG',
+            'handlers': ['xdata-js',]
+        },
         'xdata-v2': {
             'level':'DEBUG',
             'handlers': ['xdata-v2',]
@@ -127,6 +140,7 @@ LOG_SETTINGS = {
 
 config.dictConfig(LOG_SETTINGS)
 
+logger_js = logging.getLogger('xdata-js')
 logger = logging.getLogger('xdata-v2')
 loggerv3 = logging.getLogger('xdata-v3')
 logger_err = logging.getLogger('error')
@@ -151,7 +165,9 @@ def get_allow_origin(request):
         return settings['allow_origin']
 
 def log_json(data):
-    if ('useraleVersion' in data) and (data['useraleVersion'].split('.')[0] == '3'):
+    if ('toolVersion' in data):
+        logger_js.info(simplejson.dumps(data))
+    elif ('useraleVersion' in data) and (data['useraleVersion'].split('.')[0] == '3'):
         loggerv3.info(simplejson.dumps(data))
     elif ('parms' in data) and ('wf_state' in data['parms']):
         data['wf_state_longname'] = wf_dict[data['parms']['wf_state']]
