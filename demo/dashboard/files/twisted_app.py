@@ -192,3 +192,5 @@ application = service.Application('User-ALE')
 
 # attach the service to its parent application
 tmp_service.setServiceParent(application)
+startApplication(application, 0)
+reactor.run()
