@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 #   Copyright 2016 The Charles Stark Draper Laboratory
 #
@@ -13,8 +14,6 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #
-
-#!/bin/bash
 
 sudo service elasticsearch restart
 
@@ -141,4 +140,5 @@ fi
 
 # Run the twisted web server so the developer has access to the
 # dashboard provided by Kibana.
-sudo -E python /home/vagrant/twisted_app.py --log-directory /var/log/xdata
+sudo -E python /home/vagrant/twisted_app.py --log-directory /var/log/xdata &
+echo $! > /home/vagrant/twistd.pid
