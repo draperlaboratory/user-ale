@@ -77,6 +77,7 @@ LOG_SETTINGS = {
             'maxBytes': 100e6,
             'backupCount': 10,
         },
+        # Deprecated
         'xdata-v2': {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
@@ -165,7 +166,7 @@ def get_allow_origin(request):
         return settings['allow_origin']
 
 def log_json(data):
-    if ('toolVersion' in data):
+    if ('useraleVersion' in data) and (data ['useraleVersion'].split('.')[0] == '4'):
         logger_js.info(simplejson.dumps(data))
     elif ('useraleVersion' in data) and (data['useraleVersion'].split('.')[0] == '3'):
         loggerv3.info(simplejson.dumps(data))
