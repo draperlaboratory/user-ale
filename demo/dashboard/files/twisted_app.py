@@ -34,10 +34,12 @@ parser = argparse.ArgumentParser(description='Export incoming JSON logs to a spe
 parser.add_argument('-c', '--config', type=str, help='Configuration file path.')
 parser.add_argument('-p', '--port', type=int, default=80, help='Port for the TCP server to run on.')
 parser.add_argument('-l', '--log-directory', type=str, help='Directory in which to output log files.')
+parser.add_argument('-f', '--filename',  type=str, default="xdata", help='Specify filename to store logs.')
 parser.add_argument('--allow-origin', type=str,\
   help='List of string URLs to allow Cross-Origin requests from.', nargs='*')
+
 arguments = parser.parse_known_args()[0]
-valid_keys = set(['port', 'log_directory', 'allow_origin'])
+valid_keys = set(['port', 'log_directory', 'filename', 'allow_origin'])
 
 if arguments.config is not None:
   with open(arguments.config, 'r') as config_file:
@@ -64,43 +66,44 @@ else:
         print 'Unable to create log directory %s' % settings['log_directory']
         sys.exit(1)
 
+
 # logging configuration
 LOG_SETTINGS = {
     'version': 1,
     'handlers': {    
-        'xdata-js': {
+        settings['filename'] + '-js': {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
             'formatter': 'xdata',
-            'filename': os.path.join(settings['log_directory'], 'xdata-js.log'),
+            'filename': os.path.join(settings['log_directory'], settings['filename'] + '-js.log'),
             'mode': 'a',
             'maxBytes': 100e6,
             'backupCount': 10,
         },
         # Deprecated
-        'xdata-v2': {
+        settings['filename'] + '-v2': {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
             'formatter': 'xdata',
-            'filename': os.path.join(settings['log_directory'], 'xdata-v2.log'),
+            'filename': os.path.join(settings['log_directory'], settings['filename'] + '-v2.log'),
             'mode': 'a',
             'maxBytes': 100e6,
             'backupCount': 10,
         },
-        'xdata-v3': {
+        settings['filename'] + '-v3': {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
             'formatter': 'xdata',
-            'filename': os.path.join(settings['log_directory'], 'xdata-v3.log'),
+            'filename': os.path.join(settings['log_directory'], settings['filename'] + '-v3.log'),
             'mode': 'a',
             'maxBytes': 100e6,
             'backupCount': 10,
         },
-        'file2': {
+        settings['filename'] + '-error': {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'INFO',
             'formatter': 'detailed',
-            'filename': os.path.join(settings['log_directory'], 'xdata-error.log'),
+            'filename': os.path.join(settings['log_directory'], settings['filename'] + '-error.log'),
             'mode': 'a',
             'maxBytes': 100e6,
             'backupCount': 10,
@@ -120,31 +123,31 @@ LOG_SETTINGS = {
         },
     },
     'loggers': {
-        'xdata-js': {
+        settings['filename'] + '-js': {
             'level':'DEBUG',
-            'handlers': ['xdata-js',]
+            'handlers': [settings['filename'] + '-js',]
         },
-        'xdata-v2': {
+        settings['filename'] + '-v2': {
             'level':'DEBUG',
-            'handlers': ['xdata-v2',]
+            'handlers': [settings['filename'] + '-v2',]
         },
-        'xdata-v3': {
+        settings['filename'] + '-v3': {
             'level':'DEBUG',
-            'handlers': ['xdata-v3',]
+            'handlers': [settings['filename'] + '-v3',]
         },
-        'error': {
+        settings['filename'] + '-error': {
             'level':'DEBUG',
-            'handlers': ['file2',]
+            'handlers': [settings['filename'] + '-error',]
         },
     }
 }
 
 config.dictConfig(LOG_SETTINGS)
 
-logger_js = logging.getLogger('xdata-js')
-logger = logging.getLogger('xdata-v2')
-loggerv3 = logging.getLogger('xdata-v3')
-logger_err = logging.getLogger('error')
+logger_js = logging.getLogger(settings['filename'] + '-js')
+logger = logging.getLogger(settings['filename'] + '-v2')
+loggerv3 = logging.getLogger(settings['filename'] + '-v3')
+logger_err = logging.getLogger(settings['filename'] + '-error')
 
 wf_dict = {
     0: 'WF_OTHER',
