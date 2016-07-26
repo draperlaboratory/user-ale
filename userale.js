@@ -47,7 +47,7 @@
     loggingUrl: '',
     toolName: 'UNK',
     toolVersion: 'UNK',
-    version: '3',
+    version: '3.0',
     workerUrl: 'userale-worker.js',
     debug: true,
     sendLogs: true,
